@@ -1,8 +1,14 @@
 <template>
   <div>
-    <HomeHeader></HomeHeader>
+    <!-- <HomeHeader></HomeHeader> -->
     <div class="m-content">
-      <el-form ref="editForm" status-icon :model="editForm" :rules="rules" label-width="80px">
+      <el-form
+        ref="editForm"
+        status-icon
+        :model="editForm"
+        :rules="rules"
+        label-width="80px"
+      >
         <el-form-item label="标题" prop="blogTitle">
           <el-input v-model="editForm.blogTitle"></el-input>
         </el-form-item>
@@ -14,31 +20,39 @@
         </el-form-item>
         <!-- axios 是异步进行 需要等数据返回后才进行渲染 -->
         <el-form-item label="内容" prop="content" v-if="edit">
-          <MarkdownEditor :initialValue="editForm.content" @blurEditor="updateData"></MarkdownEditor>
+          <MarkdownEditor
+            :initialValue="editForm.content"
+            @blurEditor="updateData"
+          ></MarkdownEditor>
         </el-form-item>
         <el-form-item label="状态" prop="content">
           <textarea v-model="editForm.status" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm(editForm)">完成</el-button>
+          <el-button type="primary" @click="submitForm(editForm)"
+            >完成</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
+    <halo-footer></halo-footer>
   </div>
 </template>
 
 <script>
-import { reactive, ref, toRaw } from "vue";
+import { reactive, toRaw } from "vue";
 import { BlogDetail } from "../api";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import MarkdownEditor from "../components/MarkdownEditor/Editor.vue";
 import HomeHeader from "../components/Header/HomeHeader.vue";
+import HaloFooter from "../components/Footer/HaloFooter.vue";
 export default {
   name: "BlogEdit",
   components: {
     MarkdownEditor,
     HomeHeader,
+    HaloFooter,
   },
 
   setup() {

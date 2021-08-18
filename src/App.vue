@@ -10,9 +10,17 @@ import Test from "./views/Test.vue";
 import UserInfo from "./components/Cards/UserInfo.vue";
 import MarkdownEditorTest from "./views/Test/MarkdownEditorTest.vue";
 import SetUpTest from "./views/Test/SetUpTest.vue";
+import MarkdownContent from "./views/Test/MarkdownContent.vue";
 
 export default {
-  components: { Home, Test, UserInfo, MarkdownEditorTest, SetUpTest },
+  components: {
+    Home,
+    Test,
+    UserInfo,
+    MarkdownEditorTest,
+    SetUpTest,
+    MarkdownContent,
+  },
   setup() {},
 };
 </script>

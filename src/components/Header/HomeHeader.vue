@@ -18,14 +18,22 @@
               <a href="//localhost:3000/home">测试</a>
             </li>
             <li class="nav-link-item">
-              <a href="//www.bilibili.com/anime/" target="_blank" class="link">番剧</a>
+              <a href="//www.bilibili.com/anime/" target="_blank" class="link"
+                >番剧</a
+              >
             </li>
           </ul>
         </div>
       </el-col>
       <el-col :span="8">
         <div class="halo-search">
-          <el-form ref="form" :model="form" label-width="100px" inline="true" size="small">
+          <el-form
+            ref="form"
+            :model="form"
+            label-width="100px"
+            inline="true"
+            size="small"
+          >
             <el-form-item>
               <el-input v-model="input" placeholder="请输入内容"></el-input>
             </el-form-item>
@@ -37,10 +45,18 @@
       </el-col>
       <el-col :span="8">
         <div class="halo-user-center">
-          <a href="//localhost:8008/#/blog/article" target="_blank" class="link">个人中心</a>
-          <a href="//localhost:8008/#/blog/article" target="_blank" class="link">个人中心</a>
-          <a href="//localhost:8008/#/blog/article" target="_blank" class="link">个人中心</a>
-          <a href="//localhost:8008/#/blog/article" target="_blank" class="link">个人中心</a>
+          <a href="//localhost:8008/#/blog/article" target="_blank" class="link"
+            >个人中心</a
+          >
+          <a href="//localhost:8008/#/blog/article" target="_blank" class="link"
+            >个人中心</a
+          >
+          <a href="//localhost:8008/#/blog/article" target="_blank" class="link"
+            >个人中心</a
+          >
+          <a href="//localhost:8008/#/blog/article" target="_blank" class="link"
+            >个人中心</a
+          >
         </div>
       </el-col>
     </el-row>
@@ -66,7 +82,11 @@ ul {
 }
 
 .halo-header {
+  z-index: 100;
   margin-bottom: 20px;
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 
 .halo-nav-link {

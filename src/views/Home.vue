@@ -13,7 +13,11 @@
               @click.prevent="toBlogDetail(item.id)"
             >
               <div class="halo-carousel-title">{{ item.blogTitle }}</div>
-              <img class="post_bg" :src="item.blogCover" :alt="item.blogTitle" />
+              <img
+                class="post_bg"
+                :src="item.blogCover"
+                :alt="item.blogTitle"
+              />
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -26,7 +30,11 @@
             @click="toBlogDetail(item.id)"
           >
             <div class="halo-blog-img">
-              <img class="post_bg" :src="item.blogCover" :alt="item.blogTitle" />
+              <img
+                class="post_bg"
+                :src="item.blogCover"
+                :alt="item.blogTitle"
+              />
               <p class="halo-blog-created">{{ item.created }}</p>
             </div>
             <div class="halo-blog-content">
@@ -52,15 +60,16 @@
         <div>
           <UserInfo></UserInfo>
         </div>
-        <!-- <div></div>
         <div></div>
         <div></div>
-        <div class="halo-sticky"></div>-->
+        <div class="halo-test"></div>
+        <div class="halo-sticky"></div>
       </div>
     </div>
 
     <!-- 回到顶部 -->
     <el-backtop :bottom="100"></el-backtop>
+    <halo-footer></halo-footer>
   </div>
 </template>
 
@@ -70,10 +79,11 @@ import carouselData from "../hooks/carouselData";
 import UserInfo from "../components/Cards/UserInfo.vue";
 import { useRouter } from "vue-router";
 import IndexBanner from "../components/Banner/IndexBanner.vue";
+import HaloFooter from "../components/Footer/HaloFooter.vue";
 
 export default {
   name: "Home",
-  components: { UserInfo, IndexBanner },
+  components: { UserInfo, IndexBanner, HaloFooter },
   setup() {
     const router = useRouter();
 
@@ -103,7 +113,7 @@ export default {
 .halo-body {
   margin: 0 auto;
   padding: 1.5rem 1rem;
-  max-width: 1024px;
+  width: 1200px;
   display: grid;
   grid-template-columns: 69% 29%;
   grid-gap: 2%;
@@ -254,6 +264,10 @@ export default {
       top: 20px;
       position: sticky;
       background: #889db8;
+    }
+
+    .halo-test {
+      background: rgba(16 18 27 / 40%);
     }
   }
 }

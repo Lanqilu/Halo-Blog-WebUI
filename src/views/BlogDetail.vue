@@ -1,62 +1,105 @@
 <template>
   <div class="m-container">
-    <HomeHeader></HomeHeader>
-
     <div class="halo-blog">
-      <div class="m-blog">
-        <div class="halo-blog-title">
-          <h1>{{ blog.info.blogTitle }}</h1>
-          <div class="edit">
-            <el-link icon="el-icon-edit" v-if="blog.isOwnBlog">
-              <router-link :to="{name: 'BlogEdit', params: {blogId: blog.info.id}}">编辑</router-link>
-            </el-link>
+      <div class="halo-title-card">
+        <div class="post-info">
+          <div class="halo-blog-info">
+            <div class="halo-blog-sort">vue</div>
+            <div class="halo-blog-tags">你好</div>
+            <div class="halo-blog-tags">你好</div>
+            <div class="halo-blog-tags">你好</div>
+          </div>
+
+          <div class="halo-blog-title">
+            <div class="title">
+              {{ blog.info.blogTitle }}
+            </div>
+            <div class="edit">
+              <el-link icon="el-icon-edit" v-if="blog.isOwnBlog">
+                <router-link
+                  :to="{ name: 'BlogEdit', params: { blogId: blog.info.id } }"
+                  >编辑</router-link
+                >
+              </el-link>
+            </div>
+          </div>
+
+          <div class="halo-blog-author">
+            <div class="avatar">
+              <img :src="blog.author.avatar" alt class="author-avatar" />
+            </div>
+            <div class="author-info">
+              <div>{{ blog.author.username }}</div>
+              <div>{{ blog.author.email }}</div>
+            </div>
           </div>
         </div>
 
-        <div class="author">
-          <div class="avatar">
-            <img :src="blog.author.avatar" alt />
-          </div>
-          <div class="author-info">
-            <div>{{ blog.author.username }}</div>
-            <div>{{ blog.author.email }}</div>
-          </div>
-        </div>
-
-        <el-divider></el-divider>
-
-        <div>描述：{{ blog.info.description }}</div>
-        <el-divider></el-divider>
-        <div class="content markdown-body" v-html="blog.info.content"></div>
-        <el-divider></el-divider>
-
-        <div class="like" @click.once="giveLike()">点赞数：{{ blog.info.blogLike }}</div>
+        <div
+          class="post-cover"
+          :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"
+        ></div>
       </div>
 
-      <div class="halo-blog-catalogue"></div>
+      <div
+        class="post-cover"
+        :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"
+      ></div>
+
+      <div class="halo-blog-content">
+        <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
+          <div class="describe">
+            {{ blog.info.description }}
+          </div>
+          <el-divider></el-divider>
+          <div
+            class="content markdown-body"
+            v-html="blog.info.content"
+            v-highlight
+          ></div>
+          <el-divider></el-divider>
+
+          <div class="like" @click.once="giveLike()">
+            点赞数：{{ blog.info.blogLike }}
+          </div>
+        </div>
+
+        <div class="halo-blog-catalogue" v-if="state.isShowContent">
+          <div class="fsdhufh"></div>
+        </div>
+      </div>
     </div>
+
+    <div class="halo-setting">
+      <button @click="showContent">目录</button>
+    </div>
+
+    <halo-footer></halo-footer>
   </div>
 </template>
 <script>
-import "github-markdown-css/github-markdown.css";
-import { onMounted, onUpdated, reactive, ref } from "vue";
+import "../assets/markdown-css/halo-markdown.css";
+import { onMounted, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import marked from "marked";
 import { BlogDetail, getAuthorInfo } from "../api";
 import axios from "axios";
 import { ElMessage } from "element-plus";
-import HomeHeader from "../components/Header/HomeHeader.vue";
+import HaloFooter from "../components/Footer/HaloFooter.vue";
 
 export default {
   name: "BlogDetail",
   components: {
-    HomeHeader,
+    HaloFooter,
   },
 
   setup() {
     const route = useRoute();
     const store = useStore();
+
+    // 进入页面 滚动条重置
+    document.body.scrollTo(0, 0);
 
     let blog = reactive({
       info: {
@@ -72,6 +115,10 @@ export default {
         username: "默认名称",
         email: "",
       },
+    });
+
+    let state = reactive({
+      isShowContent: true,
     });
 
     const blogId = route.params.blogId;
@@ -106,9 +153,16 @@ export default {
       });
     }
 
+    // 目录显示按钮;
+    function showContent() {
+      state.isShowContent = !state.isShowContent;
+    }
+
     return {
+      state,
       blog,
       giveLike,
+      showContent,
     };
   },
 };
@@ -116,56 +170,123 @@ export default {
 
 <style scoped lang="scss">
 .halo-blog {
-  margin: 40px auto;
-
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 1200px;
+  margin: 0 auto;
 
-  .m-blog {
-    padding: 30px;
+  .halo-title-card {
+    margin-top: 30px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     background: #ffffff;
     border-radius: 12px;
-    width: 65%;
-    max-width: 1200px;
-    margin-right: 25px;
+    width: 100%;
+    max-height: 300px;
 
-    .halo-blog-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    .author {
-      margin-top: 15px;
-      display: flex;
-      justify-content: flex-start;
-
-      img {
-        max-height: 3.5rem;
-        border-radius: 6px;
-      }
-
-      .author-info {
-        margin-left: 10px;
+    .post-info {
+      padding: 30px;
+      .halo-blog-info {
         display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
+      }
+
+      .halo-blog-title {
+        display: flex;
+        align-items: center;
+        margin: 0.8rem 0 0.8rem 0;
+        .title {
+          font-weight: 700;
+          font-size: 2.3rem;
+          line-height: 1.2;
+          text-align: left;
+          padding: 0;
+        }
+        .edit {
+          margin: 20px;
+        }
+      }
+
+      .halo-blog-author {
+        margin-top: 15px;
+        display: flex;
+        justify-content: flex-start;
+
+        img {
+          max-height: 3.5rem;
+          border-radius: 6px;
+        }
+
+        .author-info {
+          margin-left: 10px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+        }
       }
     }
 
-    .like {
-      cursor: pointer;
+    .post-cover {
+      border-radius: 12px;
+      width: 300px;
+      height: 200px;
+      background-size: cover;
+      margin: 20px;
     }
   }
 
-  .halo-blog-catalogue {
-    border-radius: 12px;
-    background: #99cccc;
-    width: 20%;
-    height: 500px;
+  .halo-blog-content {
+    margin: 30px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+
+    .m-blog {
+      .describe {
+        line-height: 1.8;
+        font-size: 1.1em;
+      }
+
+      padding: 30px;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+      background: #ffffff;
+      border-radius: 12px;
+      width: 100%;
+
+      .like {
+        cursor: pointer;
+      }
+    }
+
+    .active {
+      width: 70%;
+    }
+
+    .halo-blog-catalogue {
+      position: relative;
+      .fsdhufh {
+        border-radius: 12px;
+        background: #99cccc;
+        position: sticky;
+        top: 30px;
+        height: 500px;
+        width: 100%;
+      }
+
+      margin-left: 30px;
+      width: 30%;
+    }
   }
+}
+
+.halo-setting {
+  position: fixed;
+  right: 40px;
+  bottom: 100px;
 }
 </style>
