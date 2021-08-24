@@ -26,7 +26,7 @@
         </div>
       </el-col>
       <el-col :span="8">
-        <div class="halo-search">
+        <!-- <div class="halo-search">
           <el-form
             ref="form"
             :model="form"
@@ -41,7 +41,7 @@
               <el-button icon="el-icon-search" size="small"></el-button>
             </el-form-item>
           </el-form>
-        </div>
+        </div> -->
       </el-col>
       <el-col :span="8">
         <div class="halo-user-center">

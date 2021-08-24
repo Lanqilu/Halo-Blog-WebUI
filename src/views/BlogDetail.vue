@@ -1,8 +1,10 @@
 <template>
   <div class="m-container">
     <div class="halo-blog">
+      <!-- 文章头信息 -->
       <div class="halo-title-card">
         <div class="post-info">
+          <!-- 文章分类和标签信息 -->
           <div class="halo-blog-info">
             <div class="halo-blog-sort">vue</div>
             <div class="halo-blog-tags">你好</div>
@@ -10,6 +12,7 @@
             <div class="halo-blog-tags">你好</div>
           </div>
 
+          <!-- 文章标题 -->
           <div class="halo-blog-title">
             <div class="title">
               {{ blog.info.blogTitle }}
@@ -24,6 +27,7 @@
             </div>
           </div>
 
+          <!-- 文章作者信息 -->
           <div class="halo-blog-author">
             <div class="avatar">
               <img :src="blog.author.avatar" alt class="author-avatar" />
@@ -35,27 +39,24 @@
           </div>
         </div>
 
+        <!-- 文章封面 -->
         <div
           class="post-cover"
           :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"
         ></div>
       </div>
 
-      <div
-        class="post-cover"
-        :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"
-      ></div>
-
       <div class="halo-blog-content">
+        <!-- 文章主体信息 -->
         <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
           <div class="describe">
             {{ blog.info.description }}
           </div>
           <el-divider></el-divider>
           <div
+            id="content"
             class="content markdown-body"
             v-html="blog.info.content"
-            v-highlight
           ></div>
           <el-divider></el-divider>
 
@@ -64,12 +65,20 @@
           </div>
         </div>
 
+        <!-- 文章目录 -->
         <div class="halo-blog-catalogue" v-if="state.isShowContent">
-          <div class="fsdhufh"></div>
+          <div class="toc">
+            <ul v-for="item in state.treeArray" :key="item.id">
+              <li>
+                <a :href="'#' + item.id">{{ item.name }}</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- 固定设置按钮 -->
     <div class="halo-setting">
       <button @click="showContent">目录</button>
     </div>
@@ -87,6 +96,8 @@ import { BlogDetail, getAuthorInfo } from "../api";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
+import hljs from "highlight.js";
+import "highlight.js/styles/atom-one-dark.css";
 
 export default {
   name: "BlogDetail",
@@ -119,28 +130,44 @@ export default {
 
     let state = reactive({
       isShowContent: true,
+      treeArray: [],
     });
 
     const blogId = route.params.blogId;
+
+    // 参考地址：https://blog.csdn.net/weixin_41727824/article/details/112776711
+    let rendererMD = new marked.Renderer();
+    marked.setOptions({
+      renderer: rendererMD,
+      highlight: function (code) {
+        return hljs.highlightAuto(code).value;
+      },
+      gfm: true, //默认为true。 允许 Git Hub标准的markdown.
+      tables: true, //默认为true。 允许支持表格语法。该选项要求 gfm 为true。
+      breaks: true, //默认为false。 允许回车换行。该选项要求 gfm 为true。
+      pedantic: false, //默认为false。 尽可能地兼容 markdown.pl的晦涩部分。不纠正原始模型任何的不良行为和错误。
+      smartLists: true,
+      smartypants: true, //使用更为时髦的标点，比如在引用语法中加入破折号。
+      langPrefix: "hljs language-",
+    });
 
     onMounted(async () => {
       let blogDetailRes = await BlogDetail(blogId);
       blog.info = { ...blog.info, ...blogDetailRes.data.data };
       blog.info.content = marked(blog.info.content);
 
-      console.log(blog);
-
       // 判断是否是自己的文章，能否编辑
       blog.isOwnBlog = blog.info.userId === store.getters.getUser.id;
 
       let authorInfoRes = await getAuthorInfo(blog.info.userId);
       blog.author = authorInfoRes.data.data;
+
+      getToc();
     });
 
     // 点赞
     function giveLike() {
       axios.post(`http://localhost:8088/blog/like/${blogId}`).then((res) => {
-        console.log(res);
         if (res.data.code === 200) {
           ElMessage.success({
             message: res.data.msg,
@@ -156,6 +183,20 @@ export default {
     // 目录显示按钮;
     function showContent() {
       state.isShowContent = !state.isShowContent;
+    }
+
+    function getToc() {
+      let childrens = document.getElementById("content").children;
+      for (let i = 0; i < childrens.length - 1; i++) {
+        let nodeName = childrens[i].nodeName;
+        if (nodeName == "H2" || nodeName == "H3") {
+          state.treeArray.push({
+            id: childrens[i].id,
+            name: childrens[i].innerText,
+            tag: childrens[i].nodeName,
+          });
+        }
+      }
     }
 
     return {
@@ -269,7 +310,8 @@ export default {
 
     .halo-blog-catalogue {
       position: relative;
-      .fsdhufh {
+      .toc {
+        overflow: auto;
         border-radius: 12px;
         background: #99cccc;
         position: sticky;

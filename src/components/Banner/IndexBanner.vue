@@ -24,7 +24,7 @@
         </div>
       </el-col>
       <el-col :span="8">
-        <div class="halo-search">
+        <!-- <div class="halo-search">
           <el-form ref="form" :model="form" label-width="150px" inline="true" size="small">
             <el-form-item>
               <el-input v-model="input" placeholder="请输入内容"></el-input>
@@ -33,7 +33,7 @@
               <el-button icon="el-icon-search"></el-button>
             </el-form-item>
           </el-form>
-        </div>
+        </div> -->
       </el-col>
       <el-col :span="8">
         <div class="halo-user-center">
