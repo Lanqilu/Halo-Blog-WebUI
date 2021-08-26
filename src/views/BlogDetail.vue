@@ -49,7 +49,7 @@
       <div class="halo-blog-content">
         <!-- 文章主体信息 -->
         <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
-          <div class="describe">
+          <div id="describe" class="describe">
             {{ blog.info.description }}
           </div>
           <el-divider></el-divider>
@@ -68,11 +68,18 @@
         <!-- 文章目录 -->
         <div class="halo-blog-catalogue" v-if="state.isShowContent">
           <div class="toc">
-            <ul v-for="item in state.treeArray" :key="item.id">
-              <li>
-                <a :href="'#' + item.id">{{ item.name }}</a>
-              </li>
-            </ul>
+            <div>
+              <ul id="toc-content">
+                <li
+                  v-for="item in state.treeArray"
+                  :key="item.id"
+                  :id="`${item.id}-halo`"
+                  :class="item.tag"
+                >
+                  <a :href="'#' + item.id">{{ item.name }}</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -81,6 +88,7 @@
     <!-- 固定设置按钮 -->
     <div class="halo-setting">
       <button @click="showContent">目录</button>
+      <button @click="toTop">回到顶部</button>
     </div>
 
     <halo-footer></halo-footer>
@@ -88,7 +96,7 @@
 </template>
 <script>
 import "../assets/markdown-css/halo-markdown.css";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import marked from "marked";
@@ -131,6 +139,7 @@ export default {
     let state = reactive({
       isShowContent: true,
       treeArray: [],
+      scroll: "",
     });
 
     const blogId = route.params.blogId;
@@ -139,22 +148,26 @@ export default {
     let rendererMD = new marked.Renderer();
     marked.setOptions({
       renderer: rendererMD,
-      highlight: function (code) {
-        return hljs.highlightAuto(code).value;
-      },
       gfm: true, //默认为true。 允许 Git Hub标准的markdown.
       tables: true, //默认为true。 允许支持表格语法。该选项要求 gfm 为true。
       breaks: true, //默认为false。 允许回车换行。该选项要求 gfm 为true。
       pedantic: false, //默认为false。 尽可能地兼容 markdown.pl的晦涩部分。不纠正原始模型任何的不良行为和错误。
       smartLists: true,
       smartypants: true, //使用更为时髦的标点，比如在引用语法中加入破折号。
+      highlight: function (code) {
+        return hljs.highlightAuto(code).value;
+      },
       langPrefix: "hljs language-",
     });
 
     onMounted(async () => {
       let blogDetailRes = await BlogDetail(blogId);
+      console.log("————————————————数据获取完成————————————————");
+
       blog.info = { ...blog.info, ...blogDetailRes.data.data };
       blog.info.content = marked(blog.info.content);
+
+      console.log("————————————————marked转义完成————————————————");
 
       // 判断是否是自己的文章，能否编辑
       blog.isOwnBlog = blog.info.userId === store.getters.getUser.id;
@@ -163,6 +176,9 @@ export default {
       blog.author = authorInfoRes.data.data;
 
       getToc();
+      console.log("————————————————挂载完成————————————————");
+
+      window.addEventListener("scroll", dataScroll);
     });
 
     // 点赞
@@ -180,11 +196,6 @@ export default {
       });
     }
 
-    // 目录显示按钮;
-    function showContent() {
-      state.isShowContent = !state.isShowContent;
-    }
-
     function getToc() {
       let childrens = document.getElementById("content").children;
       for (let i = 0; i < childrens.length - 1; i++) {
@@ -199,11 +210,57 @@ export default {
       }
     }
 
+    // 目录显示按钮;
+    function showContent() {
+      state.isShowContent = !state.isShowContent;
+    }
+
+    function toTop() {
+      // document.body.scrollTop = document.documentElement.scrollTop = 0;
+      console.log(state.scroll);
+      loadScroll();
+    }
+
+    function dataScroll() {
+      state.scroll =
+        document.documentElement.scrollTop || document.body.scrollTop; //获取屏幕距离顶部的距离
+    }
+
+    function loadScroll() {
+      let childrens = document.getElementById("content").children;
+      for (let i = 0; i < childrens.length - 1; i++) {
+        let nodeName = childrens[i].nodeName;
+        if (nodeName == "H2" || nodeName == "H3") {
+          if (childrens[i].offsetTop - state.scroll > 20) {
+            var anchorId = childrens[i].id + "-halo";
+            break;
+          }
+        }
+      }
+      let tocContent = document.getElementById(anchorId);
+      if (!tocContent.classList.contains("catalog-active")) {
+        const li = document.querySelector(".catalog-active");
+        if (li) {
+          li.classList.remove("catalog-active");
+        }
+
+        tocContent.classList.add("catalog-active");
+      }
+    }
+
+    watch(
+      () => state.scroll,
+      () => {
+        loadScroll();
+      }
+    );
+
     return {
       state,
       blog,
       giveLike,
       showContent,
+      toTop,
     };
   },
 };
@@ -310,14 +367,65 @@ export default {
 
     .halo-blog-catalogue {
       position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      top: 30px;
+      height: 500px;
+      width: 100%;
+      position: sticky;
       .toc {
         overflow: auto;
-        border-radius: 12px;
+        height: 100%;
         background: #99cccc;
-        position: sticky;
-        top: 30px;
-        height: 500px;
-        width: 100%;
+        ul,
+        li {
+          list-style: none;
+          margin: 0px;
+          padding: 0px;
+        }
+
+        ul {
+          width: 85%;
+          margin: 20px auto;
+
+          .catalog-active {
+            background: #cacaca77;
+          }
+
+          .H2 {
+            padding: 5px 15px;
+            margin: 10px;
+            color: rgb(150, 58, 211);
+          }
+          .H3 {
+            margin-left: 25px;
+            padding: 3px;
+            color: rgb(211, 98, 22);
+          }
+
+          .H2,
+          .H3 {
+            border-radius: 10px;
+            &:hover {
+              color: rgb(49, 77, 235);
+            }
+          }
+        }
+
+        // 滚动条
+        &::-webkit-scrollbar {
+          width: 4px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 0px;
+          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+          background: rgba(0, 0, 0, 0.2);
+        }
+        &::-webkit-scrollbar-track {
+          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+          border-radius: 0;
+          background: rgba(0, 0, 0, 0.1);
+        }
       }
 
       margin-left: 30px;
