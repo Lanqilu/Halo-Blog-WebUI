@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Home from "../views/Home.vue";
 
 
@@ -7,7 +7,12 @@ const routes = [
     {
         path: '/',
         name: 'Index',
-        redirect: {name: 'Home'}
+        component: Home
+    },
+    {
+        path: '/home',
+        name: 'Home',
+        component: Home
     },
     {
         path: '/404',
@@ -23,11 +28,6 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: () => import('../views/Login.vue')
-    },
-    {
-        path: '/home',
-        name: 'Home',
-        component: Home
     },
     {
         path: '/blog/add', // 注意放在 /blog/:blogId 之前

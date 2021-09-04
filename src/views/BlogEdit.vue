@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <!-- <HomeHeader></HomeHeader> -->
+  <div class="halo-edit">
+    <default-header></default-header>
     <div class="m-content">
       <el-form
         ref="editForm"
@@ -35,8 +35,8 @@
         </el-form-item>
       </el-form>
     </div>
-    <halo-footer></halo-footer>
   </div>
+  <halo-footer></halo-footer>
 </template>
 
 <script>
@@ -45,13 +45,13 @@ import { BlogDetail } from "../api";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import MarkdownEditor from "../components/MarkdownEditor/Editor.vue";
-import HomeHeader from "../components/Header/HomeHeader.vue";
+import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
 export default {
   name: "BlogEdit",
   components: {
     MarkdownEditor,
-    HomeHeader,
+    DefaultHeader,
     HaloFooter,
   },
 
@@ -158,9 +158,13 @@ export default {
 };
 </script>
 
-<style scoped>
-.m-content {
-  width: 80%;
+<style lang='scss' scoped >
+.halo-edit {
+  max-width: 1200px;
   margin: 0 auto;
+
+  .m-content {
+    margin-top: 30px;
+  }
 }
 </style>

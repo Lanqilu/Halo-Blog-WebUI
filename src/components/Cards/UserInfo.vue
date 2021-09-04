@@ -11,17 +11,14 @@
           <div class="halo-personal-homepage" @click="publishArticle()">
             发表文章
           </div>
-          <div class="logout" @click="logout()">
-            退出
-          </div>
+          <div class="logout" @click="logout()">退出</div>
         </div>
       </div>
 
-<!--      <div class="halo-user-info">-->
+      <!--      <div class="halo-user-info">-->
       <!--        文章数目：{{ user.articleCount }}-->
       <!--      </div>-->
     </div>
-
 
     <!-- 如果未登录展示该 div -->
     <div class="halo-has-not-login" v-if="!user.hasLogin">
@@ -36,37 +33,35 @@
 </template>
 
 <script>
-
-import {onMounted, reactive, ref} from "vue";
-import {useStore} from "vuex";
+import { onMounted, reactive, ref } from "vue";
+import { useStore } from "vuex";
 import axios from "axios";
-import {useRouter} from 'vue-router';
-import {getAuthorArticle} from "../../api";
+import { useRouter } from "vue-router";
+import { getAuthorArticle } from "../../api";
 
 export default {
   name: "UserInfo",
   setup: function () {
-
-    const store = useStore()
-    const router = useRouter()
+    const store = useStore();
+    const router = useRouter();
 
     let user = reactive({
       username: "Halo",
-      avatar: "https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-icon-a@master/spring.1ra9xtxvcxeo.svg",
+      avatar:
+        "https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-icon-a@master/spring.1ra9xtxvcxeo.svg",
       userId: 0,
       hasLogin: false,
-      articleCount: 0
-    })
-
+      articleCount: 0,
+    });
 
     onMounted(() => {
-      getAuthorArticleCount()
-    })
+      getAuthorArticleCount();
+    });
 
     // 获取该作者的文章数目
     async function getAuthorArticleCount() {
-      let res = await getAuthorArticle(user.userId)
-      user.articleCount = res.data.data
+      let res = await getAuthorArticle(user.userId);
+      user.articleCount = res.data.data;
     }
 
     // 判断是否登录
@@ -78,34 +73,30 @@ export default {
     }
 
     function logout() {
-      axios.get("http://localhost:8088/logout", {
-        headers: {Authorization: localStorage.getItem("token"),},
-      })
-          .then((res) => {
-            store.commit("REMOVE_INFO");
-            location.reload();
-          });
+      axios
+        .get("http://localhost:8088/logout", {
+          headers: { Authorization: localStorage.getItem("token") },
+        })
+        .then((res) => {
+          store.commit("REMOVE_INFO");
+          location.reload();
+        });
     }
 
     function publishArticle() {
-      router.push("/blog/add")
+      router.push("/blog/add");
     }
-
 
     return {
       user,
       logout,
-      publishArticle
-    }
-
-  }
-  ,
-}
-;
+      publishArticle,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
 .halo-user-info {
   padding: 0;
   margin: 0;
@@ -124,7 +115,8 @@ export default {
     margin: 0;
     padding: 15px;
 
-    .login, .register {
+    .login,
+    .register {
       flex: 1 0 auto;
       border-radius: 12px;
       display: flex;
@@ -154,15 +146,14 @@ export default {
       background: rgba(230, 219, 232, 0.99);
     }
 
-    .login > a:hover, .register > a:hover {
+    .login > a:hover,
+    .register > a:hover {
       background: #93c2e2;
       color: #ffffff;
     }
-
   }
 
   .halo-has-login {
-
     .halo-user-meta {
       display: flex;
       justify-content: space-evenly;
@@ -183,8 +174,8 @@ export default {
         display: flex;
         flex-direction: column;
 
-
-        .halo-personal-homepage, .logout {
+        .halo-personal-homepage,
+        .logout {
           background: rgba(186, 222, 218, 0.64);
           cursor: pointer;
 
@@ -202,10 +193,6 @@ export default {
         }
       }
     }
-
   }
-
 }
-
-
 </style>

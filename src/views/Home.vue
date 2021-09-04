@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <index-banner />
-
+  <div class="halo-home">
+    <default-header></default-header>
     <div class="halo-body">
       <div class="halo-left-content">
         <!-- 幻灯片 -->
@@ -69,8 +68,8 @@
 
     <!-- 回到顶部 -->
     <el-backtop :bottom="100"></el-backtop>
-    <halo-footer></halo-footer>
   </div>
+  <halo-footer></halo-footer>
 </template>
 
 <script>
@@ -80,10 +79,11 @@ import UserInfo from "../components/Cards/UserInfo.vue";
 import { useRouter } from "vue-router";
 import IndexBanner from "../components/Banner/IndexBanner.vue";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
+import DefaultHeader from "../components/Header/DefaultHeader.vue";
 
 export default {
   name: "Home",
-  components: { UserInfo, IndexBanner, HaloFooter },
+  components: { UserInfo, IndexBanner, HaloFooter, DefaultHeader },
   setup() {
     const router = useRouter();
 
@@ -110,10 +110,13 @@ export default {
   letter-spacing: 0.3px;
 }
 
-.halo-body {
-  margin: 0 auto;
-  padding: 1.5rem 1rem;
+.halo-home {
   width: 1200px;
+  margin: 0 auto;
+}
+
+.halo-body {
+  margin-top: 30px;
   display: grid;
   grid-template-columns: 69% 29%;
   grid-gap: 2%;
@@ -192,6 +195,11 @@ export default {
     .halo-pagination {
       text-align: center;
       margin-top: 20px;
+      .number,
+      .btn-prev,
+      .btn-next {
+        background: #ffffff00;
+      }
     }
 
     .halo-carousel {

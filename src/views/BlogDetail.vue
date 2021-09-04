@@ -1,5 +1,6 @@
 <template>
   <div class="m-container">
+    <default-header></default-header>
     <div class="halo-blog">
       <!-- 文章头信息 -->
       <div class="halo-title-card">
@@ -53,11 +54,20 @@
             {{ blog.info.description }}
           </div>
           <el-divider></el-divider>
+
+          <el-skeleton
+            :rows="10"
+            animated
+            v-if="blog.info.isShow"
+            :throttle="200"
+          />
+
           <div
             id="content"
             class="content markdown-body"
             v-html="blog.info.content"
           ></div>
+
           <el-divider></el-divider>
 
           <div class="like" @click.once="giveLike()">
@@ -90,9 +100,8 @@
       <button @click="showContent">目录</button>
       <button @click="toTop">回到顶部</button>
     </div>
-
-    <halo-footer></halo-footer>
   </div>
+  <halo-footer></halo-footer>
 </template>
 <script>
 import "../assets/markdown-css/halo-markdown.css";
@@ -104,12 +113,14 @@ import { BlogDetail, getAuthorInfo } from "../api";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
+import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 
 export default {
   name: "BlogDetail",
   components: {
+    DefaultHeader,
     HaloFooter,
   },
 
@@ -127,6 +138,7 @@ export default {
         description: "",
         content: "",
         blogLike: null,
+        isShow: true,
       },
       isOwnBlog: false,
       author: {
@@ -178,6 +190,8 @@ export default {
       getToc();
       console.log("————————————————挂载完成————————————————");
 
+      blog.info.isShow = false;
+
       window.addEventListener("scroll", dataScroll);
     });
 
@@ -216,9 +230,9 @@ export default {
     }
 
     function toTop() {
-      // document.body.scrollTop = document.documentElement.scrollTop = 0;
-      console.log(state.scroll);
-      loadScroll();
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+      // console.log(state.scroll);
+      // loadScroll();
     }
 
     function dataScroll() {
@@ -228,23 +242,26 @@ export default {
 
     function loadScroll() {
       let childrens = document.getElementById("content").children;
-      for (let i = 0; i < childrens.length - 1; i++) {
+      for (let i = 1; i < childrens.length - 1; i++) {
         let nodeName = childrens[i].nodeName;
         if (nodeName == "H2" || nodeName == "H3") {
-          if (childrens[i].offsetTop - state.scroll > 20) {
+          if (childrens[i].offsetTop - state.scroll > 10) {
             var anchorId = childrens[i].id + "-halo";
             break;
           }
         }
       }
       let tocContent = document.getElementById(anchorId);
-      if (!tocContent.classList.contains("catalog-active")) {
-        const li = document.querySelector(".catalog-active");
-        if (li) {
-          li.classList.remove("catalog-active");
-        }
+      tocContent = tocContent.previousSibling;
 
+      const li = document.querySelector(".catalog-active");
+      if (li) {
+        li.classList.remove("catalog-active");
+      }
+      try {
         tocContent.classList.add("catalog-active");
+      } catch {
+        console.log("...");
       }
     }
 
@@ -252,6 +269,7 @@ export default {
       () => state.scroll,
       () => {
         loadScroll();
+        // console.log(state.scroll);
       }
     );
 
@@ -267,176 +285,183 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.halo-blog {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.m-container {
   width: 1200px;
   margin: 0 auto;
 
-  .halo-title-card {
-    margin-top: 30px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    background: #ffffff;
-    border-radius: 12px;
-    width: 100%;
-    max-height: 300px;
-
+  .halo-blog {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
 
-    .post-info {
-      padding: 30px;
-      .halo-blog-info {
-        display: flex;
-      }
-
-      .halo-blog-title {
-        display: flex;
-        align-items: center;
-        margin: 0.8rem 0 0.8rem 0;
-        .title {
-          font-weight: 700;
-          font-size: 2.3rem;
-          line-height: 1.2;
-          text-align: left;
-          padding: 0;
-        }
-        .edit {
-          margin: 20px;
-        }
-      }
-
-      .halo-blog-author {
-        margin-top: 15px;
-        display: flex;
-        justify-content: flex-start;
-
-        img {
-          max-height: 3.5rem;
-          border-radius: 6px;
-        }
-
-        .author-info {
-          margin-left: 10px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-evenly;
-        }
-      }
-    }
-
-    .post-cover {
-      border-radius: 12px;
-      width: 300px;
-      height: 200px;
-      background-size: cover;
-      margin: 20px;
-    }
-  }
-
-  .halo-blog-content {
-    margin: 30px auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-content: center;
-    width: 100%;
-
-    .m-blog {
-      .describe {
-        line-height: 1.8;
-        font-size: 1.1em;
-      }
-
-      padding: 30px;
+    .halo-title-card {
+      margin-top: 30px;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
       background: #ffffff;
       border-radius: 12px;
       width: 100%;
+      max-height: 300px;
 
-      .like {
-        cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .post-info {
+        padding: 30px;
+        .halo-blog-info {
+          display: flex;
+        }
+
+        .halo-blog-title {
+          display: flex;
+          align-items: center;
+          margin: 0.8rem 0 0.8rem 0;
+          .title {
+            font-weight: 700;
+            font-size: 2.3rem;
+            line-height: 1.2;
+            text-align: left;
+            padding: 0;
+          }
+          .edit {
+            margin: 20px;
+          }
+        }
+
+        .halo-blog-author {
+          margin-top: 15px;
+          display: flex;
+          justify-content: flex-start;
+
+          img {
+            max-height: 3.5rem;
+            border-radius: 6px;
+          }
+
+          .author-info {
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+          }
+        }
+      }
+
+      .post-cover {
+        border-radius: 12px;
+        width: 300px;
+        height: 200px;
+        background-size: cover;
+        margin: 20px;
       }
     }
 
-    .active {
-      width: 70%;
-    }
-
-    .halo-blog-catalogue {
-      position: relative;
-      overflow: hidden;
-      border-radius: 12px;
-      top: 30px;
-      height: 500px;
+    .halo-blog-content {
+      margin: 30px auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-content: center;
       width: 100%;
-      position: sticky;
-      .toc {
-        overflow: auto;
-        height: 100%;
-        background: #99cccc;
-        ul,
-        li {
-          list-style: none;
-          margin: 0px;
-          padding: 0px;
+
+      .m-blog {
+        .describe {
+          line-height: 1.8;
+          font-size: 1.1em;
         }
 
-        ul {
-          width: 85%;
-          margin: 20px auto;
+        padding: 30px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        background: #ffffff;
+        border-radius: 12px;
+        width: 100%;
 
-          .catalog-active {
-            background: #cacaca77;
+        .like {
+          cursor: pointer;
+        }
+      }
+
+      .active {
+        width: 70%;
+      }
+
+      .halo-blog-catalogue {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        top: 30px;
+        height: 500px;
+        width: 100%;
+        position: sticky;
+        .toc {
+          overflow: auto;
+          height: 100%;
+          background: #ffffff6b;
+          ul,
+          li {
+            list-style: none;
+            margin: 0px;
+            padding: 0px;
           }
 
-          .H2 {
-            padding: 5px 15px;
-            margin: 10px;
-            color: rgb(150, 58, 211);
-          }
-          .H3 {
-            margin-left: 25px;
-            padding: 3px;
-            color: rgb(211, 98, 22);
-          }
+          ul {
+            width: 75%;
+            margin: 20px auto;
 
-          .H2,
-          .H3 {
-            border-radius: 10px;
-            &:hover {
-              color: rgb(49, 77, 235);
+            .catalog-active {
+              color: #e94986 !important;
+              &::before {
+                content: "# ";
+                margin-left: -1em;
+              }
+            }
+
+            .H2 {
+              margin-bottom: 5px;
+              color: rgb(150, 58, 211);
+            }
+            .H3 {
+              margin-left: 25px;
+              margin-bottom: 5px;
+              color: rgb(211, 98, 22);
+            }
+
+            .H2,
+            .H3 {
+              border-radius: 10px;
+              &:hover {
+                color: rgb(49, 77, 235);
+              }
             }
           }
+
+          // 滚动条
+          &::-webkit-scrollbar {
+            width: 4px;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 0px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+          }
+          &::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            border-radius: 0;
+            background: rgba(0, 0, 0, 0.1);
+          }
         }
 
-        // 滚动条
-        &::-webkit-scrollbar {
-          width: 4px;
-        }
-        &::-webkit-scrollbar-thumb {
-          border-radius: 0px;
-          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-          background: rgba(0, 0, 0, 0.2);
-        }
-        &::-webkit-scrollbar-track {
-          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-          border-radius: 0;
-          background: rgba(0, 0, 0, 0.1);
-        }
+        margin-left: 30px;
+        width: 30%;
       }
-
-      margin-left: 30px;
-      width: 30%;
     }
   }
-}
 
-.halo-setting {
-  position: fixed;
-  right: 40px;
-  bottom: 100px;
+  .halo-setting {
+    position: fixed;
+    right: 40px;
+    bottom: 100px;
+    z-index: 1;
+  }
 }
 </style>
