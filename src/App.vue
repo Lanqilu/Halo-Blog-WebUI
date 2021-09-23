@@ -21,15 +21,37 @@ export default {
     SetUpTest,
     MarkdownContent,
   },
-  setup() {},
+  setup() { },
 };
 </script>
 
 <style>
+@font-face {
+  font-family: HarmonyOS_Sans_SC_Regular;
+  src: url(https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-img-c@master/font/HarmonyOS_Sans/HarmonyOS_Sans_SC_Regular.ttf);
+}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "HarmonyOS_Sans_SC_Regular";
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background: rgba(161, 203, 216, 0.301);
 }
 
 a,

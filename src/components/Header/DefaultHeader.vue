@@ -1,10 +1,18 @@
 <template>
   <div class="halo-top"></div>
   <div class="halo-header">
-    <div class="halo-a"><a href="//localhost:3000/home">主页</a></div>
-    <div class="halo-a"><a href="//localhost:3000/home">主页</a></div>
-    <div class="halo-a"><a href="//localhost:3000/home">主页</a></div>
-    <div class="halo-a"><a href="//localhost:3000/home">主页</a></div>
+    <div class="halo-a">
+      <a href="//81.70.151.52:3000/home">主页</a>
+    </div>
+    <div class="halo-a">
+      <a href="//81.70.151.52:3000/home">主页</a>
+    </div>
+    <div class="halo-a">
+      <a href="//81.70.151.52:3000/home">主页</a>
+    </div>
+    <div class="halo-a">
+      <a href="//81.70.151.52:3000/home">主页</a>
+    </div>
   </div>
 </template>
 

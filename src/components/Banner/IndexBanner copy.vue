@@ -5,16 +5,16 @@
         <div class="nav-link test-style">
           <ul class="nav-link-ul">
             <li class="nav-link-item">
-              <a href="//localhost:3000/home">主页</a>
+              <a href="//81.70.151.52:3000/home">主页</a>
             </li>
             <li class="nav-link-item">
-              <a href="//localhost:3000/home">测试</a>
+              <a href="//81.70.151.52:3000/home">测试</a>
             </li>
             <li class="nav-link-item">
-              <a href="//localhost:3000/home">测试</a>
+              <a href="//81.70.151.52:3000/home">测试</a>
             </li>
             <li class="nav-link-item">
-              <a href="//localhost:3000/home">测试</a>
+              <a href="//81.70.151.52:3000/home">测试</a>
             </li>
             <li class="nav-link-item">
               <a href="//www.bilibili.com/anime/" target="_blank" class="link">番剧</a>
@@ -46,7 +46,7 @@
         </div>
 
         <div class="nav-user-center test-style">
-          <a href="//localhost:8008/#/blog/article" target="_blank" class="link">个人中心</a>
+          <a href="//test:8008/#/blog/article" target="_blank" class="link">个人中心</a>
         </div>
       </div>
     </div>

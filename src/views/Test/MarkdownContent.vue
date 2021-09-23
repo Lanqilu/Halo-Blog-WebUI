@@ -36,7 +36,7 @@
       </p>
       <p>
         <img
-          src="/Users/chenyujun/Desktop/截屏2020-07-14 下午1.56.11.png"
+          src="https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-img-e@master/wallhaven-5wodp1.3foy9ylfp7w0.jpg"
           alt="截屏2020-07-14 下午1.56.11"
         />
       </p>

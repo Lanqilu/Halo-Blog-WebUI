@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:8088"
+
+const baseURL = "http://test:8088"
 // const baseURL = "http://mysql:8088"
 
 // 获取文章列表
@@ -28,5 +29,9 @@ export function getAuthorArticle(userId) {
     return axios.get(`${baseURL}/blog/number/${userId}`)
 }
 
+// 登录提交表单
+export function postSubmitLoginForm(ruleForm) {
+    return axios.post(`${baseURL}/login/`)
+}
 
 

@@ -5,25 +5,21 @@
       <!-- 文章头信息 -->
       <div class="halo-title-card">
         <div class="post-info">
-          <!-- 文章分类和标签信息 -->
-          <div class="halo-blog-info">
+          <!-- TODO:文章分类和标签信息 -->
+
+          <!-- <div class="halo-blog-info">
             <div class="halo-blog-sort">vue</div>
             <div class="halo-blog-tags">你好</div>
             <div class="halo-blog-tags">你好</div>
             <div class="halo-blog-tags">你好</div>
-          </div>
+          </div>-->
 
           <!-- 文章标题 -->
           <div class="halo-blog-title">
-            <div class="title">
-              {{ blog.info.blogTitle }}
-            </div>
+            <div class="title">{{ blog.info.blogTitle }}</div>
             <div class="edit">
               <el-link icon="el-icon-edit" v-if="blog.isOwnBlog">
-                <router-link
-                  :to="{ name: 'BlogEdit', params: { blogId: blog.info.id } }"
-                  >编辑</router-link
-                >
+                <router-link :to="{ name: 'BlogEdit', params: { blogId: blog.info.id } }">编辑</router-link>
               </el-link>
             </div>
           </div>
@@ -41,38 +37,22 @@
         </div>
 
         <!-- 文章封面 -->
-        <div
-          class="post-cover"
-          :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"
-        ></div>
+        <div class="post-cover" :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"></div>
       </div>
 
       <div class="halo-blog-content">
         <!-- 文章主体信息 -->
         <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
-          <div id="describe" class="describe">
-            {{ blog.info.description }}
-          </div>
+          <div id="describe" class="describe">{{ blog.info.description }}</div>
           <el-divider></el-divider>
 
-          <el-skeleton
-            :rows="10"
-            animated
-            v-if="blog.info.isShow"
-            :throttle="200"
-          />
+          <el-skeleton :rows="10" animated v-if="blog.info.isShow" :throttle="200" />
 
-          <div
-            id="content"
-            class="content markdown-body"
-            v-html="blog.info.content"
-          ></div>
+          <div id="content" class="content markdown-body" v-html="blog.info.content"></div>
 
           <el-divider></el-divider>
 
-          <div class="like" @click.once="giveLike()">
-            点赞数：{{ blog.info.blogLike }}
-          </div>
+          <div class="like" @click.once="giveLike()">点赞数：{{ blog.info.blogLike }}</div>
         </div>
 
         <!-- 文章目录 -->
@@ -95,10 +75,12 @@
       </div>
     </div>
 
+    <!-- 回到顶部 -->
+    <el-backtop :bottom="100"></el-backtop>
+
     <!-- 固定设置按钮 -->
     <div class="halo-setting">
       <button @click="showContent">目录</button>
-      <button @click="toTop">回到顶部</button>
     </div>
   </div>
   <halo-footer></halo-footer>
@@ -197,7 +179,7 @@ export default {
 
     // 点赞
     function giveLike() {
-      axios.post(`http://localhost:8088/blog/like/${blogId}`).then((res) => {
+      axios.post(`http://test:8088/blog/like/${blogId}`).then((res) => {
         if (res.data.code === 200) {
           ElMessage.success({
             message: res.data.msg,
@@ -252,7 +234,12 @@ export default {
         }
       }
       let tocContent = document.getElementById(anchorId);
-      tocContent = tocContent.previousSibling;
+      try {
+        tocContent = tocContent.previousSibling;
+      } catch {
+        console.log("...");
+      }
+
 
       const li = document.querySelector(".catalog-active");
       if (li) {
@@ -459,7 +446,7 @@ export default {
 
   .halo-setting {
     position: fixed;
-    right: 40px;
+    left: 40px;
     bottom: 100px;
     z-index: 1;
   }

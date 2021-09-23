@@ -6,16 +6,16 @@
         <div class="halo-nav-link">
           <ul class="halo-nav-link-ul">
             <li class="nav-link-item">
-              <a href="//localhost:3000/home">主页</a>
+              <a href="//81.70.151.52:3000/home">主页</a>
             </li>
             <li class="nav-link-item">
-              <a href="//localhost:3000/home">测试</a>
+              <a href="//81.70.151.52:3000/home">测试</a>
             </li>
             <li class="nav-link-item">
-              <a href="//localhost:3000/home">测试</a>
+              <a href="//81.70.151.52:3000/home">测试</a>
             </li>
             <li class="nav-link-item">
-              <a href="//localhost:3000/home">测试</a>
+              <a href="//81.70.151.52:3000/home">测试</a>
             </li>
             <li class="nav-link-item">
               <a href="//www.bilibili.com/anime/" target="_blank" class="link">番剧</a>
@@ -33,14 +33,14 @@
               <el-button icon="el-icon-search"></el-button>
             </el-form-item>
           </el-form>
-        </div> -->
+        </div>-->
       </el-col>
       <el-col :span="8">
         <div class="halo-user-center">
-          <a href="//localhost:8008/#/blog/article" target="_blank" class="link">个人中心</a>
-          <a href="//localhost:8008/#/blog/article" target="_blank" class="link">个人中心</a>
-          <a href="//localhost:8008/#/blog/article" target="_blank" class="link">个人中心</a>
-          <a href="//localhost:8008/#/blog/article" target="_blank" class="link">个人中心</a>
+          <a href="//test:8008/#/blog/article" target="_blank" class="link">个人中心</a>
+          <a href="//test:8008/#/blog/article" target="_blank" class="link">个人中心</a>
+          <a href="//test:8008/#/blog/article" target="_blank" class="link">个人中心</a>
+          <a href="//test:8008/#/blog/article" target="_blank" class="link">个人中心</a>
         </div>
       </el-col>
     </el-row>

@@ -8,9 +8,7 @@
           <div class="halo-username">{{ user.username }}</div>
         </div>
         <div class="halo-user-button">
-          <div class="halo-personal-homepage" @click="publishArticle()">
-            发表文章
-          </div>
+          <div class="halo-personal-homepage" @click="publishArticle()">发表文章</div>
           <div class="logout" @click="logout()">退出</div>
         </div>
       </div>
@@ -33,7 +31,7 @@
 </template>
 
 <script>
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive } from "vue";
 import { useStore } from "vuex";
 import axios from "axios";
 import { useRouter } from "vue-router";
@@ -74,7 +72,7 @@ export default {
 
     function logout() {
       axios
-        .get("http://localhost:8088/logout", {
+        .get("http://test:8088/logout", {
           headers: { Authorization: localStorage.getItem("token") },
         })
         .then((res) => {

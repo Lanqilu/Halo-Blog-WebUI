@@ -12,11 +12,7 @@
               @click.prevent="toBlogDetail(item.id)"
             >
               <div class="halo-carousel-title">{{ item.blogTitle }}</div>
-              <img
-                class="post_bg"
-                :src="item.blogCover"
-                :alt="item.blogTitle"
-              />
+              <img class="post_bg" :src="item.blogCover" :alt="item.blogTitle" />
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -29,11 +25,7 @@
             @click="toBlogDetail(item.id)"
           >
             <div class="halo-blog-img">
-              <img
-                class="post_bg"
-                :src="item.blogCover"
-                :alt="item.blogTitle"
-              />
+              <img class="post_bg" :src="item.blogCover" :alt="item.blogTitle" />
               <p class="halo-blog-created">{{ item.created }}</p>
             </div>
             <div class="halo-blog-content">
@@ -47,7 +39,8 @@
         <el-pagination
           class="halo-pagination"
           background
-          layout="prev, pager, next"
+          hide-on-single-page="1"
+          layout="prev, pager, next, jumper"
           :current-page="homeData.currentPage"
           :page-size="homeData.pageSize"
           :total="homeData.total"

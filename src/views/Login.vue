@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { reactive, onMounted, onBeforeMount } from "vue";
+import { reactive, onMounted } from "vue";
 import axios from "axios";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
@@ -66,7 +66,7 @@ export default {
     });
 
     function submitForm() {
-      axios.post("http://localhost:8088/login", ruleForm).then((res) => {
+      axios.post("http://test:8088/login", ruleForm).then((res) => {
         // 获取 JWT
         const jwt = res.headers["authorization"];
         // 获取用户信息
@@ -84,24 +84,26 @@ export default {
     }
 
     function registry() {
-      axios.post("http://localhost:8088/register", registryForm).then((res) => {
-        console.log(res);
-        if (res.data.code === 200) {
-          ElMessage.success({
-            message: res.data.msg,
-            type: "success",
-          });
-          // 改变数据
-          ruleForm.email = registryForm.email;
-          ruleForm.password = registryForm.password;
+      axios
+        .post("http://test:8088/register", registryForm)
+        .then((res) => {
+          console.log(res);
+          if (res.data.code === 200) {
+            ElMessage.success({
+              message: res.data.msg,
+              type: "success",
+            });
+            // 改变数据
+            ruleForm.email = registryForm.email;
+            ruleForm.password = registryForm.password;
 
-          // 跳转到登录页
-          let container = document.querySelector(".container");
-          container.classList.remove("right-panel-active");
-        } else {
-          ElMessage(res.data.msg);
-        }
-      });
+            // 跳转到登录页
+            let container = document.querySelector(".container");
+            container.classList.remove("right-panel-active");
+          } else {
+            ElMessage(res.data.msg);
+          }
+        });
     }
 
     onMounted(() => {
