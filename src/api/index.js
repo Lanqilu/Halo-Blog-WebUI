@@ -14,6 +14,17 @@ export function getMostLikeList(BlogCount) {
     return axios.get(`${baseURL}/blog/most/like/${BlogCount}`)
 }
 
+// 获取所有分类信息
+export function getSortAll() {
+    return axios.get(`${baseURL}/blog/sort/all`)
+}
+
+// 获取指定用户的分类信息
+export function getSortByUserId(userId) {
+    return axios.get(`${baseURL}/blog/sort/user/${userId}`)
+}
+
+
 // 获取文章信息
 export function BlogDetail(blogId) {
     return axios.get(`${baseURL}/blog/${blogId}`)

@@ -35,7 +35,7 @@ export default {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "HarmonyOS_Sans_SC_Regular";
+  font-family: "HarmonyOS_Sans_SC_Regular",serif;
 }
 
 /* 滚动条 */
@@ -44,13 +44,13 @@ export default {
   height: 11px;
 }
 ::-webkit-scrollbar-thumb {
-  border-radius: 5px;
+  border-radius: 4px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
   background: rgba(0, 0, 0, 0.2);
 }
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  border-radius: 0;
   background: rgba(161, 203, 216, 0.301);
 }
 

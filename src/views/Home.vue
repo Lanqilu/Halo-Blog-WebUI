@@ -1,31 +1,33 @@
 <template>
   <div class="halo-home">
-    <default-header></default-header>
+
     <div class="halo-body">
       <div class="halo-left-content">
+        <!-- 左上测导航条 -->
+        <default-header></default-header>
         <!-- 幻灯片 -->
         <div class="halo-carousel">
           <el-carousel :interval="5000" height="230px">
             <el-carousel-item
-              v-for="item in carouselData.blogs"
-              :key="item.id"
-              @click.prevent="toBlogDetail(item.id)"
+                v-for="item in carouselData.blogs"
+                :key="item.id"
+                @click.prevent="toBlogDetail(item.id)"
             >
               <div class="halo-carousel-title">{{ item.blogTitle }}</div>
-              <img class="post_bg" :src="item.blogCover" :alt="item.blogTitle" />
+              <img class="post_bg" :src="item.blogCover" :alt="item.blogTitle"/>
             </el-carousel-item>
           </el-carousel>
         </div>
         <!--文章-->
         <div class="halo-blogs-box">
           <div
-            v-for="item in homeData.blogs"
-            :key="item.id"
-            class="blogs"
-            @click="toBlogDetail(item.id)"
+              v-for="item in homeData.blogs"
+              :key="item.id"
+              class="blogs"
+              @click="toBlogDetail(item.id)"
           >
             <div class="halo-blog-img">
-              <img class="post_bg" :src="item.blogCover" :alt="item.blogTitle" />
+              <img class="post_bg" :src="item.blogCover" :alt="item.blogTitle"/>
               <p class="halo-blog-created">{{ item.created }}</p>
             </div>
             <div class="halo-blog-content">
@@ -37,23 +39,25 @@
 
         <!--分页-->
         <el-pagination
-          class="halo-pagination"
-          background
-          hide-on-single-page="1"
-          layout="prev, pager, next, jumper"
-          :current-page="homeData.currentPage"
-          :page-size="homeData.pageSize"
-          :total="homeData.total"
-          @current-change="changePage"
+            class="halo-pagination"
+            background
+            hide-on-single-page="1"
+            layout="prev, pager, next, jumper"
+            :current-page="homeData.currentPage"
+            :page-size="homeData.pageSize"
+            :total="homeData.total"
+            @current-change="changePage"
         ></el-pagination>
       </div>
 
+      <!-- 右侧卡片  -->
       <div class="halo-right-content">
         <div>
           <UserInfo></UserInfo>
         </div>
-        <div></div>
-        <div></div>
+        <div>
+          <SortInfo></SortInfo>
+        </div>
         <div class="halo-test"></div>
         <div class="halo-sticky"></div>
       </div>
@@ -69,19 +73,20 @@
 import homeData from "../hooks/homeData";
 import carouselData from "../hooks/carouselData";
 import UserInfo from "../components/Cards/UserInfo.vue";
-import { useRouter } from "vue-router";
+import SortInfo from "../components/Cards/SortInfo.vue";
+import {useRouter} from "vue-router";
 import IndexBanner from "../components/Banner/IndexBanner.vue";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
 import DefaultHeader from "../components/Header/DefaultHeader.vue";
 
 export default {
   name: "Home",
-  components: { UserInfo, IndexBanner, HaloFooter, DefaultHeader },
+  components: {UserInfo, IndexBanner, HaloFooter, DefaultHeader, SortInfo},
   setup() {
     const router = useRouter();
 
     function toBlogDetail(id) {
-      router.push({ name: "BlogDetail", params: { blogId: id } });
+      router.push({name: "BlogDetail", params: {blogId: id}});
     }
 
     return {
@@ -109,7 +114,7 @@ export default {
 }
 
 .halo-body {
-  margin-top: 30px;
+  //margin-top: 30px;
   display: grid;
   grid-template-columns: 69% 29%;
   grid-gap: 2%;
@@ -142,6 +147,19 @@ export default {
             line-height: 1.6;
             font-size: 1.3rem;
             margin-bottom: 10px;
+            z-index: 1;
+
+            &:after {
+              display: block;
+              content: "";
+              width: 30%;
+              height: 8px;
+              background-color: #FFD55D;
+              bottom: 0;
+              z-index: -1;
+              position: relative;
+              transform: translateY(-13px);
+            }
           }
 
           .halo-blog-text {
@@ -188,6 +206,7 @@ export default {
     .halo-pagination {
       text-align: center;
       margin-top: 20px;
+
       .number,
       .btn-prev,
       .btn-next {
@@ -202,6 +221,7 @@ export default {
         margin: 15px;
         padding: 0 6px;
         position: absolute;
+        transform: translateY(180px);
         // text-align: center;
         // background: rgba(0, 0, 0, 0.3);
         // color: #f3f0f0dc;
@@ -249,6 +269,9 @@ export default {
   }
 
   .halo-right-content {
+
+    margin-top: 30px;
+
     div:first-child {
       margin-top: 0;
     }
@@ -256,7 +279,7 @@ export default {
     & > div {
       min-height: 200px;
       width: auto;
-      background: #ffffff;
+      background-color: rgb(222, 234, 246);
       margin-top: 20px;
       border-radius: 10px;
     }
@@ -267,8 +290,28 @@ export default {
       background: #889db8;
     }
 
+    .halo-card-glass {
+      background-color: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+      -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+      border-radius: 12px;
+      -webkit-border-radius: 12px;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
     .halo-test {
-      background: rgba(16 18 27 / 40%);
+      background-color: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+      -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+      border-radius: 12px;
+      -webkit-border-radius: 12px;
+      color: rgba(255, 255, 255, 0.75);
     }
   }
 }

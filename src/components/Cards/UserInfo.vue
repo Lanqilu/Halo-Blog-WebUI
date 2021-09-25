@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import { onMounted, reactive } from "vue";
-import { useStore } from "vuex";
+import {onMounted, reactive} from "vue";
+import {useStore} from "vuex";
 import axios from "axios";
-import { useRouter } from "vue-router";
-import { getAuthorArticle } from "../../api";
+import {useRouter} from "vue-router";
+import {getAuthorArticle} from "../../api";
 
 export default {
   name: "UserInfo",
@@ -44,9 +44,8 @@ export default {
     const router = useRouter();
 
     let user = reactive({
-      username: "Halo",
-      avatar:
-        "https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-icon-a@master/spring.1ra9xtxvcxeo.svg",
+      username: "Hello",
+      avatar: "https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-img-f@master/image.4skloqie47w0.png",
       userId: 0,
       hasLogin: false,
       articleCount: 0,
@@ -72,13 +71,13 @@ export default {
 
     function logout() {
       axios
-        .get("http://test:8088/logout", {
-          headers: { Authorization: localStorage.getItem("token") },
-        })
-        .then((res) => {
-          store.commit("REMOVE_INFO");
-          location.reload();
-        });
+          .get("http://test:8088/logout", {
+            headers: {Authorization: localStorage.getItem("token")},
+          })
+          .then((res) => {
+            store.commit("REMOVE_INFO");
+            location.reload();
+          });
     }
 
     function publishArticle() {
@@ -96,6 +95,7 @@ export default {
 
 <style lang="scss" scoped>
 .halo-user-info {
+
   padding: 0;
   margin: 0;
   background: #ffffff;
@@ -157,12 +157,12 @@ export default {
       justify-content: space-evenly;
       align-items: center;
 
-      span.el-avatar.el-avatar--square {
-        border-radius: 12px;
-      }
 
       .halo-user-avatar {
+
         .halo-username {
+          display: none;
+          margin-top: 10px;
           text-align: center;
         }
       }
@@ -174,7 +174,7 @@ export default {
 
         .halo-personal-homepage,
         .logout {
-          background: rgba(186, 222, 218, 0.64);
+          //background: rgba(186, 222, 218, 0.64);
           cursor: pointer;
 
           height: 50px;
@@ -183,12 +183,23 @@ export default {
           line-height: 50px;
           text-align: center;
 
-          margin-bottom: 20px;
+          background-color: rgb(222, 234, 246);
+          box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
 
           &:hover {
-            background: rgba(186, 196, 222, 0.64);
+            background: rgba(186, 196, 222, 0.9);
           }
         }
+
+        .halo-personal-homepage {
+          margin-bottom: 10px;
+        }
+
+        .logout {
+          margin-top: 10px;
+        }
+
+
       }
     }
   }

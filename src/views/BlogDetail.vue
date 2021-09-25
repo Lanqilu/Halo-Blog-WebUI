@@ -1,7 +1,8 @@
 <template>
   <div class="m-container">
-    <default-header></default-header>
+
     <div class="halo-blog">
+      <default-header></default-header>
       <!-- 文章头信息 -->
       <div class="halo-title-card">
         <div class="post-info">
@@ -27,7 +28,7 @@
           <!-- 文章作者信息 -->
           <div class="halo-blog-author">
             <div class="avatar">
-              <img :src="blog.author.avatar" alt class="author-avatar" />
+              <img :src="blog.author.avatar" alt class="author-avatar"/>
             </div>
             <div class="author-info">
               <div>{{ blog.author.username }}</div>
@@ -41,12 +42,37 @@
       </div>
 
       <div class="halo-blog-content">
+
+        <!-- 文章目录 -->
+        <div class="halo-blog-catalogue" v-if="state.isShowContent">
+          <div class="toc">
+            <div class="toc-title">目录</div>
+            <el-divider></el-divider>
+            <div>
+              <ul id="toc-content">
+                <li
+                    v-for="item in state.treeArray"
+                    :key="item.id"
+                    :id="`${item.id}-halo`"
+                    :class="item.tag"
+                >
+                  <a :href="'#' + item.id">{{ item.name }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!--        <div class="operation">-->
+        <!--          <div>点赞</div>-->
+        <!--          <div>投币</div>-->
+        <!--          <div>收藏</div>-->
+        <!--        </div>-->
         <!-- 文章主体信息 -->
         <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
           <div id="describe" class="describe">{{ blog.info.description }}</div>
           <el-divider></el-divider>
 
-          <el-skeleton :rows="10" animated v-if="blog.info.isShow" :throttle="200" />
+          <el-skeleton :rows="10" animated v-if="blog.info.isShow" :throttle="200"/>
 
           <div id="content" class="content markdown-body" v-html="blog.info.content"></div>
 
@@ -55,23 +81,7 @@
           <div class="like" @click.once="giveLike()">点赞数：{{ blog.info.blogLike }}</div>
         </div>
 
-        <!-- 文章目录 -->
-        <div class="halo-blog-catalogue" v-if="state.isShowContent">
-          <div class="toc">
-            <div>
-              <ul id="toc-content">
-                <li
-                  v-for="item in state.treeArray"
-                  :key="item.id"
-                  :id="`${item.id}-halo`"
-                  :class="item.tag"
-                >
-                  <a :href="'#' + item.id">{{ item.name }}</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
 
@@ -87,13 +97,13 @@
 </template>
 <script>
 import "../assets/markdown-css/halo-markdown.css";
-import { onMounted, reactive, watch } from "vue";
-import { useRoute } from "vue-router";
-import { useStore } from "vuex";
+import {onMounted, reactive, watch} from "vue";
+import {useRoute} from "vue-router";
+import {useStore} from "vuex";
 import marked from "marked";
-import { BlogDetail, getAuthorInfo } from "../api";
+import {BlogDetail, getAuthorInfo} from "../api";
 import axios from "axios";
-import { ElMessage } from "element-plus";
+import {ElMessage} from "element-plus";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
 import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import hljs from "highlight.js";
@@ -158,7 +168,7 @@ export default {
       let blogDetailRes = await BlogDetail(blogId);
       console.log("————————————————数据获取完成————————————————");
 
-      blog.info = { ...blog.info, ...blogDetailRes.data.data };
+      blog.info = {...blog.info, ...blogDetailRes.data.data};
       blog.info.content = marked(blog.info.content);
 
       console.log("————————————————marked转义完成————————————————");
@@ -219,7 +229,7 @@ export default {
 
     function dataScroll() {
       state.scroll =
-        document.documentElement.scrollTop || document.body.scrollTop; //获取屏幕距离顶部的距离
+          document.documentElement.scrollTop || document.body.scrollTop; //获取屏幕距离顶部的距离
     }
 
     function loadScroll() {
@@ -252,12 +262,14 @@ export default {
       }
     }
 
+    // TODO 根据页面滑动实现目录跟随 2021年9月26日
+
     watch(
-      () => state.scroll,
-      () => {
-        loadScroll();
-        // console.log(state.scroll);
-      }
+        () => state.scroll,
+        () => {
+          loadScroll();
+          // console.log(state.scroll);
+        }
     );
 
     return {
@@ -282,19 +294,19 @@ export default {
     align-items: center;
 
     .halo-title-card {
-      margin-top: 30px;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
       background: #ffffff;
       border-radius: 12px;
       width: 100%;
       max-height: 300px;
-
+      z-index: 2;
       display: flex;
       align-items: center;
       justify-content: space-between;
 
       .post-info {
         padding: 30px;
+
         .halo-blog-info {
           display: flex;
         }
@@ -303,13 +315,29 @@ export default {
           display: flex;
           align-items: center;
           margin: 0.8rem 0 0.8rem 0;
+
+
           .title {
             font-weight: 700;
             font-size: 2.3rem;
             line-height: 1.2;
             text-align: left;
             padding: 0;
+
+            &:after {
+              display: block;
+              content: "";
+              width: 30%;
+              height: 15px;
+              background-color: #FFD55D;
+              bottom: 0;
+              z-index: -1;
+              position: relative;
+              transform: translateY(-15px);
+            }
+
           }
+
           .edit {
             margin: 20px;
           }
@@ -351,6 +379,7 @@ export default {
       align-content: center;
       width: 100%;
 
+
       .m-blog {
         .describe {
           line-height: 1.8;
@@ -359,7 +388,7 @@ export default {
 
         padding: 30px;
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-        background: #ffffff;
+        background: rgba(255, 255, 255, 0.8);
         border-radius: 12px;
         width: 100%;
 
@@ -369,68 +398,103 @@ export default {
       }
 
       .active {
-        width: 70%;
+        width: 75%;
       }
 
+
       .halo-blog-catalogue {
-        position: relative;
-        overflow: hidden;
-        border-radius: 12px;
         top: 30px;
         height: 500px;
-        width: 100%;
+        width: 25%;
         position: sticky;
+        margin-right: 30px;
+
+
+        // 目录
         .toc {
+          background: rgba(255, 255, 255, 0.8);
+          border-radius: 12px;
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
           overflow: auto;
           height: 100%;
-          background: #ffffff6b;
+
+          .toc-title {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 20px;
+            color: #464444;
+          }
+
+          .el-divider--horizontal {
+            margin-top: 10px;
+          }
+
+          ul {
+            // 文本不换行 多出的截断
+            // 包裹了 lu 不能实现截断
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
           ul,
           li {
             list-style: none;
-            margin: 0px;
-            padding: 0px;
+            margin: 0;
+            padding-top: 1.5px;
+            padding-bottom: 1.5px;
+
           }
 
           ul {
             width: 75%;
-            margin: 20px auto;
+            margin: 10px auto;
+
 
             .catalog-active {
-              color: #e94986 !important;
+              color: rgb(37, 80, 145) !important;
+              //&>a{
+              //  background: rgba(246, 244, 225, 0.9);
+              //}
+
               &::before {
-                content: "# ";
-                margin-left: -1em;
+                content: "→ ";
+                margin-left: -1.3em;
+
               }
             }
+
 
             .H2 {
               margin-bottom: 5px;
               color: rgb(150, 58, 211);
             }
+
             .H3 {
-              margin-left: 25px;
+              margin-left: 20px;
               margin-bottom: 5px;
               color: rgb(211, 98, 22);
             }
 
             .H2,
             .H3 {
-              border-radius: 10px;
               &:hover {
                 color: rgb(49, 77, 235);
               }
             }
           }
-
-          // 滚动条
+          // 隐藏滚动条
           &::-webkit-scrollbar {
+            display: none;
             width: 4px;
           }
+
           &::-webkit-scrollbar-thumb {
-            border-radius: 0px;
+            border-radius: 0;
             box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
             background: rgba(0, 0, 0, 0.2);
           }
+
           &::-webkit-scrollbar-track {
             box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
             border-radius: 0;
@@ -438,16 +502,38 @@ export default {
           }
         }
 
-        margin-left: 30px;
-        width: 30%;
+
+
+        // 目录下的点赞操作
+        //.operation {
+        //  margin-top: 30px;
+        //  background: rgba(255, 255, 255, 0.8);
+        //  border-radius: 12px;
+        //  height: 50px;
+        //  width: 100%;
+        //
+        //  display: flex;
+        //  flex-wrap: nowrap;
+        //  justify-content: space-evenly;
+        //  align-items: center;
+        //
+        //  & > div {
+        //    cursor: pointer;
+        //
+        //    &:hover {
+        //      color: #0064d7;
+        //    }
+        //  }
+        //}
       }
+
     }
   }
 
   .halo-setting {
     position: fixed;
     left: 40px;
-    bottom: 100px;
+    top: 10px;
     z-index: 1;
   }
 }
