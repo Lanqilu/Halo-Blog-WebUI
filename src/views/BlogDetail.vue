@@ -42,31 +42,39 @@
       </div>
 
       <div class="halo-blog-content">
-
-        <!-- 文章目录 -->
-        <div class="halo-blog-catalogue" v-if="state.isShowContent">
-          <div class="toc">
-            <div class="toc-title">目录</div>
-            <el-divider></el-divider>
-            <div>
-              <ul id="toc-content">
-                <li
-                    v-for="item in state.treeArray"
-                    :key="item.id"
-                    :id="`${item.id}-halo`"
-                    :class="item.tag"
-                >
-                  <a :href="'#' + item.id">{{ item.name }}</a>
-                </li>
-              </ul>
+        <div class="halo-blog-left">
+          <!-- 文章目录 -->
+          <div class="halo-blog-catalogue" v-if="state.isShowContent">
+            <div class="toc">
+              <div class="toc-title">目录</div>
+              <el-divider></el-divider>
+              <div>
+                <ul id="toc-content">
+                  <li
+                      v-for="item in state.treeArray"
+                      :key="item.id"
+                      :id="`${item.id}-halo`"
+                      :class="item.tag"
+                  >
+                    <a :href="'#' + item.id">{{ item.name }}</a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
+          <div class="operation">
+
+            <div class="like" @click.once="giveLike()" :class="blog.info.isLike===true?'activeLike':''">
+              <svg class="icon dianzan" aria-hidden="true">
+                <use xlink:href="#icon-dianzan"></use>
+              </svg>
+              {{ blog.info.blogLike }}
+            </div>
+            <div>投币</div>
+            <div>收藏</div>
+          </div>
         </div>
-        <!--        <div class="operation">-->
-        <!--          <div>点赞</div>-->
-        <!--          <div>投币</div>-->
-        <!--          <div>收藏</div>-->
-        <!--        </div>-->
+
         <!-- 文章主体信息 -->
         <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
           <div id="describe" class="describe">{{ blog.info.description }}</div>
@@ -77,8 +85,6 @@
           <div id="content" class="content markdown-body" v-html="blog.info.content"></div>
 
           <el-divider></el-divider>
-
-          <div class="like" @click.once="giveLike()">点赞数：{{ blog.info.blogLike }}</div>
         </div>
 
 
@@ -131,6 +137,7 @@ export default {
         content: "",
         blogLike: null,
         isShow: true,
+        isLike: false,
       },
       isOwnBlog: false,
       author: {
@@ -200,6 +207,7 @@ export default {
           ElMessage(res.data.msg);
         }
       });
+      blog.info.isLike = true;
     }
 
     function getToc() {
@@ -284,6 +292,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+
 .m-container {
   width: 1200px;
   margin: 0 auto;
@@ -379,6 +389,19 @@ export default {
       align-content: center;
       width: 100%;
 
+      .activeLike{
+        color: rgba(28, 27, 27, 0.96) !important;
+      }
+
+      .like {
+        cursor: pointer;
+        color: rgba(163, 156, 156, 0.9);
+
+        .dianzan {
+          width: 1.3em;
+          height: 1.3em;
+        }
+      }
 
       .m-blog {
         .describe {
@@ -392,145 +415,148 @@ export default {
         border-radius: 12px;
         width: 100%;
 
-        .like {
-          cursor: pointer;
-        }
+
       }
 
       .active {
         width: 75%;
       }
 
-
-      .halo-blog-catalogue {
-        top: 30px;
-        height: 500px;
-        width: 25%;
+      .halo-blog-left {
         position: sticky;
         margin-right: 30px;
+        top: 30px;
+        width: 25%;
+        display: flex;
+        flex-direction: column;
+        height: 800px;
+
+        .halo-blog-catalogue {
+          height: 500px;
+          // 目录
+          .toc {
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+            overflow: auto;
+            height: 100%;
+
+            .toc-title {
+              margin-top: 20px;
+              text-align: center;
+              font-size: 20px;
+              color: #464444;
+            }
+
+            .el-divider--horizontal {
+              margin-top: 10px;
+            }
+
+            ul {
+              // 文本不换行 多出的截断
+              // 包裹了 lu 不能实现截断
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            ul,
+            li {
+              list-style: none;
+              margin: 0;
+              padding-top: 1.5px;
+              padding-bottom: 1.5px;
+
+            }
+
+            ul {
+              width: 75%;
+              margin: 10px auto;
 
 
-        // 目录
-        .toc {
-          background: rgba(255, 255, 255, 0.8);
-          border-radius: 12px;
-          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-          overflow: auto;
-          height: 100%;
+              .catalog-active {
+                color: rgb(37, 80, 145) !important;
+                //&>a{
+                //  background: rgba(246, 244, 225, 0.9);
+                //}
 
-          .toc-title {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 20px;
-            color: #464444;
-          }
+                &::before {
+                  content: "→ ";
+                  margin-left: -1.3em;
 
-          .el-divider--horizontal {
-            margin-top: 10px;
-          }
-
-          ul {
-            // 文本不换行 多出的截断
-            // 包裹了 lu 不能实现截断
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-
-          ul,
-          li {
-            list-style: none;
-            margin: 0;
-            padding-top: 1.5px;
-            padding-bottom: 1.5px;
-
-          }
-
-          ul {
-            width: 75%;
-            margin: 10px auto;
+                }
+              }
 
 
-            .catalog-active {
-              color: rgb(37, 80, 145) !important;
-              //&>a{
-              //  background: rgba(246, 244, 225, 0.9);
-              //}
+              .H2 {
+                margin-bottom: 5px;
+                color: rgb(150, 58, 211);
+              }
 
-              &::before {
-                content: "→ ";
-                margin-left: -1.3em;
+              .H3 {
+                margin-left: 20px;
+                margin-bottom: 5px;
+                color: rgb(211, 98, 22);
+              }
 
+              .H2,
+              .H3 {
+                &:hover {
+                  color: rgb(49, 77, 235);
+                }
               }
             }
 
-
-            .H2 {
-              margin-bottom: 5px;
-              color: rgb(150, 58, 211);
+            // 隐藏滚动条
+            &::-webkit-scrollbar {
+              display: none;
+              width: 4px;
             }
 
-            .H3 {
-              margin-left: 20px;
-              margin-bottom: 5px;
-              color: rgb(211, 98, 22);
+            &::-webkit-scrollbar-thumb {
+              border-radius: 0;
+              box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+              background: rgba(0, 0, 0, 0.2);
             }
 
-            .H2,
-            .H3 {
-              &:hover {
-                color: rgb(49, 77, 235);
-              }
+            &::-webkit-scrollbar-track {
+              box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+              border-radius: 0;
+              background: rgba(0, 0, 0, 0.1);
             }
-          }
-          // 隐藏滚动条
-          &::-webkit-scrollbar {
-            display: none;
-            width: 4px;
-          }
-
-          &::-webkit-scrollbar-thumb {
-            border-radius: 0;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-            background: rgba(0, 0, 0, 0.2);
-          }
-
-          &::-webkit-scrollbar-track {
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-            border-radius: 0;
-            background: rgba(0, 0, 0, 0.1);
           }
         }
 
-
-
         // 目录下的点赞操作
-        //.operation {
-        //  margin-top: 30px;
-        //  background: rgba(255, 255, 255, 0.8);
-        //  border-radius: 12px;
-        //  height: 50px;
-        //  width: 100%;
-        //
-        //  display: flex;
-        //  flex-wrap: nowrap;
-        //  justify-content: space-evenly;
-        //  align-items: center;
-        //
-        //  & > div {
-        //    cursor: pointer;
-        //
-        //    &:hover {
-        //      color: #0064d7;
-        //    }
-        //  }
-        //}
+        .operation {
+          margin-top: 30px;
+          background: rgba(255, 255, 255, 0.8);
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+          border-radius: 12px;
+          height: 50px;
+          width: 100%;
+
+          display: flex;
+          flex-wrap: nowrap;
+          justify-content: space-evenly;
+          align-items: center;
+
+          & > div {
+            cursor: pointer;
+
+            &:hover {
+              color: #0064d7;
+            }
+          }
+        }
       }
+
 
     }
   }
 
   .halo-setting {
+    display: none;
     position: fixed;
     left: 40px;
     top: 10px;
