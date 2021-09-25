@@ -55,8 +55,11 @@
                       :key="item.id"
                       :id="`${item.id}-halo`"
                       :class="item.tag"
+                      class="toc-content-item"
                   >
-                    <a :href="'#' + item.id">{{ item.name }}</a>
+                    <!-- 使用DOM进行跳转,不记录历史记录-->
+                    <a class="toc-content-item" @click="jump(`${item.id}`)">{{ item.name }}</a>
+                    <!-- <a :href="'#' + item.id">{{ item.name }}</a>-->
                   </li>
                 </ul>
               </div>
@@ -270,6 +273,10 @@ export default {
       }
     }
 
+    function jump(v) {
+      document.getElementById(v).scrollIntoView(true);
+    }
+
     // TODO 根据页面滑动实现目录跟随 2021年9月26日
 
     watch(
@@ -286,6 +293,7 @@ export default {
       giveLike,
       showContent,
       toTop,
+      jump,
     };
   },
 };
@@ -389,7 +397,7 @@ export default {
       align-content: center;
       width: 100%;
 
-      .activeLike{
+      .activeLike {
         color: rgba(28, 27, 27, 0.96) !important;
       }
 
@@ -446,6 +454,13 @@ export default {
               text-align: center;
               font-size: 20px;
               color: #464444;
+
+
+            }
+
+            // 目录中标题鼠标样式
+            .toc-content-item {
+              cursor: pointer;
             }
 
             .el-divider--horizontal {
