@@ -1,8 +1,7 @@
 import axios from "axios";
 
 
-const baseURL = "http://test:8088"
-// const baseURL = "http://mysql:8088"
+const baseURL = import.meta.env.VITE_GLOB_API_URL;
 
 // 获取文章列表
 export function getBlogList(currentPage) {

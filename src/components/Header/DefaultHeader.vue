@@ -7,11 +7,11 @@
     <div class="halo-a" @click="toNav()">
       导航
     </div>
-    <div class="halo-a">
-      <a href="//81.70.151.52:3000/home">工具</a>
+    <div class="halo-a" @click="toHome()">
+      工具
     </div>
-    <div class="halo-a">
-      <a href="//81.70.151.52:3000/home">动态</a>
+    <div class="halo-a" @click="toHome()">
+      动态
     </div>
   </div>
 </template>

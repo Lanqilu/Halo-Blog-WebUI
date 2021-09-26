@@ -5,9 +5,9 @@
       <div class="container__form container--signup">
         <form action="#" class="form" id="form1" :model="registryForm">
           <h2 class="form__title">注 册</h2>
-          <input type="text" placeholder="用户名" class="input" v-model="registryForm.username" />
-          <input type="email" placeholder="电子邮箱" class="input" v-model="registryForm.email" />
-          <input type="password" placeholder="密码" class="input" v-model="registryForm.password" />
+          <input type="text" placeholder="用户名" class="input" v-model="registryForm.username"/>
+          <input type="email" placeholder="电子邮箱" class="input" v-model="registryForm.email"/>
+          <input type="password" placeholder="密码" class="input" v-model="registryForm.password"/>
           <!--          <input type="text" placeholder="邮箱验证码" class="input" v-model="registryForm.authCode"/>-->
           <button class="btn" @click.prevent="registry()">注 册</button>
         </form>
@@ -17,8 +17,8 @@
       <div class="container__form container--signin">
         <form action="#" class="form" id="form2" :model="ruleForm">
           <h2 class="form__title">登 录</h2>
-          <input type="email" placeholder="电子邮箱" class="input" v-model="ruleForm.email" />
-          <input type="password" placeholder="密码" class="input" v-model="ruleForm.password" />
+          <input type="email" placeholder="电子邮箱" class="input" v-model="ruleForm.email"/>
+          <input type="password" placeholder="密码" class="input" v-model="ruleForm.password"/>
           <!--        <a href="#" class="link">忘记密码?</a>-->
           <button class="btn" @click.prevent="submitForm()">登 录</button>
         </form>
@@ -40,11 +40,12 @@
 </template>
 
 <script>
-import { reactive, onMounted } from "vue";
+import {reactive, onMounted} from "vue";
 import axios from "axios";
-import { useStore } from "vuex";
-import { useRouter, useRoute } from "vue-router";
-import { ElMessage } from "element-plus";
+import {useStore} from "vuex";
+import {useRouter, useRoute} from "vue-router";
+import {ElMessage} from "element-plus";
+import {post} from "../utils/request";
 
 export default {
   name: "Login",
@@ -66,7 +67,7 @@ export default {
     });
 
     function submitForm() {
-      axios.post("http://test:8088/login", ruleForm).then((res) => {
+      post("/login", ruleForm).then((res) => {
         // 获取 JWT
         const jwt = res.headers["authorization"];
         // 获取用户信息
@@ -84,26 +85,25 @@ export default {
     }
 
     function registry() {
-      axios
-        .post("http://test:8088/register", registryForm)
-        .then((res) => {
-          console.log(res);
-          if (res.data.code === 200) {
-            ElMessage.success({
-              message: res.data.msg,
-              type: "success",
-            });
-            // 改变数据
-            ruleForm.email = registryForm.email;
-            ruleForm.password = registryForm.password;
+      post("/register", registryForm)
+          .then((res) => {
+            console.log(res);
+            if (res.data.code === 200) {
+              ElMessage.success({
+                message: res.data.msg,
+                type: "success",
+              });
+              // 改变数据
+              ruleForm.email = registryForm.email;
+              ruleForm.password = registryForm.password;
 
-            // 跳转到登录页
-            let container = document.querySelector(".container");
-            container.classList.remove("right-panel-active");
-          } else {
-            ElMessage(res.data.msg);
-          }
-        });
+              // 跳转到登录页
+              let container = document.querySelector(".container");
+              container.classList.remove("right-panel-active");
+            } else {
+              ElMessage(res.data.msg);
+            }
+          });
     }
 
     onMounted(() => {
@@ -154,7 +154,7 @@ export default {
 
   font-size: 16px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   align-items: center;
   background-color: var(--white);
   background: url("https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-img-e@master/macos.6z1mshl4twk0.svg");
@@ -184,7 +184,7 @@ export default {
   background-color: var(--white);
   border-radius: var(--button-radius);
   box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25),
-    0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
+  0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
   height: var(--max-height);
   max-width: var(--max-width);
   overflow: hidden;
@@ -291,9 +291,9 @@ export default {
 .btn {
   background-color: var(--blue);
   background-image: linear-gradient(
-    90deg,
-    var(--blue) 0%,
-    var(--lightblue) 74%
+      90deg,
+      var(--blue) 0%,
+      var(--lightblue) 74%
   );
   border-radius: 20px;
   border: 1px solid var(--blue);

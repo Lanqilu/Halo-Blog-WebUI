@@ -1,6 +1,6 @@
 {
   "name": "vue3_halo_web",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "scripts": {
     "serve": "vite preview",
     "build": "vite build",

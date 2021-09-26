@@ -34,7 +34,7 @@
 import {reactive, toRaw} from "vue";
 import {BlogDetail} from "../api";
 import {useRoute} from "vue-router";
-import axios from "axios";
+import {post} from "../utils/request";
 import MarkdownEditor from "../components/MarkdownEditor/Editor.vue";
 import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
@@ -105,12 +105,7 @@ export default {
       this.editForm.content = this.state.content;
       this.$refs.editForm.validate((valid) => {
         if (valid) {
-          axios
-              .post("http://test:8088/blog/edit", toRaw(this.editForm), {
-                headers: {
-                  Authorization: localStorage.getItem("token"),
-                },
-              })
+          post("/blog/edit", toRaw(this.editForm))
               .then(() => {
                 this.$alert("操作成功", "提示", {
                   confirmButtonText: "确定",

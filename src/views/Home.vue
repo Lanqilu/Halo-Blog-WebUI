@@ -10,7 +10,9 @@
         <!--        <div>-->
         <!--          <SortInfo></SortInfo>-->
         <!--        </div>-->
-        <div class="halo-test"></div>
+        <div class="halo-test">
+
+        </div>
         <div class="halo-test"></div>
         <div class="halo-test"></div>
         <div class="halo-test"></div>
@@ -83,6 +85,7 @@ import {useRouter} from "vue-router";
 import IndexBanner from "../components/Banner/IndexBanner.vue";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
 import DefaultHeader from "../components/Header/DefaultHeader.vue";
+
 
 export default {
   name: "Home",
