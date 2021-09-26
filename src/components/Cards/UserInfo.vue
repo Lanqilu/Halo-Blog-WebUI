@@ -100,6 +100,7 @@ export default {
   margin: 0;
   background: #ffffff;
   min-height: 200px;
+  max-width: 330px;
   border-radius: 10px;
 
   display: flex;

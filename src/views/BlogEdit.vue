@@ -2,7 +2,9 @@
   <div class="halo-edit">
     <default-header></default-header>
     <div class="m-content">
+
       <el-form ref="editForm" status-icon :model="editForm" :rules="rules" label-width="80px">
+
         <el-form-item label="标题" prop="blogTitle">
           <el-input v-model="editForm.blogTitle"></el-input>
         </el-form-item>
@@ -17,7 +19,7 @@
           <MarkdownEditor :initialValue="editForm.content" @blurEditor="updateData"></MarkdownEditor>
         </el-form-item>
         <el-form-item label="状态" prop="content">
-          <textarea v-model="editForm.status" />
+          <textarea v-model="editForm.status"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm(editForm)">完成</el-button>
@@ -29,13 +31,14 @@
 </template>
 
 <script>
-import { reactive, toRaw } from "vue";
-import { BlogDetail } from "../api";
-import { useRoute } from "vue-router";
+import {reactive, toRaw} from "vue";
+import {BlogDetail} from "../api";
+import {useRoute} from "vue-router";
 import axios from "axios";
 import MarkdownEditor from "../components/MarkdownEditor/Editor.vue";
 import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
+
 export default {
   name: "BlogEdit",
   components: {
@@ -69,13 +72,13 @@ export default {
         blogTitle: "",
         description: "",
         blogCover:
-          "https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-img-e@master/macos.6z1mshl4twk0.svg",
+            "https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-img-e@master/macos.6z1mshl4twk0.svg",
         content: "",
         status: null,
       },
       rules: {
         blogTitle: [
-          { required: true, message: "请输入标题", trigger: "blur" },
+          {required: true, message: "请输入标题", trigger: "blur"},
           {
             min: 3,
             max: 50,
@@ -84,7 +87,7 @@ export default {
           },
         ],
         description: [
-          { required: true, message: "请输入摘要", trigger: "blur" },
+          {required: true, message: "请输入摘要", trigger: "blur"},
         ],
       },
       edit: false,
@@ -103,19 +106,19 @@ export default {
       this.$refs.editForm.validate((valid) => {
         if (valid) {
           axios
-            .post("http://test:8088/blog/edit", toRaw(this.editForm), {
-              headers: {
-                Authorization: localStorage.getItem("token"),
-              },
-            })
-            .then(() => {
-              this.$alert("操作成功", "提示", {
-                confirmButtonText: "确定",
-                callback: () => {
-                  this.$router.push("/home");
+              .post("http://test:8088/blog/edit", toRaw(this.editForm), {
+                headers: {
+                  Authorization: localStorage.getItem("token"),
                 },
+              })
+              .then(() => {
+                this.$alert("操作成功", "提示", {
+                  confirmButtonText: "确定",
+                  callback: () => {
+                    this.$router.push("/home");
+                  },
+                });
               });
-            });
         } else {
           console.log("error submit!!");
           return false;
@@ -147,12 +150,16 @@ export default {
 };
 </script>
 
-<style lang='scss' scoped >
+<style lang='scss' scoped>
 .halo-edit {
   max-width: 1200px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   .m-content {
+
     margin-top: 30px;
   }
 }

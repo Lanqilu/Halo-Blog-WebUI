@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import Home from "../views/Home.vue";
 
 const routes = [
@@ -26,6 +26,11 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: () => import('../views/Login.vue')
+    },
+    {
+        path: '/nav',
+        name: 'Nav',
+        component: () => import('../views/Nav.vue')
     },
     {
         path: '/blog/add', // 注意放在 /blog/:blogId 之前

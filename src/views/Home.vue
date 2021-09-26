@@ -2,7 +2,23 @@
   <div class="halo-home">
 
     <div class="halo-body">
+      <!-- 右侧卡片  -->
       <div class="halo-left-content">
+        <div>
+          <UserInfo></UserInfo>
+        </div>
+        <!--        <div>-->
+        <!--          <SortInfo></SortInfo>-->
+        <!--        </div>-->
+        <div class="halo-test"></div>
+        <div class="halo-test"></div>
+        <div class="halo-test"></div>
+        <div class="halo-test"></div>
+        <div class="halo-test"></div>
+<!--        <div class="halo-sticky"></div>-->
+      </div>
+
+      <div class="halo-right-content">
         <!-- 左上测导航条 -->
         <default-header></default-header>
         <!-- 幻灯片 -->
@@ -26,17 +42,16 @@
               class="blogs"
               @click="toBlogDetail(item.id)"
           >
-            <div class="halo-blog-img">
-              <img class="post_bg" :src="item.blogCover" :alt="item.blogTitle"/>
-              <p class="halo-blog-created">{{ item.created }}</p>
-            </div>
             <div class="halo-blog-content">
               <h3 class="halo-blog-title">{{ item.blogTitle }}</h3>
               <p class="halo-blog-text">{{ item.description }}</p>
             </div>
+            <div class="halo-blog-img">
+              <img class="post_bg" :src="item.blogCover" :alt="item.blogTitle"/>
+              <p class="halo-blog-created">{{ item.created }}</p>
+            </div>
           </div>
         </div>
-
         <!--分页-->
         <el-pagination
             class="halo-pagination"
@@ -50,17 +65,7 @@
         ></el-pagination>
       </div>
 
-      <!-- 右侧卡片  -->
-      <div class="halo-right-content">
-        <div>
-          <UserInfo></UserInfo>
-        </div>
-        <div>
-          <SortInfo></SortInfo>
-        </div>
-        <div class="halo-test"></div>
-        <div class="halo-sticky"></div>
-      </div>
+
     </div>
 
     <!-- 回到顶部 -->
@@ -116,10 +121,10 @@ export default {
 .halo-body {
   //margin-top: 30px;
   display: grid;
-  grid-template-columns: 69% 29%;
-  grid-gap: 2%;
+  grid-template-columns: 330px 850px;
+  grid-gap: 20px;
 
-  .halo-left-content {
+  .halo-right-content {
     .halo-blogs-box {
       display: flex;
       flex-direction: column;
@@ -175,6 +180,7 @@ export default {
 
         min-height: 100px;
         display: flex;
+        justify-content: space-between;
         overflow: hidden;
 
         .halo-blog-img {
@@ -184,7 +190,7 @@ export default {
           .halo-blog-created {
             position: absolute;
             z-index: 1;
-            transform: translateY(-40px) translateX(10px);
+            transform: translateY(-40px) translateX(210px);
             width: 100px;
             // text-align: center;
             // background: rgba(0, 0, 0, 0.3);
@@ -268,8 +274,7 @@ export default {
     }
   }
 
-  .halo-right-content {
-
+  .halo-left-content {
     margin-top: 30px;
 
     div:first-child {
@@ -278,7 +283,7 @@ export default {
 
     & > div {
       min-height: 200px;
-      width: auto;
+      width: 330px;
       background-color: rgb(222, 234, 246);
       margin-top: 20px;
       border-radius: 10px;

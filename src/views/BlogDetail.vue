@@ -2,96 +2,107 @@
   <div class="m-container">
 
     <div class="halo-blog">
-      <default-header></default-header>
-      <!-- 文章头信息 -->
-      <div class="halo-title-card">
-        <div class="post-info">
-          <!-- TODO:文章分类和标签信息 -->
 
-          <!-- <div class="halo-blog-info">
-            <div class="halo-blog-sort">vue</div>
-            <div class="halo-blog-tags">你好</div>
-            <div class="halo-blog-tags">你好</div>
-            <div class="halo-blog-tags">你好</div>
-          </div>-->
-
-          <!-- 文章标题 -->
-          <div class="halo-blog-title">
-            <div class="title">{{ blog.info.blogTitle }}</div>
-            <div class="edit">
-              <el-link icon="el-icon-edit" v-if="blog.isOwnBlog">
-                <router-link :to="{ name: 'BlogEdit', params: { blogId: blog.info.id } }">编辑</router-link>
-              </el-link>
-            </div>
-          </div>
-
-          <!-- 文章作者信息 -->
-          <div class="halo-blog-author">
-            <div class="avatar">
-              <img :src="blog.author.avatar" alt class="author-avatar"/>
-            </div>
-            <div class="author-info">
-              <div>{{ blog.author.username }}</div>
-              <div>{{ blog.author.email }}</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 文章封面 -->
-        <div class="post-cover" :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"></div>
-      </div>
 
       <div class="halo-blog-content">
+
         <div class="halo-blog-left">
-          <!-- 文章目录 -->
-          <div class="halo-blog-catalogue" v-if="state.isShowContent">
-            <div class="toc">
-              <div class="toc-title">目录</div>
-              <el-divider></el-divider>
-              <div>
-                <ul id="toc-content">
-                  <li
-                      v-for="item in state.treeArray"
-                      :key="item.id"
-                      :id="`${item.id}-halo`"
-                      :class="item.tag"
-                      class="toc-content-item"
-                  >
-                    <!-- 使用DOM进行跳转,不记录历史记录-->
-                    <a class="toc-content-item" @click="jump(`${item.id}`)">{{ item.name }}</a>
-                    <!-- <a :href="'#' + item.id">{{ item.name }}</a>-->
-                  </li>
-                </ul>
+          <div class="user-info">
+            <UserInfo></UserInfo>
+          </div>
+          <div class="halo-sticky">
+            <!-- 文章目录 -->
+            <div class="halo-blog-catalogue" v-if="state.isShowContent">
+              <div class="toc">
+                <div class="toc-title">目录</div>
+                <el-divider></el-divider>
+                <div>
+                  <ul id="toc-content">
+                    <li
+                        v-for="item in state.treeArray"
+                        :key="item.id"
+                        :id="`${item.id}-halo`"
+                        :class="item.tag"
+                        class="toc-content-item"
+                    >
+                      <!-- 使用DOM进行跳转,不记录历史记录-->
+                      <a class="toc-content-item" @click="jump(`${item.id}`)">{{ item.name }}</a>
+                      <!-- <a :href="'#' + item.id">{{ item.name }}</a>-->
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="operation">
+            <div class="operation">
 
-            <div class="like" @click.once="giveLike()" :class="blog.info.isLike===true?'activeLike':''">
-              <svg class="icon dianzan" aria-hidden="true">
-                <use xlink:href="#icon-dianzan"></use>
-              </svg>
-              {{ blog.info.blogLike }}
+              <div class="like" @click.once="giveLike()" :class="blog.info.isLike===true?'activeLike':''">
+                <svg class="icon dianzan" aria-hidden="true">
+                  <use xlink:href="#icon-dianzan"></use>
+                </svg>
+                {{ blog.info.blogLike }}
+              </div>
+              <div>投币</div>
+              <div>收藏</div>
             </div>
-            <div>投币</div>
-            <div>收藏</div>
+          </div>
+
+        </div>
+
+        <div class="halo-blog-right">
+          <default-header></default-header>
+          <!-- 文章头信息 -->
+          <div class="halo-title-card">
+            <div class="post-info">
+              <!-- TODO:文章分类和标签信息 -->
+
+              <!-- <div class="halo-blog-info">
+                <div class="halo-blog-sort">vue</div>
+                <div class="halo-blog-tags">你好</div>
+                <div class="halo-blog-tags">你好</div>
+                <div class="halo-blog-tags">你好</div>
+              </div>-->
+
+              <!-- 文章标题 -->
+              <div class="halo-blog-title">
+                <div class="title">{{ blog.info.blogTitle }}</div>
+                <div class="edit">
+                  <el-link icon="el-icon-edit" v-if="blog.isOwnBlog">
+                    <router-link :to="{ name: 'BlogEdit', params: { blogId: blog.info.id } }">编辑</router-link>
+                  </el-link>
+                </div>
+              </div>
+
+              <!-- 文章作者信息 -->
+              <div class="halo-blog-author">
+                <div class="avatar">
+                  <img :src="blog.author.avatar" alt class="author-avatar"/>
+                </div>
+                <div class="author-info">
+                  <div>{{ blog.author.username }}</div>
+                  <div>{{ blog.author.email }}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 文章封面 -->
+            <div class="post-cover" :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"></div>
+          </div>
+          <!-- 文章主体信息 -->
+          <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
+
+            <div id="describe" class="describe">{{ blog.info.description }}</div>
+            <el-divider></el-divider>
+
+            <el-skeleton :rows="10" animated v-if="blog.info.isShow" :throttle="200"/>
+
+            <div id="content" class="content markdown-body" v-html="blog.info.content"></div>
+
+            <el-divider></el-divider>
           </div>
         </div>
-
-        <!-- 文章主体信息 -->
-        <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
-          <div id="describe" class="describe">{{ blog.info.description }}</div>
-          <el-divider></el-divider>
-
-          <el-skeleton :rows="10" animated v-if="blog.info.isShow" :throttle="200"/>
-
-          <div id="content" class="content markdown-body" v-html="blog.info.content"></div>
-
-          <el-divider></el-divider>
-        </div>
-
-
       </div>
+
+
     </div>
 
     <!-- 回到顶部 -->
@@ -115,6 +126,7 @@ import axios from "axios";
 import {ElMessage} from "element-plus";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
 import DefaultHeader from "../components/Header/DefaultHeader.vue";
+import UserInfo from "../components/Cards/UserInfo.vue";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 
@@ -123,6 +135,7 @@ export default {
   components: {
     DefaultHeader,
     HaloFooter,
+    UserInfo,
   },
 
   setup() {
@@ -390,12 +403,174 @@ export default {
     }
 
     .halo-blog-content {
-      margin: 30px auto;
+      margin: 0 auto;
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-content: center;
       width: 100%;
+      position: relative;
+
+      .halo-blog-right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .m-blog {
+          .describe {
+            line-height: 1.8;
+            font-size: 1.1em;
+          }
+
+          margin-top: 30px;
+          padding: 30px;
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+          background: rgba(255, 255, 255, 0.8);
+          border-radius: 12px;
+          width: 850px;
+        }
+      }
+
+      .halo-blog-left {
+        margin-right: 20px;
+        top: 30px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        .halo-sticky {
+          top: 10px;
+          position: sticky;
+
+          .halo-blog-catalogue {
+
+            // 目录
+            .toc {
+              margin-top: 20px;
+              border-radius: 12px;
+              background: rgba(255, 255, 255, 0.8);
+              box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+              overflow: auto;
+              height: 500px;
+              .toc-title {
+                margin-top: 20px;
+                text-align: center;
+                font-size: 20px;
+                color: #464444;
+              }
+
+              // 目录中标题鼠标样式
+              .toc-content-item {
+                cursor: pointer;
+              }
+
+              .el-divider--horizontal {
+                margin-top: 10px;
+              }
+
+              ul {
+                // 文本不换行 多出的截断
+                // 包裹了 lu 不能实现截断
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+
+              ul,
+              li {
+                list-style: none;
+                margin: 0;
+                padding-top: 1.5px;
+                padding-bottom: 1.5px;
+
+              }
+
+              ul {
+                width: 75%;
+                margin: 10px auto;
+
+
+                .catalog-active {
+                  color: rgb(37, 80, 145) !important;
+                  //&>a{
+                  //  background: rgba(246, 244, 225, 0.9);
+                  //}
+
+                  &::before {
+                    content: "→ ";
+                    margin-left: -1.3em;
+
+                  }
+                }
+
+
+                .H2 {
+                  margin-bottom: 5px;
+                  color: rgb(150, 58, 211);
+                }
+
+                .H3 {
+                  margin-left: 20px;
+                  margin-bottom: 5px;
+                  color: rgb(211, 98, 22);
+                }
+
+                .H2,
+                .H3 {
+                  &:hover {
+                    color: rgb(49, 77, 235);
+                  }
+                }
+              }
+
+              // 隐藏滚动条
+              &::-webkit-scrollbar {
+                display: none;
+                width: 4px;
+              }
+
+              &::-webkit-scrollbar-thumb {
+                border-radius: 0;
+                box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+                background: rgba(0, 0, 0, 0.2);
+              }
+
+              &::-webkit-scrollbar-track {
+                box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+                border-radius: 0;
+                background: rgba(0, 0, 0, 0.1);
+              }
+            }
+          }
+
+          // 目录下的点赞操作
+          .operation {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            height: 50px;
+            width: 100%;
+
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            align-items: center;
+
+            & > div {
+              cursor: pointer;
+
+              &:hover {
+                color: #0064d7;
+              }
+            }
+          }
+        }
+
+
+      }
+
 
       .activeLike {
         color: rgba(28, 27, 27, 0.96) !important;
@@ -411,159 +586,9 @@ export default {
         }
       }
 
-      .m-blog {
-        .describe {
-          line-height: 1.8;
-          font-size: 1.1em;
-        }
-
-        padding: 30px;
-        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: 12px;
-        width: 100%;
-
-
-      }
 
       .active {
         width: 75%;
-      }
-
-      .halo-blog-left {
-        position: sticky;
-        margin-right: 30px;
-        top: 30px;
-        width: 25%;
-        display: flex;
-        flex-direction: column;
-        height: 800px;
-
-        .halo-blog-catalogue {
-          height: 500px;
-          // 目录
-          .toc {
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-            overflow: auto;
-            height: 100%;
-
-            .toc-title {
-              margin-top: 20px;
-              text-align: center;
-              font-size: 20px;
-              color: #464444;
-
-
-            }
-
-            // 目录中标题鼠标样式
-            .toc-content-item {
-              cursor: pointer;
-            }
-
-            .el-divider--horizontal {
-              margin-top: 10px;
-            }
-
-            ul {
-              // 文本不换行 多出的截断
-              // 包裹了 lu 不能实现截断
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-            }
-
-            ul,
-            li {
-              list-style: none;
-              margin: 0;
-              padding-top: 1.5px;
-              padding-bottom: 1.5px;
-
-            }
-
-            ul {
-              width: 75%;
-              margin: 10px auto;
-
-
-              .catalog-active {
-                color: rgb(37, 80, 145) !important;
-                //&>a{
-                //  background: rgba(246, 244, 225, 0.9);
-                //}
-
-                &::before {
-                  content: "→ ";
-                  margin-left: -1.3em;
-
-                }
-              }
-
-
-              .H2 {
-                margin-bottom: 5px;
-                color: rgb(150, 58, 211);
-              }
-
-              .H3 {
-                margin-left: 20px;
-                margin-bottom: 5px;
-                color: rgb(211, 98, 22);
-              }
-
-              .H2,
-              .H3 {
-                &:hover {
-                  color: rgb(49, 77, 235);
-                }
-              }
-            }
-
-            // 隐藏滚动条
-            &::-webkit-scrollbar {
-              display: none;
-              width: 4px;
-            }
-
-            &::-webkit-scrollbar-thumb {
-              border-radius: 0;
-              box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-              background: rgba(0, 0, 0, 0.2);
-            }
-
-            &::-webkit-scrollbar-track {
-              box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-              border-radius: 0;
-              background: rgba(0, 0, 0, 0.1);
-            }
-          }
-        }
-
-        // 目录下的点赞操作
-        .operation {
-          margin-top: 30px;
-          background: rgba(255, 255, 255, 0.8);
-          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-          border-radius: 12px;
-          height: 50px;
-          width: 100%;
-
-          display: flex;
-          flex-wrap: nowrap;
-          justify-content: space-evenly;
-          align-items: center;
-
-          & > div {
-            cursor: pointer;
-
-            &:hover {
-              color: #0064d7;
-            }
-          }
-        }
       }
 
 

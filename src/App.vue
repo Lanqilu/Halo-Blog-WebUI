@@ -66,6 +66,11 @@ export default {
   overflow: hidden;
 }
 
+/*回到顶部图标*/
+.el-backtop {
+  border-radius: 12px !important;
+}
+
 a,
 a:link,
 a:visited,

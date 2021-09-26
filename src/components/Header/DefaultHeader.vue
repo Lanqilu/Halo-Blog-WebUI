@@ -1,23 +1,47 @@
 <template>
   <!--  <div class="halo-top"></div>-->
   <div class="halo-header">
-    <div class="halo-a">
-      <a href="//81.70.151.52:3000/home">主页</a>
+    <div class="halo-a" @click="toHome()">
+      主页
+    </div>
+    <div class="halo-a" @click="toNav()">
+      导航
     </div>
     <div class="halo-a">
-      <a href="//81.70.151.52:3000/home">主页</a>
+      <a href="//81.70.151.52:3000/home">工具</a>
     </div>
     <div class="halo-a">
-      <a href="//81.70.151.52:3000/home">主页</a>
-    </div>
-    <div class="halo-a">
-      <a href="//81.70.151.52:3000/home">主页</a>
+      <a href="//81.70.151.52:3000/home">动态</a>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+
+import {useRouter} from "vue-router";
+
+export default {
+  name: "DefaultHeader",
+
+  setup() {
+    const router = useRouter();
+
+    function toNav() {
+      router.push("/nav");
+    }
+
+    function toHome() {
+      router.push("/home");
+    }
+
+
+    return {
+      toNav,
+      toHome,
+    }
+
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -36,5 +60,9 @@ export default {};
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+
+  .halo-a {
+    cursor: pointer;
+  }
 }
 </style>>

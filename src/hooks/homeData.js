@@ -1,7 +1,7 @@
 import {getBlogList} from "../api";
 import {reactive, onMounted} from "vue";
 
-export default function (){
+export default function () {
 
     let homeData = reactive({
         blogs: {
@@ -33,6 +33,9 @@ export default function (){
         homeData.currentPage = res.data.data.current;
         homeData.total = res.data.data.total;
         homeData.pageSize = res.data.data.size;
+        // 回到顶部
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
     }
 
     return {
