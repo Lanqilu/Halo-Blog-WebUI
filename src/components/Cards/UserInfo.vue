@@ -133,7 +133,8 @@ export default {
         text-align: center;
         width: 100%;
         height: 65px;
-        line-height: 60px;
+        // 文本上下居中
+        line-height: 65px;
       }
     }
 
@@ -179,9 +180,9 @@ export default {
           cursor: pointer;
 
           height: 50px;
+          line-height: 50px;
           width: 100px;
           border-radius: 12px;
-          line-height: 50px;
           text-align: center;
 
           background-color: rgb(222, 234, 246);

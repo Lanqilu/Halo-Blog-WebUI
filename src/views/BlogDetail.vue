@@ -195,9 +195,13 @@ export default {
       blog.info.content = marked(blog.info.content);
 
       console.log("————————————————marked转义完成————————————————");
-
-      // 判断是否是自己的文章，能否编辑
-      blog.isOwnBlog = blog.info.userId === store.getters.getUser.id;
+      try {
+        // 判断是否是自己的文章，能否编辑
+        blog.isOwnBlog = blog.info.userId === store.getters.getUser.id;
+      } catch (e) {
+        console.log(e);
+        console.log("未登录");
+      }
 
       let authorInfoRes = await getAuthorInfo(blog.info.userId);
       blog.author = authorInfoRes.data.data;
@@ -227,14 +231,14 @@ export default {
     }
 
     function getToc() {
-      let childrens = document.getElementById("content").children;
-      for (let i = 0; i < childrens.length - 1; i++) {
-        let nodeName = childrens[i].nodeName;
-        if (nodeName == "H2" || nodeName == "H3") {
+      let children = document.getElementById("content").children;
+      for (let i = 0; i < children.length - 1; i++) {
+        let nodeName = children[i].nodeName;
+        if (nodeName === "H2" || nodeName === "H3") {
           state.treeArray.push({
-            id: childrens[i].id,
-            name: childrens[i].innerText,
-            tag: childrens[i].nodeName,
+            id: children[i].id,
+            name: children[i].innerText,
+            tag: children[i].nodeName,
           });
         }
       }
@@ -453,6 +457,7 @@ export default {
               box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
               overflow: auto;
               height: 500px;
+
               .toc-title {
                 margin-top: 20px;
                 text-align: center;
