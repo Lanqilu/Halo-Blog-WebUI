@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -41,20 +41,20 @@ export default {
 
 /* 滚动条 */
 ::-webkit-scrollbar {
-  width: 11px;
-  height: 11px;
+  width: 6px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   background: rgba(0, 0, 0, 0.2);
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  /* box-shadow: outset 0 0 5px rgba(0, 0, 0, 0.2); */
   border-radius: 0;
-  background: rgba(161, 203, 216, 0.301);
+  background: rgba(0, 0, 0, 0);
 }
 
 /* 阿里图标 */
@@ -82,15 +82,15 @@ a:active {
 
 #app {
   background: linear-gradient(
-      90deg,
-      rgba(247, 149, 51, 0.1),
-      rgba(243, 112, 85, 0.1) 15%,
-      rgba(239, 78, 123, 0.1) 30%,
-      rgba(161, 102, 171, 0.1) 44%,
-      rgba(80, 115, 184, 0.1) 58%,
-      rgba(16, 152, 173, 0.1) 72%,
-      rgba(7, 179, 155, 0.1) 86%,
-      rgba(109, 186, 130, 0.1)
+    90deg,
+    rgba(247, 149, 51, 0.1),
+    rgba(243, 112, 85, 0.1) 15%,
+    rgba(239, 78, 123, 0.1) 30%,
+    rgba(161, 102, 171, 0.1) 44%,
+    rgba(80, 115, 184, 0.1) 58%,
+    rgba(16, 152, 173, 0.1) 72%,
+    rgba(7, 179, 155, 0.1) 86%,
+    rgba(109, 186, 130, 0.1)
   );
 }
 

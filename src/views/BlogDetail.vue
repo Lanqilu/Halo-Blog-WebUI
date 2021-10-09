@@ -1,17 +1,14 @@
 <template>
   <div class="m-container">
-
     <div class="halo-blog">
-
-
       <div class="halo-blog-content">
-
         <div class="halo-blog-left">
           <div class="user-info">
             <UserInfo></UserInfo>
           </div>
           <div class="halo-sticky">
             <!-- 文章目录 -->
+
             <div class="halo-blog-catalogue" v-if="state.isShowContent">
               <div class="toc">
                 <div class="toc-title">目录</div>
@@ -19,11 +16,11 @@
                 <div>
                   <ul id="toc-content">
                     <li
-                        v-for="item in state.treeArray"
-                        :key="item.id"
-                        :id="`${item.id}-halo`"
-                        :class="item.tag"
-                        class="toc-content-item"
+                      v-for="item in state.treeArray"
+                      :key="item.id"
+                      :id="`${item.id}-halo`"
+                      :class="item.tag"
+                      class="toc-content-item"
                     >
                       <!-- 使用DOM进行跳转,不记录历史记录-->
                       <a class="toc-content-item" @click="jump(`${item.id}`)">{{ item.name }}</a>
@@ -33,11 +30,15 @@
                 </div>
               </div>
             </div>
-            <div class="operation">
 
-              <div class="like" @click.once="giveLike()" :class="blog.info.isLike===true?'activeLike':''">
+            <div class="operation">
+              <div
+                class="like"
+                @click.once="giveLike()"
+                :class="blog.info.isLike === true ? 'activeLike' : ''"
+              >
                 <svg class="icon dianzan" aria-hidden="true">
-                  <use xlink:href="#icon-dianzan"></use>
+                  <use xlink:href="#icon-dianzan" />
                 </svg>
                 {{ blog.info.blogLike }}
               </div>
@@ -45,7 +46,6 @@
               <div>收藏</div>
             </div>
           </div>
-
         </div>
 
         <div class="halo-blog-right">
@@ -75,7 +75,7 @@
               <!-- 文章作者信息 -->
               <div class="halo-blog-author">
                 <div class="avatar">
-                  <img :src="blog.author.avatar" alt class="author-avatar"/>
+                  <img :src="blog.author.avatar" alt class="author-avatar" />
                 </div>
                 <div class="author-info">
                   <div>{{ blog.author.username }}</div>
@@ -85,15 +85,17 @@
             </div>
 
             <!-- 文章封面 -->
-            <div class="post-cover" :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"></div>
+            <div
+              class="post-cover"
+              :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"
+            ></div>
           </div>
           <!-- 文章主体信息 -->
           <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
-
             <div id="describe" class="describe">{{ blog.info.description }}</div>
             <el-divider></el-divider>
 
-            <el-skeleton :rows="10" animated v-if="blog.info.isShow" :throttle="200"/>
+            <el-skeleton :rows="10" animated v-if="blog.info.isShow" :throttle="200" />
 
             <div id="content" class="content markdown-body" v-html="blog.info.content"></div>
 
@@ -101,8 +103,6 @@
           </div>
         </div>
       </div>
-
-
     </div>
 
     <!-- 回到顶部 -->
@@ -117,13 +117,13 @@
 </template>
 <script>
 import "../assets/markdown-css/halo-markdown.css";
-import {onMounted, reactive, watch} from "vue";
-import {useRoute} from "vue-router";
-import {useStore} from "vuex";
+import { onMounted, reactive, watch } from "vue";
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 import marked from "marked";
-import {BlogDetail, getAuthorInfo} from "../api";
+import { BlogDetail, getAuthorInfo } from "../api";
 import axios from "axios";
-import {ElMessage} from "element-plus";
+import { ElMessage } from "element-plus";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
 import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import UserInfo from "../components/Cards/UserInfo.vue";
@@ -158,7 +158,7 @@ export default {
       isOwnBlog: false,
       author: {
         avatar: "",
-        username: "默认名称",
+        username: "",
         email: "",
       },
     });
@@ -191,7 +191,7 @@ export default {
       let blogDetailRes = await BlogDetail(blogId);
       console.log("————————————————数据获取完成————————————————");
 
-      blog.info = {...blog.info, ...blogDetailRes.data.data};
+      blog.info = { ...blog.info, ...blogDetailRes.data.data };
       blog.info.content = marked(blog.info.content);
 
       console.log("————————————————marked转义完成————————————————");
@@ -257,7 +257,7 @@ export default {
 
     function dataScroll() {
       state.scroll =
-          document.documentElement.scrollTop || document.body.scrollTop; //获取屏幕距离顶部的距离
+        document.documentElement.scrollTop || document.body.scrollTop; //获取屏幕距离顶部的距离
     }
 
     function loadScroll() {
@@ -297,11 +297,11 @@ export default {
     // TODO 根据页面滑动实现目录跟随 2021年9月26日
 
     watch(
-        () => state.scroll,
-        () => {
-          loadScroll();
-          // console.log(state.scroll);
-        }
+      () => state.scroll,
+      () => {
+        loadScroll();
+        // console.log(state.scroll);
+      }
     );
 
     return {
@@ -317,8 +317,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
-
 .m-container {
   width: 1200px;
   margin: 0 auto;
@@ -351,7 +349,6 @@ export default {
           align-items: center;
           margin: 0.8rem 0 0.8rem 0;
 
-
           .title {
             font-weight: 700;
             font-size: 2.3rem;
@@ -364,13 +361,12 @@ export default {
               content: "";
               width: 30%;
               height: 15px;
-              background-color: #FFD55D;
+              background-color: #ffd55d;
               bottom: 0;
               z-index: -1;
               position: relative;
               transform: translateY(-15px);
             }
-
           }
 
           .edit {
@@ -448,7 +444,6 @@ export default {
           position: sticky;
 
           .halo-blog-catalogue {
-
             // 目录
             .toc {
               margin-top: 20px;
@@ -488,13 +483,11 @@ export default {
                 margin: 0;
                 padding-top: 1.5px;
                 padding-bottom: 1.5px;
-
               }
 
               ul {
                 width: 75%;
                 margin: 10px auto;
-
 
                 .catalog-active {
                   color: rgb(37, 80, 145) !important;
@@ -505,10 +498,8 @@ export default {
                   &::before {
                     content: "→ ";
                     margin-left: -1.3em;
-
                   }
                 }
-
 
                 .H2 {
                   margin-bottom: 5px;
@@ -536,15 +527,13 @@ export default {
               }
 
               &::-webkit-scrollbar-thumb {
-                border-radius: 0;
+                border-radius: 5px;
                 box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
                 background: rgba(0, 0, 0, 0.2);
               }
 
               &::-webkit-scrollbar-track {
-                box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-                border-radius: 0;
-                background: rgba(0, 0, 0, 0.1);
+                background: rgba(0, 0, 0, 0);
               }
             }
           }
@@ -572,10 +561,7 @@ export default {
             }
           }
         }
-
-
       }
-
 
       .activeLike {
         color: rgba(28, 27, 27, 0.96) !important;
@@ -591,12 +577,9 @@ export default {
         }
       }
 
-
       .active {
         width: 75%;
       }
-
-
     }
   }
 

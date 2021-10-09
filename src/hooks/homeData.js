@@ -1,5 +1,5 @@
-import {getBlogList} from "../api";
-import {reactive, onMounted} from "vue";
+import { getBlogList } from "../api";
+import { reactive, onMounted } from "vue";
 
 export default function () {
 
@@ -20,12 +20,11 @@ export default function () {
 
     onMounted(async () => {
         let res = await getBlogList(1)
-        homeData.blogs = res.data.data.records
         homeData.blogs = res.data.data.records;
         homeData.currentPage = res.data.data.current;
         homeData.total = res.data.data.total;
         homeData.pageSize = res.data.data.size;
-    },)
+    })
 
     async function changePage(currentPage) {
         let res = await getBlogList(currentPage)

@@ -10,14 +10,12 @@
         <!--        <div>-->
         <!--          <SortInfo></SortInfo>-->
         <!--        </div>-->
-        <div class="halo-test">
-
-        </div>
+        <div class="halo-test">系列</div>
         <div class="halo-test"></div>
         <div class="halo-test"></div>
         <div class="halo-test"></div>
         <div class="halo-test"></div>
-<!--        <div class="halo-sticky"></div>-->
+        <!--        <div class="halo-sticky"></div>-->
       </div>
 
       <div class="halo-right-content">
@@ -319,7 +317,9 @@ export default {
       -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
       border-radius: 12px;
       -webkit-border-radius: 12px;
-      color: rgba(255, 255, 255, 0.75);
+      //color: rgba(255, 255, 255, 0.75);
+      color: rgba(128, 48, 48, 0.75);
+      font-size: 20px;
     }
   }
 }
