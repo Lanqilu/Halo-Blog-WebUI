@@ -4,18 +4,8 @@
     <div class="halo-body">
       <!-- 右侧卡片  -->
       <div class="halo-left-content">
-        <div>
-          <UserInfo></UserInfo>
-        </div>
-        <!--        <div>-->
-        <!--          <SortInfo></SortInfo>-->
-        <!--        </div>-->
-        <div class="halo-test">系列</div>
-        <div class="halo-test"></div>
-        <div class="halo-test"></div>
-        <div class="halo-test"></div>
-        <div class="halo-test"></div>
-        <!--        <div class="halo-sticky"></div>-->
+        <UserInfo></UserInfo>
+        <UserInfo></UserInfo>
       </div>
 
       <div class="halo-right-content">
@@ -64,8 +54,6 @@
             @current-change="changePage"
         ></el-pagination>
       </div>
-
-
     </div>
 
     <!-- 回到顶部 -->
@@ -105,6 +93,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../assets/style/mixin.scss";
+
 .halo-blog-created,
 .halo-carousel-title {
   text-align: center;
@@ -114,26 +104,14 @@ export default {
   letter-spacing: 0.3px;
 }
 
-.halo-home {
-  width: 1200px;
-  margin: 0 auto;
-}
 
 .halo-body {
-  //margin-top: 30px;
-  display: grid;
-  grid-template-columns: 330px 850px;
-  grid-gap: 20px;
-
   .halo-right-content {
     .halo-blogs-box {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-content: center;
-
-      // 测试样式
-      //border: solid 2px greenyellow;
 
       .blogs {
         margin-top: 20px;
@@ -247,11 +225,8 @@ export default {
         }
 
         button {
-          border-radius: 12px;
+          border-radius: #{$border-radius};
         }
-
-        // 测试样式
-        //border: solid;
       }
 
       .el-carousel__item h3 {
@@ -272,54 +247,6 @@ export default {
         background-color: #d3dce6;
         overflow: hidden;
       }
-    }
-  }
-
-  .halo-left-content {
-    margin-top: 30px;
-
-    div:first-child {
-      margin-top: 0;
-    }
-
-    & > div {
-      min-height: 200px;
-      width: 330px;
-      background-color: rgb(222, 234, 246);
-      margin-top: 20px;
-      border-radius: 10px;
-    }
-
-    .halo-sticky {
-      top: 20px;
-      position: sticky;
-      background: #889db8;
-    }
-
-    .halo-card-glass {
-      background-color: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
-      -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
-      border-radius: 12px;
-      -webkit-border-radius: 12px;
-      color: rgba(255, 255, 255, 0.75);
-    }
-
-    .halo-test {
-      background-color: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
-      -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
-      border-radius: 12px;
-      -webkit-border-radius: 12px;
-      //color: rgba(255, 255, 255, 0.75);
-      color: rgba(128, 48, 48, 0.75);
-      font-size: 20px;
     }
   }
 }

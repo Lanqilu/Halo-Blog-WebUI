@@ -1,0 +1,93 @@
+// 全局统一样式
+$border-radius: 8px;
+$box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+$card-gap: 12px;
+
+// 色彩管理
+$blue: #0099FF;
+
+// 按钮统一样式
+$bottom-height: 44px;
+$bottom-width: 130px;
+
+$bottom-font-size: 16px;
+$bottom-hover-font-size: 18px;
+
+$bottom-background: #FFFFFF;
+$bottom-hover-background: #0099FF;
+
+$bottom-color: #333333;
+$bottom-hover-color: #FFFFFF;
+
+
+// 按钮样式
+.halo-base-bottom {
+  width: #{$bottom-width};
+  height: #{$bottom-height};
+  border-radius: #{$border-radius};
+  // 文本居中
+  line-height: #{$bottom-height};
+  text-align: center;
+  font-size: #{$bottom-font-size};
+
+  &:hover {
+    cursor: pointer;
+    font-size: #{$bottom-hover-font-size};
+  }
+}
+
+.halo-bottom {
+  @extend .halo-base-bottom;
+  color: #{$bottom-color};
+  background: #{$bottom-background};
+
+  &:hover {
+    color: #{$bottom-hover-color};
+    background: #{$bottom-hover-background};
+  }
+}
+
+
+// 主页大小布局
+.halo-home {
+  width: 1169px;
+  margin: 0 auto;
+  // 两栏设计
+  .halo-body {
+    display: grid;
+    grid-template-columns: 320px 836px;
+    grid-gap: 12px;
+
+    .halo-left-content {
+      margin-top: 30px;
+
+      div:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+
+
+
+// ------------------ 测试样式 --------------
+
+.halo-card-glass {
+  background-color: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: rgba(142, 142, 142, 0.19) 0 6px 15px 0;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.halo-test {
+  background-color: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: rgba(142, 142, 142, 0.19) 0 6px 15px 0;
+  border-radius: 12px;
+  color: rgba(128, 48, 48, 0.75);
+  font-size: 20px;
+}

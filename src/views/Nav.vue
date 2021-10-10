@@ -3,14 +3,11 @@
     <div class="halo-body">
       <!-- 右侧卡片  -->
       <div class="halo-left-content">
-        <div>
-          <UserInfo></UserInfo>
-        </div>
-        <div class="halo-test"></div>
-        <div class="halo-test"></div>
-        <div class="halo-test"></div>
-        <div class="halo-test"></div>
-        <div class="halo-test"></div>
+        <UserInfo></UserInfo>
+        <UserInfo></UserInfo>
+        <UserInfo></UserInfo>
+        <UserInfo></UserInfo>
+        <UserInfo></UserInfo>
       </div>
 
       <div class="halo-right-content">
@@ -19,24 +16,25 @@
         <div class="link-content">
           <!-- 链接卡片 -->
           <div
-            class="link-card"
-            v-for="link in state.links"
-            :key="link.linkId"
-            :id="'link-card-' + link.linkId"
+              class="link-card"
+              v-for="link in state.links"
+              :key="link.linkId"
+              :id="'link-card-' + link.linkId"
           >
             <div class="link-card-left" @click="hrefClick(link.link)">
-              <img :src="link.linkCover" :alt="link.title" />
+              <img :src="link.linkCover" :alt="link.title"/>
             </div>
             <div class="link-card-right" @mouseover="mouseOver(link.linkId)">
               <p class="link-title">{{ link.linkTitle }}</p>
-              <p>{{ link.linkDescription }}</p>
+              <div class="link-description">{{ link.linkDescription }}</div>
+              <div class="link-address">{{ link.link }}</div>
             </div>
           </div>
           <!-- 新增链接卡片 -->
           <div class="link-card">
-            <div class="link-card-left">
+            <div class="link-card-left-add">
               <svg class="add" aria-hidden="true">
-                <use xlink:href="#icon-zengjia-copy" />
+                <use xlink:href="#icon-zengjia-copy"/>
               </svg>
             </div>
             <div class="link-card-right-add">新增链接</div>
@@ -45,26 +43,30 @@
         <!-- 弹出卡片 -->
         <div id="popup-cards">
           <div
-            class="popup-card"
-            v-for="link in state.links"
-            :key="link.linkId"
-            :id="'popup-card-' + link.linkId"
-            @mouseleave="mouseLeave(link.linkId)"
+              class="popup-card"
+              v-for="link in state.links"
+              :key="link.linkId"
+              :id="'popup-card-' + link.linkId"
+              @mouseleave="mouseLeave(link.linkId)"
           >
             <div class="card-info">
               <div class="base-info">
-                <!-- <img :src="link.linkCover" :alt="link.title" /> -->
-                <p>{{ link.linkTitle }}</p>
-                <p>{{ link.linkDescription }}</p>
-                <p>{{ link.link }}</p>
+                <div><img class="link-img" :src="link.linkCover" :alt="link.title"/></div>
+                <div class="link-info">
+                  <p class="link-title">{{ link.linkTitle }}</p>
+                  <div class="link-description">{{ link.linkDescription }}</div>
+                  <div class="link-address">{{ link.link }}</div>
+                </div>
+
+
               </div>
 
-              <div class="card-action">
-                <div>点赞</div>
-                <div>收藏</div>
-                <div>跳转</div>
-                <div>编辑</div>
-              </div>
+<!--              <div class="card-action">-->
+<!--                <div>点赞</div>-->
+<!--                <div>收藏</div>-->
+<!--                <div>跳转</div>-->
+<!--                <div>编辑</div>-->
+<!--              </div>-->
             </div>
           </div>
         </div>
@@ -78,17 +80,17 @@
 </template>
 
 <script>
-import { onMounted, reactive } from "vue";
+import {onMounted, reactive} from "vue";
 import UserInfo from "../components/Cards/UserInfo.vue";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
 import DefaultHeader from "../components/Header/DefaultHeader.vue";
-import { getAllPublicLink } from "../api/link"
-import { ElMessage } from 'element-plus'
+import {getAllPublicLink} from "../api/link"
+import {ElMessage} from 'element-plus'
 import 'animate.css';
 
 export default {
   name: "Nav",
-  components: { UserInfo, HaloFooter, DefaultHeader },
+  components: {UserInfo, HaloFooter, DefaultHeader},
   setup() {
     let state = reactive({
       links: {
@@ -146,10 +148,11 @@ export default {
 
       let x, y;
       // 获取 linkCard 的绝对定位
-      ({ x, y } = getElementPagePosition(linkCard));
+      ({x, y} = getElementPagePosition(linkCard));
       popupCard.setAttribute("class", "show animate__zoomIn");
-      popupCard.setAttribute("style", "top:" + (y - 50) + "px; left:" + (x - 20) + "px;")
+      popupCard.setAttribute("style", "top:" + (y - 50) + "px; left:" + (x - 110) + "px;")
     }
+
     function mouseLeave(linkId) {
       console.log("鼠标从" + linkId + "移出");
       let popupCard = document.getElementById("popup-card-" + linkId);
@@ -173,9 +176,8 @@ export default {
         current = current.offsetParent;
       }
       //返回结果
-      return { x: actualLeft, y: actualTop }
+      return {x: actualLeft, y: actualTop}
     }
-
 
 
     return {
@@ -190,104 +192,102 @@ export default {
 </script>
 
 <style lang="scss">
-.halo-home {
-  width: 1200px;
-  margin: 0 auto;
+@import "../assets/style/mixin.scss";
+
+$link-with: 271px;
+$link-height: 110px;
+
+
+.link-title {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.link-description {
+  font-size: 16px;
+  color: #5C5959;
+}
+
+.link-address {
+  font-size: 14px;
+  color: #9C9898;
 }
 
 .halo-body {
-  display: grid;
-  grid-template-columns: 330px 850px;
-  grid-gap: 20px;
-
-  .halo-left-content {
-    margin-top: 30px;
-
-    div:first-child {
-      margin-top: 0;
-    }
-
-    & > div {
-      min-height: 200px;
-      width: 330px;
-      background-color: rgb(222, 234, 246);
-      margin-top: 20px;
-      border-radius: 10px;
-    }
-
-    .halo-card-glass {
-      background-color: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
-      -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
-      border-radius: 12px;
-      -webkit-border-radius: 12px;
-      color: rgba(255, 255, 255, 0.75);
-    }
-
-    .halo-test {
-      background-color: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
-      -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
-      border-radius: 12px;
-      -webkit-border-radius: 12px;
-      //color: rgba(255, 255, 255, 0.75);
-      color: rgba(128, 48, 48, 0.75);
-      font-size: 20px;
-    }
-  }
-
   .halo-right-content {
     .link-content {
       // 卡片 grid 布局
       display: grid;
-      grid-template-columns: repeat(3, 30%);
+      grid-template-columns: repeat(3, #{$link-with});
       // 列间距
-      column-gap: 5%;
+      column-gap: #{$card-gap};
       // 行间距
-      row-gap: 20px;
-      z-index: -3;
+      row-gap: #{$card-gap};
+
       .link-card {
+        border-radius: #{$border-radius};
+        height: #{$link-height};
+        box-shadow: #{$box-shadow};
         display: flex;
-        border-radius: 12px;
-        height: 100px;
         background-color: aliceblue;
-        box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+
+        // 链接图片
         .link-card-left {
-          width: 40%;
-          padding: 15px;
-          display: flex;
-          align-items: stretch;
-          flex-direction: column;
-          justify-content: space-around;
+          width: 102px;
+          padding: 8px 8px 8px 8px;
+
           img {
-            border-radius: 8px;
+            width: 94px;
+            height: 94px;
+            border-radius: #{$border-radius};
           }
+
           &:hover {
             cursor: pointer;
           }
         }
+
         .link-card-right {
-          padding-top: 15px;
-          padding-left: 10px;
-          .link-title {
-            font-weight: 700;
-            line-height: 1.6;
-            font-size: 1.2rem;
+          width: 161px;
+          padding: 16px 8px 16px 16px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          .link-title, .link-description, .link-address {
+            // 超出文本显示省略号
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
-          width: 60%;
         }
       }
+
+      .link-card-left-add {
+        width: 102px;
+        padding: 8px 8px 8px 8px;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        .add {
+          width: 94px;
+          height: 94px;
+        }
+      }
+
       .link-card-right-add {
-        padding-left: 10px;
-        line-height: 100px;
-        font-size: 1.2rem;
-        width: 100%;
+        width: 161px;
+        font-size: 20px;
+        padding: 8px 8px 8px 8px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
   }
@@ -303,14 +303,50 @@ export default {
     animation-duration: 0.25s;
 
     .card-info {
-      width: 300px;
-      border-radius: 12px;
-      height: 200px;
-      background-color: rgb(255, 228, 196);
-      box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+      width: 426px;
+      height: 226px;
+      border-radius: #{$border-radius};
+
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+
+      background-color: #FFFFFF;
+      box-shadow: #{$box-shadow};
+
+      .base-info {
+        display: flex;
+
+        .link-img {
+          width: 150px;
+          height: 150px;
+          border-radius: #{$border-radius};
+          margin: 8px 10px 8px 8px;
+        }
+
+        .link-info {
+          width: 250px;
+          margin: 16px 8px 16px 0;
+
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          .link-title, .link-address {
+            // 超出文本显示省略号
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          & > div {
+            // 强制换行 只有连续的字母或数字会出现不自动换行问题
+            word-wrap: break-word
+          }
+
+        }
+
+      }
+
 
       .card-action {
         border-bottom-right-radius: 12px;
@@ -319,6 +355,7 @@ export default {
         background-color: rgb(196, 255, 255);
         display: flex;
         justify-content: space-between;
+
         & > div {
           width: 100%;
         }

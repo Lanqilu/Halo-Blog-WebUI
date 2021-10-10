@@ -4,18 +4,25 @@
     <div class="halo-has-login" v-show="user.hasLogin">
       <div class="halo-user-meta">
         <div class="halo-user-avatar">
-          <el-avatar shape="square" :size="120" :src="user.avatar"></el-avatar>
-          <div class="halo-username">{{ user.username }}</div>
+          <el-avatar shape="square" :size="166" :src="user.avatar"></el-avatar>
         </div>
         <div class="halo-user-button">
-          <div class="halo-personal-homepage" @click="publishArticle()">发表文章</div>
-          <div class="logout" @click="logout()">退出</div>
+          <div class="halo-personal-homepage halo-base-bottom" @click="publishArticle()">动态</div>
+          <div class="logout halo-base-bottom" @click="logout()">退出</div>
+          <div class="icon">
+            <div class="add" @click="publishArticle()">
+              <svg class="add-icon" aria-hidden="true">
+                <use xlink:href="#icon-plus-circle-fill"/>
+              </svg>
+            </div>
+            <div class="massage">
+              <svg class="massage-icon" aria-hidden="true">
+                <use xlink:href="#icon-info-circle-fill"/>
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
-
-      <!--      <div class="halo-user-info">-->
-      <!--        文章数目：{{ user.articleCount }}-->
-      <!--      </div>-->
     </div>
 
     <!-- 如果未登录展示该 div -->
@@ -36,6 +43,7 @@ import {useStore} from "vuex";
 import axios from "axios";
 import {useRouter} from "vue-router";
 import {getAuthorArticle} from "../../api";
+
 
 export default {
   name: "UserInfo",
@@ -94,18 +102,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/style/mixin.scss";
+
 .halo-user-info {
+  border-radius: #{$border-radius};
+  box-shadow: #{$box-shadow};
 
-  padding: 0;
-  margin: 0;
-  background: #ffffff;
-  min-height: 200px;
-  max-width: 330px;
-  border-radius: 10px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: #FFFFFF;
+  height: 182px;
+  width: 320px;
+  margin-bottom: 12px;
 
   .halo-has-not-login {
     width: 100%;
@@ -156,52 +162,49 @@ export default {
   .halo-has-login {
     .halo-user-meta {
       display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-
 
       .halo-user-avatar {
-
-        .halo-username {
-          display: none;
-          margin-top: 10px;
-          text-align: center;
-        }
+        width: 166px;
+        height: 166px;
+        margin: 8px;
+        border-radius: 8px;
       }
 
       .halo-user-button {
-        margin-left: 20px;
         display: flex;
         flex-direction: column;
 
         .halo-personal-homepage,
         .logout {
-          //background: rgba(186, 222, 218, 0.64);
-          cursor: pointer;
-
-          height: 50px;
-          line-height: 50px;
-          width: 100px;
-          border-radius: 12px;
-          text-align: center;
-
-          background-color: rgb(222, 234, 246);
-          box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+          background: #{$blue};
+          color: #ffffff;
+          margin-top: 8px;
 
           &:hover {
-            background: rgba(186, 196, 222, 0.9);
+            background: #50a1f5;
           }
         }
 
-        .halo-personal-homepage {
-          margin-bottom: 10px;
+
+        .icon {
+          height: 78px;
+          width: 130px;
+          display: flex;
+          justify-content: space-between;
+
+          .add-icon, .massage-icon {
+            height: 62px;
+            width: 62px;
+            color: #{$blue};
+            margin-top: 8px;
+            margin-bottom: 8px;
+
+            &:hover {
+              cursor: pointer;
+              color: #50a1f5;
+            }
+          }
         }
-
-        .logout {
-          margin-top: 10px;
-        }
-
-
       }
     }
   }

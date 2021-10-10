@@ -1,17 +1,23 @@
 <template>
   <!--  <div class="halo-top"></div>-->
   <div class="halo-header">
-    <div class="halo-a" @click="toHome()">
+    <div class="halo-a halo-bottom" @click="toHome()">
       主页
     </div>
-    <div class="halo-a" @click="toNav()">
+    <div class="halo-a halo-bottom" @click="toNav()">
       导航
     </div>
-    <div class="halo-a" @click="toHome()">
+    <div class="halo-a halo-bottom" @click="toHome()">
       工具
     </div>
-    <div class="halo-a" @click="toHome()">
-      动态
+    <div class="halo-a halo-bottom" @click="toHome()">
+      Bottom
+    </div>
+    <div class="halo-a halo-bottom" @click="toHome()">
+      Bottom
+    </div>
+    <div class="halo-a halo-bottom" @click="toHome()">
+      Bottom
     </div>
   </div>
 </template>
@@ -45,6 +51,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/style/mixin.scss";
+
+// header 统一样式
+$header-background: #FFFFFF;
+
+// 距离顶部留20px
 .halo-top {
   height: 20px;
 }
@@ -53,9 +65,9 @@ export default {
   margin: 30px 0 20px 0;
   height: 60px;
   width: 100%;
-  background: white;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
+  background: #{$header-background};
+  box-shadow: #{$box-shadow};
+  border-radius: #{$border-radius};
 
   display: flex;
   align-items: center;

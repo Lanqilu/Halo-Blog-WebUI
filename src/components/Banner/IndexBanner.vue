@@ -55,6 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .test-style {
   border: solid 1px;
   min-width: 10px;
@@ -88,11 +89,13 @@ ul {
 
 .halo-nav-link {
   height: 50px;
+
   .halo-nav-link-ul {
     display: flex;
     height: 100%;
     align-items: center;
     justify-content: space-evenly;
+
     .nav-link-item {
       color: white;
     }
@@ -104,6 +107,7 @@ ul {
   justify-content: center;
   align-items: center;
   height: 50px;
+
   .el-form-item {
     margin-bottom: 0;
   }
