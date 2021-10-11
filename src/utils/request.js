@@ -50,6 +50,10 @@ export function del(url) {
     return axiosInstance.delete(url)
 }
 
+export function delById(url, id) {
+    return axiosInstance.delete(url, id)
+}
+
 export function put(url, data) {
     return axiosInstance.put(url, data)
 }

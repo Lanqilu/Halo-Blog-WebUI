@@ -47,7 +47,6 @@ $bottom-hover-color: #FFFFFF;
   }
 }
 
-
 // 主页大小布局
 .halo-home {
   width: 1169px;
@@ -68,7 +67,14 @@ $bottom-hover-color: #FFFFFF;
   }
 }
 
-
+// 左侧 Card 统一样式
+.halo-base-card {
+  background: #FFFFFF;
+  height: 182px;
+  width: 320px;
+  margin-bottom: 12px;
+  border-radius: #{$border-radius};
+}
 
 
 // ------------------ 测试样式 --------------
