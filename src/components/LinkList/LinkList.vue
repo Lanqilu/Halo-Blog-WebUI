@@ -1,158 +1,106 @@
 <template>
-  <div class="halo-home">
-    <div class="halo-body">
-      <!-- 左侧卡片  -->
-      <div class="halo-left-content">
-        <UserInfo></UserInfo>
-        <div class="halo-base-card">
-          <div class="halo-bottom" @click="updateLink(1)">全部链接</div>
-          <div class="halo-bottom" @click="getMyLink()">我创建的链接</div>
-          <div class="halo-bottom">我收藏的链接</div>
-        </div>
+  <div class="link-content">
+    <!-- 链接卡片 -->
+    <div
+        class="link-card"
+        v-for="link in state.links"
+        :key="link.linkId"
+        :id="'link-card-' + link.linkId"
+    >
+      <div class="link-card-left" @click="hrefClick(link.link)">
+        <img :src="link.linkCover" :alt="link.title"/>
       </div>
-      <!-- 右侧卡片  -->
-      <div class="halo-right-content">
-        <!-- 左上测导航条 -->
-        <default-header></default-header>
-        <div class="link-content">
-          <!-- 链接卡片 -->
-          <div
-              class="link-card"
-              v-for="link in state.links"
-              :key="link.linkId"
-              :id="'link-card-' + link.linkId"
-          >
-            <div class="link-card-left" @click="hrefClick(link.link)">
-              <img :src="link.linkCover" :alt="link.title"/>
-            </div>
-            <div class="link-card-right" @click="mouseOver(link.linkId)">
-              <p class="link-title">{{ link.linkTitle }}</p>
-              <div class="link-description">{{ link.linkDescription }}</div>
-              <div class="link-address" @click="hrefClick(link.link)">{{ link.link }}</div>
-            </div>
-          </div>
-          <!-- 新增链接卡片 -->
-          <div class="link-card" @click="newLink()">
-            <div class="link-card-left-add">
-              <svg class="add" aria-hidden="true">
-                <use xlink:href="#icon-zengjia-copy"/>
-              </svg>
-            </div>
-            <div class="link-card-right-add">新增链接</div>
+      <div class="link-card-right" @click="mouseOver(link.linkId)">
+        <p class="link-title">{{ link.linkTitle }}</p>
+        <div class="link-description">{{ link.linkDescription }}</div>
+        <div class="link-address" @click="hrefClick(link.link)">{{ link.link }}</div>
+      </div>
+    </div>
+    <!-- 新增链接卡片 -->
+    <div class="link-card" @click="newLink()">
+      <div class="link-card-left-add">
+        <svg class="add" aria-hidden="true">
+          <use xlink:href="#icon-zengjia-copy"/>
+        </svg>
+      </div>
+      <div class="link-card-right-add">新增链接</div>
+    </div>
+  </div>
+  <!-- 弹出卡片 -->
+  <div id="popup-cards">
+    <div
+        class="popup-card"
+        v-for="link in state.links"
+        :key="link.linkId"
+        :id="'popup-card-' + link.linkId"
+        @mouseleave="mouseLeave(link.linkId)"
+    >
+      <div class="card-info">
+        <div class="base-info">
+          <div><img class="link-img" :src="link.linkCover" :alt="link.title" @click="hrefClick(link.link)"/></div>
+          <div class="link-info">
+            <p class="link-title" @click="editLink(link)">{{ link.linkTitle }} </p>
+            <div class="link-description">{{ link.linkDescription }}</div>
+            <div class="link-address" @click="hrefClick(link.link)">{{ link.link }}</div>
           </div>
         </div>
-        <!-- 弹出卡片 -->
-        <div id="popup-cards">
-          <div
-              class="popup-card"
-              v-for="link in state.links"
-              :key="link.linkId"
-              :id="'popup-card-' + link.linkId"
-              @mouseleave="mouseLeave(link.linkId)"
-          >
-            <div class="card-info">
-              <div class="base-info">
-                <div><img class="link-img" :src="link.linkCover" :alt="link.title" @click="hrefClick(link.link)"/></div>
-                <div class="link-info">
-                  <p class="link-title" @click="editLink(link)">{{ link.linkTitle }} </p>
-                  <div class="link-description">{{ link.linkDescription }}</div>
-                  <div class="link-address" @click="hrefClick(link.link)">{{ link.link }}</div>
-                </div>
-              </div>
 
-              <div class="card-action">
-                <img class="link-img" :src="link.linkCover" :alt="link.title"/>
-                <div class="author-info">
-                  <div class="author-nickname">
-                    默认昵称
-                  </div>
-                  <div class="author-link">
-                    <div>
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-mail_fill"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-info-circle-fill"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <div class="link-action">
-                  <div>
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-dianzan"/>
-                    </svg>
-                    <div class="number">
-                      100
-                    </div>
-                  </div>
-                  <div>
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-heart"/>
-                    </svg>
-                    <div class="number">
-                      100
-                    </div>
-                  </div>
-                  <div class="halo-bottom" @click="hrefClick(link.link)">跳转</div>
-                </div>
+        <div class="card-action">
+          <img class="link-img" :src="link.linkCover" :alt="link.title"/>
+          <div class="author-info">
+            <div class="author-nickname">
+              默认昵称
+            </div>
+            <div class="author-link">
+              <div>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-mail_fill"/>
+                </svg>
+              </div>
+              <div>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-info-circle-fill"/>
+                </svg>
               </div>
             </div>
+          </div>
+          <div class="link-action">
+            <div>
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-dianzan"/>
+              </svg>
+              <div class="number">
+                100
+              </div>
+            </div>
+            <div>
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-heart"/>
+              </svg>
+              <div class="number">
+                100
+              </div>
+            </div>
+            <div class="halo-bottom" @click="hrefClick(link.link)">跳转</div>
           </div>
         </div>
       </div>
     </div>
-    <!-- 弹出框 -->
-    <el-dialog v-model="state.dialogFormVisible" title="编辑链接">
-      <el-form ref="form" :model="state.link" label-width="100px">
-        <el-form-item label="链接标题">
-          <el-input v-model="state.link.linkTitle"></el-input>
-        </el-form-item>
-        <el-form-item label="链接描述">
-          <el-input v-model="state.link.linkDescription" type="textarea"></el-input>
-        </el-form-item>
-        <el-form-item label="链接地址">
-          <el-input v-model="state.link.link"></el-input>
-        </el-form-item>
-        <el-form-item label="链接图片地址">
-          <el-input v-model="state.link.linkCover"></el-input>
-        </el-form-item>
-        <div style="display: flex;">
-          <el-form-item label="是否发布">
-            <el-switch v-model="state.link.publish"></el-switch>
-          </el-form-item>
-          <el-form-item label="是否开启评论" style="margin-left: 40px">
-            <el-switch v-model="state.link.openComment"></el-switch>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmitAddLink()">创建</el-button>
-          </el-form-item>
-        </div>
-      </el-form>
-    </el-dialog>
-
-    <!-- 回到顶部 -->
-    <el-backtop :bottom="100"></el-backtop>
   </div>
-  <halo-footer></halo-footer>
 </template>
+
 
 <script>
 import {onMounted, reactive} from "vue";
-import UserInfo from "../components/Cards/UserInfo.vue";
-import HaloFooter from "../components/Footer/HaloFooter.vue";
-import DefaultHeader from "../components/Header/DefaultHeader.vue";
-import {post, del, get} from "../utils/request";
-import {getAllPublicLink} from "../api/link"
+
+import {post, del, get} from "../../utils/request";
+import {getAllPublicLink} from "../../api/link"
 import {ElMessage} from 'element-plus'
 import 'animate.css';
 import {useStore} from "vuex";
 
 export default {
-  name: "Nav",
-  components: {UserInfo, HaloFooter, DefaultHeader},
+  name: "LinkList",
   setup: function () {
     let state = reactive({
       dialogFormVisible: false,
@@ -409,7 +357,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../assets/style/mixin.scss";
+@import "../../assets/style/mixin.scss";
 
 $link-with: 271px;
 $link-height: 110px;

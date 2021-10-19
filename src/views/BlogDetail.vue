@@ -1,109 +1,102 @@
 <template>
-  <div class="m-container">
-    <div class="halo-blog">
-      <div class="halo-blog-content">
-        <div class="halo-blog-left">
-          <div class="user-info">
-            <UserInfo></UserInfo>
-          </div>
-          <div class="halo-sticky">
-            <!-- 文章目录 -->
 
-            <div class="halo-blog-catalogue" v-if="state.isShowContent">
-              <div class="toc">
-                <div class="toc-title">目录</div>
-                <el-divider></el-divider>
-                <div>
-                  <ul id="toc-content">
-                    <li
+  <div class="halo-blog">
+    <div class="halo-body">
+      <div class="halo-blog-left">
+        <div class="user-info">
+          <UserInfo></UserInfo>
+        </div>
+        <div class="halo-sticky">
+          <!-- 文章目录 -->
+          <div class="halo-blog-catalogue" v-if="state.isShowContent">
+            <div class="toc-title">目录</div>
+            <el-divider></el-divider>
+            <div class="toc">
+
+              <div>
+                <ul id="toc-content">
+                  <li
                       v-for="item in state.treeArray"
                       :key="item.id"
                       :id="`${item.id}-halo`"
                       :class="item.tag"
                       class="toc-content-item"
-                    >
-                      <!-- 使用DOM进行跳转,不记录历史记录-->
-                      <a class="toc-content-item" @click="jump(`${item.id}`)">{{ item.name }}</a>
-                      <!-- <a :href="'#' + item.id">{{ item.name }}</a>-->
-                    </li>
-                  </ul>
-                </div>
+                  >
+                    <!-- 使用DOM进行跳转,不记录历史记录-->
+                    <a class="toc-content-item" @click="jump(`${item.id}`)">{{ item.name }}</a>
+                  </li>
+                </ul>
               </div>
             </div>
-
-            <div class="operation">
-              <div
+          </div>
+          <!-- 点赞投币收藏  -->
+          <div class="operation">
+            <div
                 class="like"
                 @click.once="giveLike()"
                 :class="blog.info.isLike === true ? 'activeLike' : ''"
-              >
-                <svg class="icon dianzan" aria-hidden="true">
-                  <use xlink:href="#icon-dianzan" />
-                </svg>
-                {{ blog.info.blogLike }}
-              </div>
-              <div>投币</div>
-              <div>收藏</div>
+            >
+              <svg class="icon dianzan" aria-hidden="true">
+                <use xlink:href="#icon-dianzan"/>
+              </svg>
+              <span id="likeNum"> {{ blog.info.blogLike }}</span>
+
             </div>
-          </div>
-        </div>
-
-        <div class="halo-blog-right">
-          <default-header></default-header>
-          <!-- 文章头信息 -->
-          <div class="halo-title-card">
-            <div class="post-info">
-              <!-- TODO:文章分类和标签信息 -->
-
-              <!-- <div class="halo-blog-info">
-                <div class="halo-blog-sort">vue</div>
-                <div class="halo-blog-tags">你好</div>
-                <div class="halo-blog-tags">你好</div>
-                <div class="halo-blog-tags">你好</div>
-              </div>-->
-
-              <!-- 文章标题 -->
-              <div class="halo-blog-title">
-                <div class="title">{{ blog.info.blogTitle }}</div>
-                <div class="edit">
-                  <el-link icon="el-icon-edit" v-if="blog.isOwnBlog">
-                    <router-link :to="{ name: 'BlogEdit', params: { blogId: blog.info.id } }">编辑</router-link>
-                  </el-link>
-                </div>
-              </div>
-
-              <!-- 文章作者信息 -->
-              <div class="halo-blog-author">
-                <div class="avatar">
-                  <img :src="blog.author.avatar" alt class="author-avatar" />
-                </div>
-                <div class="author-info">
-                  <div>{{ blog.author.username }}</div>
-                  <div>{{ blog.author.email }}</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 文章封面 -->
-            <div
-              class="post-cover"
-              :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"
-            ></div>
-          </div>
-          <!-- 文章主体信息 -->
-          <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
-            <div id="describe" class="describe">{{ blog.info.description }}</div>
-            <el-divider></el-divider>
-
-            <el-skeleton :rows="10" animated v-if="blog.info.isShow" :throttle="200" />
-
-            <div id="content" class="content markdown-body" v-html="blog.info.content"></div>
-
-            <el-divider></el-divider>
+            <div>投币</div>
+            <div>收藏</div>
           </div>
         </div>
       </div>
+
+      <div class="halo-blog-right">
+        <default-header></default-header>
+        <!-- 文章头信息 -->
+        <div class="halo-title-card">
+          <div class="post-info">
+            <!-- TODO:文章分类和标签信息 -->
+
+            <!-- 文章标题 -->
+            <div class="halo-blog-title">
+              <div class="title">{{ blog.info.blogTitle }}</div>
+              <div class="edit">
+                <el-link icon="el-icon-edit" v-if="blog.isOwnBlog">
+                  <router-link :to="{ name: 'BlogEdit', params: { blogId: blog.info.id } }">编辑</router-link>
+                </el-link>
+              </div>
+            </div>
+
+            <!-- 文章作者信息 -->
+            <div class="halo-blog-author">
+              <div class="avatar">
+                <img :src="blog.author.avatar" alt class="author-avatar"/>
+              </div>
+              <div class="author-info">
+                <div>{{ blog.author.username }}</div>
+                <div>{{ blog.author.email }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 文章封面 -->
+          <div
+              class="post-cover"
+              :style="{ backgroundImage: 'url(' + blog.info.blogCover + ')' }"
+          ></div>
+        </div>
+        <!-- 文章主体信息 -->
+        <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
+          <div id="describe" class="describe">{{ blog.info.description }}</div>
+          <el-divider></el-divider>
+
+          <el-skeleton :rows="10" animated v-if="blog.info.isShow" :throttle="200"/>
+
+          <div id="content" class="content markdown-body" v-html="blog.info.content"></div>
+
+          <el-divider></el-divider>
+        </div>
+      </div>
     </div>
+
 
     <!-- 回到顶部 -->
     <el-backtop :bottom="100"></el-backtop>
@@ -117,18 +110,16 @@
 </template>
 <script>
 import "../assets/markdown-css/halo-markdown.css";
-import { onMounted, reactive, watch } from "vue";
-import { useRoute } from "vue-router";
-import { useStore } from "vuex";
-import marked from "marked";
-import { BlogDetail, getAuthorInfo } from "../api";
-import axios from "axios";
-import { ElMessage } from "element-plus";
+import {onMounted, reactive, watch} from "vue";
+import {useRoute} from "vue-router";
+import {useStore} from "vuex";
+import {BlogDetail, getAuthorInfo} from "../api";
+import {ElMessage} from "element-plus";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
 import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import UserInfo from "../components/Cards/UserInfo.vue";
-import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
+import {get} from "../utils/request";
 
 export default {
   name: "BlogDetail",
@@ -138,7 +129,7 @@ export default {
     UserInfo,
   },
 
-  setup() {
+  setup: function () {
     const route = useRoute();
     const store = useStore();
 
@@ -171,30 +162,14 @@ export default {
 
     const blogId = route.params.blogId;
 
-    // 参考地址：https://blog.csdn.net/weixin_41727824/article/details/112776711
-    let rendererMD = new marked.Renderer();
-    marked.setOptions({
-      renderer: rendererMD,
-      gfm: true, //默认为true。 允许 Git Hub标准的markdown.
-      tables: true, //默认为true。 允许支持表格语法。该选项要求 gfm 为true。
-      breaks: true, //默认为false。 允许回车换行。该选项要求 gfm 为true。
-      pedantic: false, //默认为false。 尽可能地兼容 markdown.pl的晦涩部分。不纠正原始模型任何的不良行为和错误。
-      smartLists: true,
-      smartypants: true, //使用更为时髦的标点，比如在引用语法中加入破折号。
-      highlight: function (code) {
-        return hljs.highlightAuto(code).value;
-      },
-      langPrefix: "hljs language-",
-    });
-
     onMounted(async () => {
       let blogDetailRes = await BlogDetail(blogId);
       console.log("————————————————数据获取完成————————————————");
 
-      blog.info = { ...blog.info, ...blogDetailRes.data.data };
-      blog.info.content = marked(blog.info.content);
+      blog.info = {...blog.info, ...blogDetailRes.data.data};
 
-      console.log("————————————————marked转义完成————————————————");
+      blog.info.content = blog.info.contentHtml;
+
       try {
         // 判断是否是自己的文章，能否编辑
         blog.isOwnBlog = blog.info.userId === store.getters.getUser.id;
@@ -207,7 +182,7 @@ export default {
       blog.author = authorInfoRes.data.data;
 
       getToc();
-      console.log("————————————————挂载完成————————————————");
+      console.log("————————————————数据挂载完成————————————————");
 
       blog.info.isShow = false;
 
@@ -216,7 +191,7 @@ export default {
 
     // 点赞
     function giveLike() {
-      axios.post(`http://test:8088/blog/like/${blogId}`).then((res) => {
+      get(`/blog/like/${blogId}`).then((res) => {
         if (res.data.code === 200) {
           ElMessage.success({
             message: res.data.msg,
@@ -228,13 +203,14 @@ export default {
         }
       });
       blog.info.isLike = true;
+      document.getElementById("likeNum").setAttribute("style", "display: initial;")
     }
 
     function getToc() {
       let children = document.getElementById("content").children;
       for (let i = 0; i < children.length - 1; i++) {
         let nodeName = children[i].nodeName;
-        if (nodeName === "H2" || nodeName === "H3") {
+        if (nodeName === "H2" || nodeName === "H3" || nodeName === "H4") {
           state.treeArray.push({
             id: children[i].id,
             name: children[i].innerText,
@@ -249,24 +225,24 @@ export default {
       state.isShowContent = !state.isShowContent;
     }
 
+    // 回到顶部 弃用
     function toTop() {
       document.body.scrollTop = document.documentElement.scrollTop = 0;
-      // console.log(state.scroll);
-      // loadScroll();
     }
 
+    //获取屏幕距离顶部的距离
     function dataScroll() {
-      state.scroll =
-        document.documentElement.scrollTop || document.body.scrollTop; //获取屏幕距离顶部的距离
+      state.scroll = document.documentElement.scrollTop || document.body.scrollTop;
     }
 
     function loadScroll() {
-      let childrens = document.getElementById("content").children;
-      for (let i = 1; i < childrens.length - 1; i++) {
-        let nodeName = childrens[i].nodeName;
-        if (nodeName == "H2" || nodeName == "H3") {
-          if (childrens[i].offsetTop - state.scroll > 10) {
-            var anchorId = childrens[i].id + "-halo";
+      let children = document.getElementById("content").children;
+      let anchorId;
+      for (let i = 1; i < children.length - 1; i++) {
+        let nodeName = children[i].nodeName;
+        if (nodeName === "H2" || nodeName === "H3" || nodeName === "H4") {
+          if (children[i].offsetTop - state.scroll > 10) {
+            anchorId = children[i].id + "-halo";
             break;
           }
         }
@@ -277,7 +253,6 @@ export default {
       } catch {
         console.log("...");
       }
-
 
       const li = document.querySelector(".catalog-active");
       if (li) {
@@ -297,11 +272,11 @@ export default {
     // TODO 根据页面滑动实现目录跟随 2021年9月26日
 
     watch(
-      () => state.scroll,
-      () => {
-        loadScroll();
-        // console.log(state.scroll);
-      }
+        () => state.scroll,
+        () => {
+          loadScroll();
+          // console.log(state.scroll);
+        }
     );
 
     return {
@@ -316,279 +291,298 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.m-container {
-  width: 1200px;
+<style lang="scss" scoped>
+@import "../assets/style/mixin.scss";
+
+
+.halo-blog {
+  width: 1169px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  .halo-blog {
+
+  .halo-body {
+    margin: 0 auto;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    position: relative;
 
-    .halo-title-card {
-      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-      background: #ffffff;
-      border-radius: 12px;
-      width: 100%;
-      max-height: 300px;
-      z-index: 2;
+    .halo-blog-right {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
+      width: 836px;
 
-      .post-info {
-        padding: 30px;
+      .halo-title-card {
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        background: #ffffff;
+        border-radius: #{$border-radius};
+        width: 100%;
+        max-height: 300px;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-        .halo-blog-info {
-          display: flex;
-        }
+        .post-info {
+          padding: 30px;
 
-        .halo-blog-title {
-          display: flex;
-          align-items: center;
-          margin: 0.8rem 0 0.8rem 0;
+          .halo-blog-info {
+            display: flex;
+          }
 
-          .title {
-            font-weight: 700;
-            font-size: 2.3rem;
-            line-height: 1.2;
-            text-align: left;
-            padding: 0;
+          .halo-blog-title {
+            display: flex;
+            align-items: center;
+            margin: 0.8rem 0 0.8rem 0;
 
-            &:after {
-              display: block;
-              content: "";
-              width: 30%;
-              height: 15px;
-              background-color: #ffd55d;
-              bottom: 0;
-              z-index: -1;
-              position: relative;
-              transform: translateY(-15px);
+            .title {
+              font-weight: 700;
+              font-size: 2.3rem;
+              line-height: 1.2;
+              text-align: left;
+              padding: 0;
+
+              &:after {
+                display: block;
+                content: "";
+                width: 30%;
+                height: 15px;
+                background-color: #ffd55d;
+                bottom: 0;
+                z-index: -1;
+                position: relative;
+                transform: translateY(-15px);
+              }
+            }
+
+            .edit {
+              margin: 20px;
             }
           }
 
-          .edit {
-            margin: 20px;
+          .halo-blog-author {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-start;
+
+            img {
+              max-height: 3.5rem;
+              border-radius: #{$border-radius};
+            }
+
+            .author-info {
+              margin-left: 10px;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-evenly;
+            }
           }
         }
 
-        .halo-blog-author {
-          margin-top: 15px;
-          display: flex;
-          justify-content: flex-start;
-
-          img {
-            max-height: 3.5rem;
-            border-radius: 6px;
-          }
-
-          .author-info {
-            margin-left: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
-          }
+        .post-cover {
+          border-radius: #{$border-radius};
+          width: 350px;
+          height: 200px;
+          background-size: cover;
+          margin: 8px;
         }
       }
 
-      .post-cover {
-        border-radius: 12px;
-        width: 300px;
-        height: 200px;
-        background-size: cover;
-        margin: 20px;
+      .m-blog {
+        .describe {
+          line-height: 1.8;
+          font-size: 1.1em;
+        }
+
+        margin-top: #{$card-gap};
+        padding: 30px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: #{$border-radius};
+        width: 836px;
       }
     }
 
-    .halo-blog-content {
-      margin: 0 auto;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-content: center;
+    .halo-blog-left {
+      margin-right: #{$card-gap};
+      top: 30px;
       width: 100%;
+      display: flex;
+      flex-direction: column;
       position: relative;
 
-      .halo-blog-right {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      .halo-sticky {
+        top: #{$card-gap};
+        position: sticky;
 
-        .m-blog {
-          .describe {
-            line-height: 1.8;
-            font-size: 1.1em;
-          }
+        .halo-blog-catalogue {
 
-          margin-top: 30px;
-          padding: 30px;
-          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+          border-radius: #{$border-radius};
           background: rgba(255, 255, 255, 0.8);
-          border-radius: 12px;
-          width: 850px;
-        }
-      }
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 
-      .halo-blog-left {
-        margin-right: 20px;
-        top: 30px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-
-        .halo-sticky {
-          top: 10px;
-          position: sticky;
-
-          .halo-blog-catalogue {
-            // 目录
-            .toc {
-              margin-top: 20px;
-              border-radius: 12px;
-              background: rgba(255, 255, 255, 0.8);
-              box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-              overflow: auto;
-              height: 500px;
-
-              .toc-title {
-                margin-top: 20px;
-                text-align: center;
-                font-size: 20px;
-                color: #464444;
-              }
-
-              // 目录中标题鼠标样式
-              .toc-content-item {
-                cursor: pointer;
-              }
-
-              .el-divider--horizontal {
-                margin-top: 10px;
-              }
-
-              ul {
-                // 文本不换行 多出的截断
-                // 包裹了 lu 不能实现截断
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
-
-              ul,
-              li {
-                list-style: none;
-                margin: 0;
-                padding-top: 1.5px;
-                padding-bottom: 1.5px;
-              }
-
-              ul {
-                width: 75%;
-                margin: 10px auto;
-
-                .catalog-active {
-                  color: rgb(37, 80, 145) !important;
-                  //&>a{
-                  //  background: rgba(246, 244, 225, 0.9);
-                  //}
-
-                  &::before {
-                    content: "→ ";
-                    margin-left: -1.3em;
-                  }
-                }
-
-                .H2 {
-                  margin-bottom: 5px;
-                  color: rgb(150, 58, 211);
-                }
-
-                .H3 {
-                  margin-left: 20px;
-                  margin-bottom: 5px;
-                  color: rgb(211, 98, 22);
-                }
-
-                .H2,
-                .H3 {
-                  &:hover {
-                    color: rgb(49, 77, 235);
-                  }
-                }
-              }
-
-              // 隐藏滚动条
-              &::-webkit-scrollbar {
-                display: none;
-                width: 4px;
-              }
-
-              &::-webkit-scrollbar-thumb {
-                border-radius: 5px;
-                box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-                background: rgba(0, 0, 0, 0.2);
-              }
-
-              &::-webkit-scrollbar-track {
-                background: rgba(0, 0, 0, 0);
-              }
-            }
+          .el-divider--horizontal {
+            margin-top: 0;
+            margin-bottom: 0;
           }
 
-          // 目录下的点赞操作
-          .operation {
-            margin-top: 30px;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            height: 50px;
-            width: 100%;
+          .toc-title {
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            font-size: 20px;
+            color: #333333;
 
-            display: flex;
-            flex-wrap: nowrap;
-            justify-content: space-evenly;
-            align-items: center;
+          }
 
-            & > div {
+          // 目录
+          .toc {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            overflow: auto;
+            height: 500px;
+
+            // 目录中标题鼠标样式
+            .toc-content-item {
               cursor: pointer;
+            }
 
-              &:hover {
-                color: #0064d7;
+            ul {
+              // 文本不换行 多出的截断
+              // 包裹了 lu 不能实现截断
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            ul,
+            li {
+              list-style: none;
+              margin: 0;
+              padding-top: 1.5px;
+              padding-bottom: 1.5px;
+            }
+
+            ul {
+              width: 75%;
+              margin: 10px auto;
+
+              .catalog-active {
+                color: #{$blue} !important;
+
+
+                &::before {
+                  content: "→ ";
+                  margin-left: -1.3em;
+                }
               }
+
+              .H2 {
+                margin-bottom: 5px;
+                color: rgba(93, 163, 126);
+              }
+
+              .H3 {
+                margin-left: 20px;
+                margin-bottom: 5px;
+                color: rgba(114, 133, 163);
+              }
+
+              .H4 {
+                margin-left: 30px;
+                margin-bottom: 5px;
+                color: rgba(163, 142, 131);
+              }
+
+
+              .H2,
+              .H3 {
+                &:hover {
+                  color: #{$blue};
+                }
+              }
+            }
+
+
+            &::-webkit-scrollbar {
+              // 隐藏滚动条
+              //display: none;
+              width: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              border-radius: 5px;
+              box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+              background: rgba(0, 0, 0, 0.2);
+            }
+
+            &::-webkit-scrollbar-track {
+              background: rgba(0, 0, 0, 0);
             }
           }
         }
-      }
 
-      .activeLike {
-        color: rgba(28, 27, 27, 0.96) !important;
-      }
+        // 目录下的点赞操作
+        .operation {
+          margin-top: 12px;
+          background: rgba(255, 255, 255, 0.8);
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+          border-radius: 12px;
+          height: 50px;
+          width: 100%;
 
-      .like {
-        cursor: pointer;
-        color: rgba(163, 156, 156, 0.9);
+          display: flex;
+          flex-wrap: nowrap;
+          justify-content: space-evenly;
+          align-items: center;
 
-        .dianzan {
-          width: 1.3em;
-          height: 1.3em;
+          & > div {
+            cursor: pointer;
+
+            &:hover {
+              color: #{$blue};
+            }
+          }
         }
-      }
-
-      .active {
-        width: 75%;
       }
     }
-  }
 
-  .halo-setting {
-    display: none;
-    position: fixed;
-    left: 40px;
-    top: 10px;
-    z-index: 1;
+    .activeLike {
+      color: rgba(28, 27, 27, 0.96) !important;
+    }
+
+    .like {
+      cursor: pointer;
+      color: rgba(163, 156, 156, 0.9);
+
+      .dianzan {
+        width: 1.3em;
+        height: 1.3em;
+      }
+
+      & > span {
+        padding: 5px;
+        display: none;
+      }
+    }
+
+    .active {
+      width: 75%;
+    }
   }
+}
+
+.halo-setting {
+  display: none;
+  position: fixed;
+  left: 40px;
+  top: 10px;
+  z-index: 1;
 }
 </style>

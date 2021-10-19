@@ -18,14 +18,12 @@ hue-6-2: #e6c07b
 
 */
 
+
+
 .hljs {
     color: #abb2bf;
     background: #282c34;
-    font-family: Consolas,
-        "微软雅黑",
-        Liberation Mono,
-        Menlo,
-        monospace !important;
+    font-family: Consolas, "微软雅黑", Liberation Mono, Menlo, monospace !important;
 }
 
 .hljs-comment,

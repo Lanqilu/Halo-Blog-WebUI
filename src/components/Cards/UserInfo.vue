@@ -7,19 +7,23 @@
           <el-avatar shape="square" :size="166" :src="user.avatar"></el-avatar>
         </div>
         <div class="halo-user-button">
-          <div class="halo-personal-homepage halo-base-bottom" @click="publishArticle()">动态</div>
-          <div class="logout halo-base-bottom" @click="logout()">退出</div>
-          <div class="icon">
-            <div class="add" @click="publishArticle()">
-              <svg class="add-icon" aria-hidden="true">
-                <use xlink:href="#icon-plus-circle-fill"/>
-              </svg>
-            </div>
-            <div class="massage">
-              <svg class="massage-icon" aria-hidden="true">
-                <use xlink:href="#icon-info-circle-fill"/>
-              </svg>
-            </div>
+          <div class="halo-personal-homepage halo-bottom" @click="publishArticle()">
+<!--            <svg class="add-icon icon add" aria-hidden="true">-->
+<!--              <use xlink:href="#icon-plus-circle-fill"/>-->
+<!--            </svg>-->
+            动态
+          </div>
+          <div class="logout halo-bottom" @click="logout()">
+<!--            <svg class="add-icon icon add" aria-hidden="true">-->
+<!--              <use xlink:href="#icon-plus-circle-fill"/>-->
+<!--            </svg>-->
+            退出
+          </div>
+          <div class="logout halo-bottom" @click="logout()">
+<!--            <svg class="add-icon icon add" aria-hidden="true">-->
+<!--              <use xlink:href="#icon-plus-circle-fill"/>-->
+<!--            </svg>-->
+            消息
           </div>
         </div>
       </div>
@@ -27,12 +31,8 @@
 
     <!-- 如果未登录展示该 div -->
     <div class="halo-has-not-login" v-if="!user.hasLogin">
-      <div class="login">
-        <a href="/login">登 录</a>
-      </div>
-      <div class="register">
-        <a href="/register">注 册</a>
-      </div>
+      <div class="login" @click="toLogin()">登 录</div>
+      <div class="register" @click="toRegister()">注 册</div>
     </div>
   </div>
 </template>
@@ -43,7 +43,6 @@ import {useStore} from "vuex";
 import axios from "axios";
 import {useRouter} from "vue-router";
 import {getAuthorArticle} from "../../api";
-
 
 export default {
   name: "UserInfo",
@@ -92,10 +91,21 @@ export default {
       router.push("/blog/add");
     }
 
+
+    function toLogin() {
+      router.push("/login");
+    }
+
+    function toRegister() {
+      router.push("/register")
+    }
+
     return {
       user,
       logout,
       publishArticle,
+      toLogin,
+      toRegister,
     };
   },
 };
@@ -115,47 +125,38 @@ export default {
 
   .halo-has-not-login {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-flow: column;
-    margin: 0;
-    padding: 15px;
-
-    .login,
-    .register {
-      flex: 1 0 auto;
-      border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-content: center;
-      margin: 10px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      height: 65px;
-      font-weight: 600;
-
-      a {
-        display: block;
-        border-radius: 12px;
-        text-align: center;
-        width: 100%;
-        height: 65px;
-        // 文本上下居中
-        line-height: 65px;
-      }
-    }
 
     .login {
+      margin: 16px 16px 8px 16px;
       background: rgba(210, 231, 231, 0.99);
     }
 
     .register {
+      margin: 8px 16px 16px 16px;
       background: rgba(230, 219, 232, 0.99);
     }
 
-    .login > a:hover,
-    .register > a:hover {
-      background: #93c2e2;
-      color: #ffffff;
+    .login,
+    .register {
+      flex: 1 0 auto;
+      border-radius: 8px;
+      font-size: 18px;
+      height: 65px;
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      cursor: pointer;
+      line-height: 65px;
+
+      &:hover {
+        font-size: 20px;
+        background: #{$blue};
+        color: #ffffff;
+      }
     }
   }
 
@@ -173,35 +174,33 @@ export default {
       .halo-user-button {
         display: flex;
         flex-direction: column;
+        justify-content: space-evenly;
 
         .halo-personal-homepage,
         .logout {
-          background: #{$blue};
-          color: #ffffff;
           margin-top: 8px;
 
           &:hover {
-            background: #50a1f5;
+            background: #{$blue};
           }
         }
 
 
         .icon {
-          height: 78px;
-          width: 130px;
-          display: flex;
-          justify-content: space-between;
+          height: 20px;
+          width: 20px;
+          transform: translateY(1px);
 
           .add-icon, .massage-icon {
             height: 62px;
             width: 62px;
-            color: #{$blue};
+            color: #333333;
             margin-top: 8px;
             margin-bottom: 8px;
 
             &:hover {
               cursor: pointer;
-              color: #50a1f5;
+              color: #{$blue};
             }
           }
         }

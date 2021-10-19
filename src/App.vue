@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view />
+    <router-view/>
   </div>
 </template>
 
@@ -27,6 +27,7 @@ export default {
 </script>
 
 <style>
+
 @font-face {
   font-family: HarmonyOS_Sans_SC_Regular;
   src: url(https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-img-c@master/font/HarmonyOS_Sans/HarmonyOS_Sans_SC_Regular.ttf);
@@ -36,7 +37,7 @@ export default {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "HarmonyOS_Sans_SC_Regular", serif;
+  /*font-family: "HarmonyOS_Sans_SC_Regular", serif;*/
 }
 
 /* 滚动条 */
@@ -82,15 +83,15 @@ a:active {
 
 #app {
   background: linear-gradient(
-    90deg,
-    rgba(247, 149, 51, 0.1),
-    rgba(243, 112, 85, 0.1) 15%,
-    rgba(239, 78, 123, 0.1) 30%,
-    rgba(161, 102, 171, 0.1) 44%,
-    rgba(80, 115, 184, 0.1) 58%,
-    rgba(16, 152, 173, 0.1) 72%,
-    rgba(7, 179, 155, 0.1) 86%,
-    rgba(109, 186, 130, 0.1)
+      90deg,
+      rgba(247, 149, 51, 0.1),
+      rgba(243, 112, 85, 0.1) 15%,
+      rgba(239, 78, 123, 0.1) 30%,
+      rgba(161, 102, 171, 0.1) 44%,
+      rgba(80, 115, 184, 0.1) 58%,
+      rgba(16, 152, 173, 0.1) 72%,
+      rgba(7, 179, 155, 0.1) 86%,
+      rgba(109, 186, 130, 0.1)
   );
 }
 

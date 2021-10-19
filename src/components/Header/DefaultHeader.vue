@@ -7,7 +7,7 @@
     <div class="halo-a halo-bottom" @click="toNav()">
       导航
     </div>
-    <div class="halo-a halo-bottom" @click="toHome()">
+    <div class="halo-a halo-bottom" @click="toTools()">
       工具
     </div>
     <div class="halo-a halo-bottom" @click="toHome()">
@@ -40,10 +40,15 @@ export default {
       router.push("/home");
     }
 
+    function toTools() {
+      router.push("/tools");
+    }
+
 
     return {
       toNav,
       toHome,
+      toTools,
     }
 
   }
@@ -62,7 +67,7 @@ $header-background: #FFFFFF;
 }
 
 .halo-header {
-  margin: 30px 0 20px 0;
+  margin: 30px 0 12px 0;
   height: 60px;
   width: 100%;
   background: #{$header-background};

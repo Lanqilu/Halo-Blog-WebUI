@@ -2,7 +2,6 @@
   <div class="halo-edit">
     <default-header></default-header>
     <div class="m-content">
-
       <el-form ref="editForm" status-icon :model="editForm" :rules="rules" label-width="80px">
 
         <el-form-item label="标题" prop="blogTitle">
@@ -38,6 +37,8 @@ import {post} from "../utils/request";
 import MarkdownEditor from "../components/MarkdownEditor/Editor.vue";
 import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
+import marked from "marked";
+import hljs from "highlight.js";
 
 export default {
   name: "BlogEdit",
@@ -58,6 +59,23 @@ export default {
     function updateData(content) {
       state.content = content;
     }
+
+    // 参考地址：https://blog.csdn.net/weixin_41727824/article/details/112776711
+    let rendererMD = new marked.Renderer();
+    marked.setOptions({
+      renderer: rendererMD,
+      gfm: true, // 默认为 true。 允许 GitHub 标准的 Markdown.
+      tables: true, // 默认为 true。 允许支持表格语法。该选项要求 gfm 为true。
+      breaks: true, // 默认为 false。 允许回车换行。该选项要求 gfm 为true。
+      pedantic: false, // 默认为 false。 尽可能地兼容 markdown.pl的晦涩部分。不纠正原始模型任何的不良行为和错误。
+      smartLists: true,
+      smartypants: true, // 使用更为时髦的标点，比如在引用语法中加入破折号。
+      highlight: function (code) {
+        return hljs.highlightAuto(code).value;
+      },
+      langPrefix: "hljs language-",
+    });
+
 
     return {
       updateData,
@@ -103,6 +121,8 @@ export default {
     submitForm() {
       // 提交时让 MarkdownEditor 组件传回来的 content 赋值到表格对象中
       this.editForm.content = this.state.content;
+      // 将 MarkDown 内容转译为 HTML
+      this.editForm.contentHtml = marked(this.editForm.content);
       this.$refs.editForm.validate((valid) => {
         if (valid) {
           post("/blog/edit", toRaw(this.editForm))
@@ -141,6 +161,7 @@ export default {
         this.edit = true;
       }
     },
+
   },
 };
 </script>

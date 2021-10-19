@@ -8,7 +8,10 @@
           <input type="text" placeholder="用户名" class="input" v-model="registryForm.username"/>
           <input type="email" placeholder="电子邮箱" class="input" v-model="registryForm.email"/>
           <input type="password" placeholder="密码" class="input" v-model="registryForm.password"/>
-          <!--          <input type="text" placeholder="邮箱验证码" class="input" v-model="registryForm.authCode"/>-->
+          <div class="code">
+            <input type="text" placeholder="验证码" class="input" v-model="registryForm.authCode"/>
+            <div class="code-btn" @click="sendCode()">发送验证码</div>
+          </div>
           <button class="btn" @click.prevent="registry()">注 册</button>
         </form>
       </div>
@@ -45,7 +48,7 @@ import axios from "axios";
 import {useStore} from "vuex";
 import {useRouter, useRoute} from "vue-router";
 import {ElMessage} from "element-plus";
-import {post} from "../utils/request";
+import {get, post} from "../utils/request";
 
 export default {
   name: "Login",
@@ -61,9 +64,9 @@ export default {
 
     let registryForm = reactive({
       username: "hhhh",
-      email: "1379978893@qq.com",
+      email: "885240677@qq.com",
       password: "111111",
-      // authCode: "1111"
+      authCode: ""
     });
 
     function submitForm() {
@@ -106,6 +109,20 @@ export default {
           });
     }
 
+    function sendCode() {
+      let email = registryForm.email;
+      get(`/sent/${email}`).then((res) => {
+        console.log(res)
+        ElMessage.success({
+          message: res.data.msg,
+          // 是否显示关闭按钮
+          'show-close': true,
+          // 信息显示时间
+          duration: 1000
+        })
+      })
+    }
+
     onMounted(() => {
       const route = useRoute();
       // 根据路由判断是否登录或注册
@@ -121,6 +138,7 @@ export default {
       registryForm,
       registry,
       submitForm,
+      sendCode,
     };
   },
 
@@ -138,6 +156,24 @@ export default {
 </script>
 
 <style>
+
+.code {
+  width: 283px;
+  display: flex;
+  align-items: center;
+}
+
+.code-btn {
+  width: 183px;
+  height: 35px;
+  background: blue;
+  color: #FFFFFF;
+  margin: 8px;
+  border-radius: 8px;
+  line-height: 35px;
+  cursor: pointer;
+}
+
 .m-loginnew {
   /* COLORS */
   --white: #e9e9e9;
@@ -165,12 +201,14 @@ export default {
   display: grid;
   height: 100vh;
   place-items: center;
+
 }
 
 .form__title {
   font-weight: 300;
   margin: 0;
   margin-bottom: 1.25rem;
+
 }
 
 .link {
@@ -178,6 +216,7 @@ export default {
   font-size: 0.9rem;
   margin: 1.5rem 0;
   text-decoration: none;
+
 }
 
 .container {
@@ -190,6 +229,7 @@ export default {
   overflow: hidden;
   position: relative;
   width: 100%;
+
 }
 
 .container__form {
@@ -197,12 +237,14 @@ export default {
   position: absolute;
   top: 0;
   transition: all 0.6s ease-in-out;
+
 }
 
 .container--signin {
   left: 0;
   width: 50%;
   z-index: 2;
+
 }
 
 .container.right-panel-active .container--signin {
@@ -214,6 +256,7 @@ export default {
   opacity: 0;
   width: 50%;
   z-index: 1;
+
 }
 
 .container.right-panel-active .container--signup {
@@ -221,6 +264,7 @@ export default {
   opacity: 1;
   transform: translateX(100%);
   z-index: 5;
+
 }
 
 .container__overlay {
@@ -232,10 +276,12 @@ export default {
   transition: transform 0.6s ease-in-out;
   width: 50%;
   z-index: 100;
+
 }
 
 .container.right-panel-active .container__overlay {
   transform: translateX(-100%);
+
 }
 
 .overlay {
@@ -251,10 +297,12 @@ export default {
   transform: translateX(0);
   transition: transform 0.6s ease-in-out;
   width: 200%;
+
 }
 
 .container.right-panel-active .overlay {
   transform: translateX(50%);
+
 }
 
 .overlay__panel {
@@ -269,23 +317,28 @@ export default {
   transform: translateX(0);
   transition: transform 0.6s ease-in-out;
   width: 50%;
+
 }
 
 .overlay--left {
   transform: translateX(-20%);
+
 }
 
 .container.right-panel-active .overlay--left {
   transform: translateX(0);
+
 }
 
 .overlay--right {
   right: 0;
   transform: translateX(0);
+
 }
 
 .container.right-panel-active .overlay--right {
   transform: translateX(20%);
+
 }
 
 .btn {
@@ -293,8 +346,7 @@ export default {
   background-image: linear-gradient(
       90deg,
       var(--blue) 0%,
-      var(--lightblue) 74%
-  );
+      var(--lightblue) 74%);
   border-radius: 20px;
   border: 1px solid var(--blue);
   color: var(--white);
@@ -305,18 +357,22 @@ export default {
   padding: 0.9rem 4rem;
   text-transform: uppercase;
   transition: transform 80ms ease-in;
+
 }
 
 .form > .btn {
   margin-top: 1.5rem;
+
 }
 
 .btn:active {
   transform: scale(0.95);
+
 }
 
 .btn:focus {
   outline: none;
+
 }
 
 .form {
@@ -328,6 +384,7 @@ export default {
   padding: 0 3rem;
   height: 100%;
   text-align: center;
+
 }
 
 .input {
@@ -336,6 +393,7 @@ export default {
   padding: 0.9rem 0.9rem;
   margin: 0.5rem 0;
   width: 100%;
+
 }
 
 @keyframes show {

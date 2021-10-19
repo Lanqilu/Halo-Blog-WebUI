@@ -1,7 +1,14 @@
 import { getBlogList } from "../api";
 import { reactive, onMounted } from "vue";
+import {useRouter} from "vue-router";
 
 export default function () {
+
+    const router = useRouter();
+
+    function toBlogDetail(id) {
+        router.push({name: "BlogDetail", params: {blogId: id}});
+    }
 
     let homeData = reactive({
         blogs: {
@@ -39,6 +46,7 @@ export default function () {
 
     return {
         homeData,
-        changePage
+        changePage,
+        toBlogDetail
     }
 }
