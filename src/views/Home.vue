@@ -5,12 +5,12 @@
       <!-- 右侧卡片  -->
       <div class="halo-left-content">
         <UserInfo></UserInfo>
+        <music-card></music-card>
         <router-view name="blogContents"/>
       </div>
       <div class="halo-right-content">
         <!-- 左上测导航条 -->
         <default-header></default-header>
-
         <router-view name="indexCarousel"/>
         <router-view name="linkList"/>
         <router-view name="blogCards"/>
@@ -31,11 +31,20 @@ import HaloFooter from "../components/Footer/HaloFooter.vue";
 import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import IndexCarousel from "../components/Carousel/IndexCarousel.vue";
 import BlogCard from "../components/Blog/BlogCard.vue";
-
+import MusicCard from "../components/Cards/MusicCard.vue";
 
 export default {
   name: "Home",
-  components: {IndexCarousel, UserInfo, IndexBanner, HaloFooter, DefaultHeader, SortInfo, BlogCard},
+  components: {
+    IndexCarousel,
+    UserInfo,
+    IndexBanner,
+    HaloFooter,
+    DefaultHeader,
+    SortInfo,
+    BlogCard,
+    MusicCard,
+  },
 };
 </script>
 

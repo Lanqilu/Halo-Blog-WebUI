@@ -1,5 +1,4 @@
 <template>
-
   <div class="halo-blog">
     <div class="halo-body">
       <div class="halo-blog-left">
@@ -293,7 +292,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/style/mixin.scss";
-
 
 .halo-blog {
   width: 1169px;

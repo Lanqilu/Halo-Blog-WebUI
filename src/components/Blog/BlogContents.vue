@@ -1,27 +1,27 @@
 <template>
   <div class="halo-sticky">
     <!-- 文章目录 -->
-    <div class="halo-blog-catalogue" v-if="state.isShowContent">
-      <div class="toc-title">目录</div>
-      <el-divider></el-divider>
-      <div class="toc">
+<!--    <div class="halo-blog-catalogue" v-if="state.isShowContent">-->
+<!--      <div class="toc-title">目录</div>-->
+<!--      <el-divider></el-divider>-->
+<!--      <div class="toc">-->
 
-        <div>
-          <ul id="toc-content">
-            <li
-                v-for="item in state.treeArray"
-                :key="item.id"
-                :id="`${item.id}-halo`"
-                :class="item.tag"
-                class="toc-content-item"
-            >
-              <!-- 使用DOM进行跳转,不记录历史记录-->
-              <a class="toc-content-item" @click="jump(`${item.id}`)">{{ item.name }}</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+<!--        <div>-->
+<!--          <ul id="toc-content">-->
+<!--            <li-->
+<!--                v-for="item in state.treeArray"-->
+<!--                :key="item.id"-->
+<!--                :id="`${item.id}-halo`"-->
+<!--                :class="item.tag"-->
+<!--                class="toc-content-item"-->
+<!--            >-->
+<!--              &lt;!&ndash; 使用DOM进行跳转,不记录历史记录&ndash;&gt;-->
+<!--              <a class="toc-content-item" @click="jump(`${item.id}`)">{{ item.name }}</a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <!-- 点赞投币收藏  -->
     <div class="operation">
       <div
@@ -44,12 +44,16 @@
 <script>
 
 
+import blogData from "../../hooks/blogData";
+
 export default {
   name: "BlogContents",
 
   setup() {
-    return {}
-  }
+    return {
+      ...blogData(),
+    };
+  },
 };
 </script>
 

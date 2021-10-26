@@ -4,6 +4,7 @@ import BlogCards from "../components/Blog/BlogCard.vue";
 import IndexCarousel from "../components/Carousel/IndexCarousel.vue";
 import LinkList from "../components/LinkList/LinkList.vue";
 import BlogDetails from "../components/Blog/BlogDetails.vue";
+import Settings from "../views/Settings.vue";
 
 const routes = [
     {
@@ -40,6 +41,31 @@ const routes = [
                 }
             }
 
+        ]
+    },
+    {
+        path: "/settings",
+        redirect: "/settings/profile"
+    },
+    {
+        path: '/settings',
+        name: 'Settings',
+        component: Settings,
+        children: [
+            /* 个人信息 */
+            {
+                path: 'profile',
+                components: {
+                    profile: ()=> import("../components/Setting/profile.vue")
+                }
+            },
+            /* 账户信息 */
+            {
+                path: 'account',
+                components: {
+                    profile: ()=> import("../components/Setting/account.vue")
+                }
+            }
         ]
     },
     {

@@ -120,7 +120,7 @@ export default {
 
   background: #FFFFFF;
   height: 182px;
-  width: 320px;
+  width: 300px;
   margin-bottom: 12px;
 
   .halo-has-not-login {

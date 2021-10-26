@@ -49,12 +49,12 @@ $bottom-hover-color: #FFFFFF;
 
 // 主页大小布局
 .halo-home {
-  width: 1169px;
+  width: 1024px;
   margin: 0 auto;
   // 两栏设计
   .halo-body {
     display: grid;
-    grid-template-columns: 320px 836px;
+    grid-template-columns: 300px 700px;
     grid-gap: 12px;
 
     .halo-left-content {
