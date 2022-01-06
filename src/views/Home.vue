@@ -5,7 +5,8 @@
       <!-- 右侧卡片  -->
       <div class="halo-left-content">
         <UserInfo></UserInfo>
-        <music-card></music-card>
+        <!--        <music-card></music-card>-->
+        <music-card-test></music-card-test>
         <router-view name="blogContents"/>
       </div>
       <div class="halo-right-content">
@@ -32,6 +33,7 @@ import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import IndexCarousel from "../components/Carousel/IndexCarousel.vue";
 import BlogCard from "../components/Blog/BlogCard.vue";
 import MusicCard from "../components/Cards/MusicCard.vue";
+import MusicCardTest from "../components/Cards/MusicCardTest.vue";
 
 export default {
   name: "Home",
@@ -44,7 +46,9 @@ export default {
     SortInfo,
     BlogCard,
     MusicCard,
+    MusicCardTest,
   },
+
 };
 </script>
 

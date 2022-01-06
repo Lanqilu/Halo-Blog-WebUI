@@ -1,5 +1,5 @@
-import { getBlogList } from "../api";
-import { reactive, onMounted } from "vue";
+import {getBlogList} from "../api";
+import {reactive, onMounted} from "vue";
 import {useRouter} from "vue-router";
 
 export default function () {
@@ -27,6 +27,8 @@ export default function () {
 
     onMounted(async () => {
         let res = await getBlogList(1)
+        console.log("---------------------res-------------------")
+        console.log(res);
         homeData.blogs = res.data.data.records;
         homeData.currentPage = res.data.data.current;
         homeData.total = res.data.data.total;

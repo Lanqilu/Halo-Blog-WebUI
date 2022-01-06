@@ -11,22 +11,15 @@ export default function () {
             description: "默认描述",
             title: "默认标题",
             userId: "默认作者"
-        },
-        currentPage: 1,
-        total: 0,
-        pageSize: 3,
+        }
     })
 
     onMounted(async () => {
+        // 获取点赞数最多的文章作为幻灯片展示
         let res = await getMostLikeList(5)
-        carouselData.blogs = res.data.data.records;
-        carouselData.currentPage = res.data.data.current;
-        carouselData.total = res.data.data.total;
-        carouselData.pageSize = res.data.data.size;
+        carouselData.blogs = res.data.data;
     },)
 
 
-    return {
-        carouselData
-    }
+    return {carouselData}
 }

@@ -6,12 +6,12 @@
         <form action="#" class="form" id="form1" :model="registryForm">
           <h2 class="form__title">注 册</h2>
           <input type="text" placeholder="用户名" class="input" v-model="registryForm.username"/>
-          <input type="email" placeholder="电子邮箱" class="input" v-model="registryForm.email"/>
+          <!--          <input type="email" placeholder="电子邮箱" class="input" v-model="registryForm.email"/>-->
           <input type="password" placeholder="密码" class="input" v-model="registryForm.password"/>
-          <div class="code">
-            <input type="text" placeholder="验证码" class="input" v-model="registryForm.authCode"/>
-            <div class="code-btn" @click="sendCode()">发送验证码</div>
-          </div>
+          <!--          <div class="code">-->
+          <!--            <input type="text" placeholder="验证码" class="input" v-model="registryForm.authCode"/>-->
+          <!--            <div class="code-btn" @click="sendCode()">发送验证码</div>-->
+          <!--          </div>-->
           <button class="btn" @click.prevent="registry()">注 册</button>
         </form>
       </div>
@@ -20,7 +20,7 @@
       <div class="container__form container--signin">
         <form action="#" class="form" id="form2" :model="ruleForm">
           <h2 class="form__title">登 录</h2>
-          <input type="email" placeholder="电子邮箱" class="input" v-model="ruleForm.email"/>
+          <input type="email" placeholder="电子邮箱" class="input" v-model="ruleForm.username"/>
           <input type="password" placeholder="密码" class="input" v-model="ruleForm.password"/>
           <!--        <a href="#" class="link">忘记密码?</a>-->
           <button class="btn" @click.prevent="submitForm()">登 录</button>
@@ -44,11 +44,11 @@
 
 <script>
 import {reactive, onMounted} from "vue";
-import axios from "axios";
 import {useStore} from "vuex";
 import {useRouter, useRoute} from "vue-router";
 import {ElMessage} from "element-plus";
 import {get, post} from "../utils/request";
+import {getUserInfo} from "../api/login";
 
 export default {
   name: "Login",
@@ -58,8 +58,8 @@ export default {
     const router = useRouter();
 
     let ruleForm = reactive({
-      email: "1379978893@qq.com",
-      password: "111111",
+      username: "admin",
+      password: "admin123",
     });
 
     let registryForm = reactive({
@@ -70,43 +70,55 @@ export default {
     });
 
     function submitForm() {
-      post("/login", ruleForm).then((res) => {
-        // 获取 JWT
-        const jwt = res.headers["authorization"];
-        // 获取用户信息
-        const userInfo = res.data.data;
+      post("/auth/login", ruleForm).then((res) => {
+            // 获取 JWT
+            let token = res.data.data.access_token
+            let expires = res.data.data.expires_in
 
-        // 赋值到全局store
-        store.commit("SET_TOKEN", jwt);
-        store.commit("SET_USERINFO", userInfo);
+            // 赋值到全局 store
+            store.commit("SET_TOKEN", token);
+            store.commit("SET_EXPIRES_IN", expires);
 
-        // 登录成功
-        console.log("登录成功");
-        // 跳转页面
-        router.push("/home");
-      });
+            // 获取 Token 后，根据 Token 返回用户信息
+            getUserInfo().then(res => {
+              let data = res.data;
+              let avatar = data.user.avatar;
+              // 如果头像没有则为默认头像
+              if (avatar === "") {
+                avatar = "https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-img-f@master/image.4skloqie47w0.png";
+              }
+              let userInfo = {
+                nickName: data.user.nickName,
+                avatar: avatar,
+                userId: data.user.userId
+              }
+              store.commit("SET_USERINFO", userInfo);
+              // 获取用户信息后, 跳转页面
+              router.push("/home");
+            })
+          }
+      );
     }
 
     function registry() {
-      post("/register", registryForm)
-          .then((res) => {
-            console.log(res);
-            if (res.data.code === 200) {
-              ElMessage.success({
-                message: res.data.msg,
-                type: "success",
-              });
-              // 改变数据
-              ruleForm.email = registryForm.email;
-              ruleForm.password = registryForm.password;
-
-              // 跳转到登录页
-              let container = document.querySelector(".container");
-              container.classList.remove("right-panel-active");
-            } else {
-              ElMessage(res.data.msg);
-            }
+      post("/auth/register", registryForm).then((res) => {
+        console.log(res);
+        if (res.data.code === 200) {
+          ElMessage.success({
+            message: "注册成功",
+            type: "success",
           });
+          // 改变数据
+          ruleForm.username = registryForm.username;
+          ruleForm.password = registryForm.password;
+
+          // 跳转到登录页
+          let container = document.querySelector(".container");
+          container.classList.remove("right-panel-active");
+        } else {
+          ElMessage(res.data.msg);
+        }
+      });
     }
 
     function sendCode() {

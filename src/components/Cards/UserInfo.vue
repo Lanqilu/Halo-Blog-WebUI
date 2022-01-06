@@ -4,26 +4,28 @@
     <div class="halo-has-login" v-show="user.hasLogin">
       <div class="halo-user-meta">
         <div class="halo-user-avatar">
-          <el-avatar shape="square" :size="166" :src="user.avatar"></el-avatar>
+          <el-avatar shape="square" :size="130" :src="user.avatar"></el-avatar>
+          <div class="username"> {{ user.username }}</div>
         </div>
         <div class="halo-user-button">
           <div class="halo-personal-homepage halo-bottom" @click="publishArticle()">
-<!--            <svg class="add-icon icon add" aria-hidden="true">-->
-<!--              <use xlink:href="#icon-plus-circle-fill"/>-->
-<!--            </svg>-->
+            <!--            <svg class="add-icon icon add" aria-hidden="true">-->
+            <!--              <use xlink:href="#icon-plus-circle-fill"/>-->
+            <!--            </svg>-->
             动态
           </div>
-          <div class="logout halo-bottom" @click="logout()">
-<!--            <svg class="add-icon icon add" aria-hidden="true">-->
-<!--              <use xlink:href="#icon-plus-circle-fill"/>-->
-<!--            </svg>-->
-            退出
+
+          <div class="logout halo-bottom" @click="goToNew('settings')">
+            <!--            <svg class="add-icon icon add" aria-hidden="true">-->
+            <!--              <use xlink:href="#icon-plus-circle-fill"/>-->
+            <!--            </svg>-->
+            设置
           </div>
-          <div class="logout halo-bottom" @click="logout()">
-<!--            <svg class="add-icon icon add" aria-hidden="true">-->
-<!--              <use xlink:href="#icon-plus-circle-fill"/>-->
-<!--            </svg>-->
-            消息
+          <div class="logout halo-bottom" @click="logout">
+            <!--            <svg class="add-icon icon add" aria-hidden="true">-->
+            <!--              <use xlink:href="#icon-plus-circle-fill"/>-->
+            <!--            </svg>-->
+            退出
           </div>
         </div>
       </div>
@@ -31,8 +33,8 @@
 
     <!-- 如果未登录展示该 div -->
     <div class="halo-has-not-login" v-if="!user.hasLogin">
-      <div class="login" @click="toLogin()">登 录</div>
-      <div class="register" @click="toRegister()">注 册</div>
+      <div class="login" @click="goToNew('login')">登 录</div>
+      <div class="register" @click="goToNew('register')">注 册</div>
     </div>
   </div>
 </template>
@@ -47,8 +49,20 @@ import {getAuthorArticle} from "../../api";
 export default {
   name: "UserInfo",
   setup: function () {
+
     const store = useStore();
     const router = useRouter();
+
+    // 路由到新地址
+    function goTo(string) {
+      router.push(`/${string}`)
+    }
+
+    // 路由到新地址并在新页面打开
+    function goToNew(string) {
+      let data = router.resolve(`/${string}`)
+      window.open(data.href, '_blank')
+    }
 
     let user = reactive({
       username: "Hello",
@@ -60,6 +74,14 @@ export default {
 
     onMounted(() => {
       getAuthorArticleCount();
+
+      // 判断是否登录
+      if (store.getters.getUser) {
+        user.username = store.getters.getUser.username;
+        user.avatar = store.getters.getUser.avatar;
+        user.userId = store.getters.getUser.id;
+        user.hasLogin = true;
+      }
     });
 
     // 获取该作者的文章数目
@@ -68,23 +90,15 @@ export default {
       user.articleCount = res.data.data;
     }
 
-    // 判断是否登录
-    if (store.getters.getUser) {
-      user.username = store.getters.getUser.username;
-      user.avatar = store.getters.getUser.avatar;
-      user.userId = store.getters.getUser.id;
-      user.hasLogin = true;
-    }
+
 
     function logout() {
-      axios
-          .get("http://test:8088/logout", {
-            headers: {Authorization: localStorage.getItem("token")},
-          })
-          .then((res) => {
-            store.commit("REMOVE_INFO");
-            location.reload();
-          });
+      axios.delete("http://localhost:8080/auth/logout", {
+        headers: {Authorization: localStorage.getItem("token")},
+      }).then((res) => {
+        store.commit("REMOVE_INFO");
+        location.reload();
+      });
     }
 
     function publishArticle() {
@@ -92,20 +106,12 @@ export default {
     }
 
 
-    function toLogin() {
-      router.push("/login");
-    }
-
-    function toRegister() {
-      router.push("/register")
-    }
-
     return {
       user,
       logout,
       publishArticle,
-      toLogin,
-      toRegister,
+      goTo,
+      goToNew,
     };
   },
 };
@@ -163,12 +169,22 @@ export default {
   .halo-has-login {
     .halo-user-meta {
       display: flex;
+      justify-content: space-evenly;
 
       .halo-user-avatar {
-        width: 166px;
+        width: 130px;
         height: 166px;
         margin: 8px;
         border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+
+        .username {
+          font-size: 18px;
+          color: #71829e;
+        }
       }
 
       .halo-user-button {

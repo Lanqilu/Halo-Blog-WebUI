@@ -4,7 +4,7 @@
   "scripts": {
     "serve": "vite preview",
     "build": "vite build",
-    "dev": "vite"
+    "dev": "vite --open"
   },
   "dependencies": {
     "@toast-ui/editor": "^3.0.2",

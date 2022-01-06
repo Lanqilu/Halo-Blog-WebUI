@@ -1,9 +1,10 @@
 import {useRoute} from "vue-router";
 import {useStore} from "vuex";
 import {onMounted, reactive, watch} from "vue";
-import {BlogDetail, getAuthorInfo} from "../api";
+import {BlogDetail} from "../api";
 import {get} from "../utils/request";
 import {ElMessage} from "element-plus";
+import {getAuthorInfo} from "../api/article";
 
 
 export default function () {
@@ -11,8 +12,7 @@ export default function () {
     const route = useRoute();
     const store = useStore();
 
-    // 进入页面 滚动条重置
-    document.body.scrollTo(0, 0);
+
 
     let blog = reactive({
         info: {
@@ -27,7 +27,7 @@ export default function () {
         isOwnBlog: false,
         author: {
             avatar: "",
-            username: "",
+            nickName: "",
             email: "",
         },
     });
@@ -50,14 +50,19 @@ export default function () {
 
         try {
             // 判断是否是自己的文章，能否编辑
-            blog.isOwnBlog = blog.info.userId === store.getters.getUser.id;
+            blog.isOwnBlog = blog.info.userId === store.getters.getUser.userId;
         } catch (e) {
             console.log(e);
             console.log("未登录");
         }
 
         let authorInfoRes = await getAuthorInfo(blog.info.userId);
+        console.log(authorInfoRes)
         blog.author = authorInfoRes.data.data;
+        if (blog.author.avatar === "") {
+            blog.author.avatar = "https://cdn.jsdelivr.net/gh/halo-blog/cdn-blog-img-f@master/image.4skloqie47w0.png"
+        }
+
 
         getToc();
         console.log("————————————————数据挂载完成————————————————");

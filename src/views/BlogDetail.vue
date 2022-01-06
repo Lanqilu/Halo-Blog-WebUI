@@ -473,8 +473,6 @@ export default {
 
               .catalog-active {
                 color: #{$blue} !important;
-
-
                 &::before {
                   content: "→ ";
                   margin-left: -1.3em;

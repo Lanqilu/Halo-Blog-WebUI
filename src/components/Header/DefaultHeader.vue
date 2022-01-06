@@ -1,16 +1,16 @@
 <template>
   <!--  <div class="halo-top"></div>-->
   <div class="halo-header">
-    <div class="halo-a halo-bottom" @click="toHome()">
+    <div class="halo-a halo-bottom" @click="goTo('home')">
       主页
     </div>
-    <div class="halo-a halo-bottom" @click="toNav()">
+    <div class="halo-a halo-bottom" @click="goTo('nav')">
       导航
     </div>
-    <div class="halo-a halo-bottom" @click="toTools()">
+    <div class="halo-a halo-bottom" @click="goToNew('tools')">
       工具
     </div>
-    <div class="halo-a halo-bottom" @click="goTo('settings')">
+    <div class="halo-a halo-bottom" @click="goToNew('settings')">
       设置
     </div>
     <div class="halo-a halo-bottom" @click="getMore()">
@@ -29,20 +29,13 @@ export default {
   setup() {
     const router = useRouter();
 
+    function goToNew(string) {
+      let data = router.resolve(`/${string}`)
+      window.open(data.href, '_blank')
+    }
+
     function goTo(string) {
       router.push(`/${string}`)
-    }
-
-    function toNav() {
-      router.push("/nav");
-    }
-
-    function toHome() {
-      router.push("/home");
-    }
-
-    function toTools() {
-      router.push("/tools");
     }
 
     function getMore() {
@@ -50,10 +43,8 @@ export default {
     }
 
     return {
-      toNav,
-      toHome,
-      toTools,
       goTo,
+      goToNew,
       getMore,
     }
 

@@ -39,6 +39,7 @@ import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import HaloFooter from "../components/Footer/HaloFooter.vue";
 import marked from "marked";
 import hljs from "highlight.js";
+import {getUserInfo} from "../api/login";
 
 export default {
   name: "BlogEdit",
@@ -87,6 +88,7 @@ export default {
     return {
       editForm: {
         id: null,
+        userId: JSON.parse(localStorage.getItem("userInfo")).userId,
         blogTitle: "",
         description: "",
         blogCover:
@@ -115,6 +117,7 @@ export default {
   mounted() {
     this.isEdit();
   },
+
 
   methods: {
     // 提交表单

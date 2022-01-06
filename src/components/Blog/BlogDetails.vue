@@ -20,7 +20,7 @@
           <img :src="blog.author.avatar" alt class="author-avatar"/>
         </div>
         <div class="author-info">
-          <div>{{ blog.author.username }}</div>
+          <div>{{ blog.author.nickName }}</div>
           <div>{{ blog.author.email }}</div>
         </div>
       </div>
@@ -36,11 +36,8 @@
   <div class="m-blog" v-bind:class="{ active: state.isShowContent }">
     <div id="describe" class="describe">{{ blog.info.description }}</div>
     <el-divider></el-divider>
-
-    <el-skeleton :rows="10" animated v-if="blog.info.isShow" :throttle="200"/>
-
     <div id="content" class="content markdown-body" v-html="blog.info.content"></div>
-
+    <el-skeleton :rows="10" animated v-if="blog.info.isShow" :throttle="200"/>
     <el-divider></el-divider>
   </div>
 </template>
@@ -53,6 +50,8 @@ import blogData from "../../hooks/blogData.js";
 export default {
   name: "BlogDetails",
   setup() {
+    // 进入页面 滚动条重置
+    window.scrollTo(0, 0);
     return {
       ...blogData(),
     };

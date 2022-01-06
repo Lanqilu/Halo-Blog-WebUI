@@ -470,6 +470,7 @@ $link-height: 110px;
   .show {
     display: block;
     position: absolute;
+    z-index: 10;
     // hover 动画时间
     animation-duration: 0.25s;
 

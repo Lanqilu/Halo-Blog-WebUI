@@ -2,7 +2,7 @@
 import axios from "axios";
 
 
-const baseURL = import.meta.env.VITE_GLOB_API_URL;
+const baseURL = import.meta.env.VITE_GLOB_API_URL+"/blog";
 
 // 获取所有公共链接
 export function getAllPublicLink() {

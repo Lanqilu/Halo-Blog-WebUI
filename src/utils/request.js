@@ -14,6 +14,7 @@ axiosInstance.interceptors.request.use(
         console.log(config)
         console.groupEnd();
         if (localStorage.getItem("token") != null) {
+            // 如果有 Token, 请求时携带 Token
             config.headers.Authorization = localStorage.getItem("token")
         }
 
