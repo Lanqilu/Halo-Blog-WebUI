@@ -4,10 +4,12 @@
     <div class="halo-body">
       <!-- 右侧卡片  -->
       <div class="halo-left-content">
-        <UserInfo></UserInfo>
-        <!--        <music-card></music-card>-->
-        <music-card-test></music-card-test>
+
+        <user-info></user-info>
+        <time-card></time-card>
+        <music-card></music-card>
         <router-view name="blogContents"/>
+
       </div>
       <div class="halo-right-content">
         <!-- 左上测导航条 -->
@@ -16,6 +18,7 @@
         <router-view name="linkList"/>
         <router-view name="blogCards"/>
         <router-view name="blogDetails"/>
+        <router-view name="Content"/>
       </div>
     </div>
     <!-- 回到顶部 -->
@@ -33,7 +36,7 @@ import DefaultHeader from "../components/Header/DefaultHeader.vue";
 import IndexCarousel from "../components/Carousel/IndexCarousel.vue";
 import BlogCard from "../components/Blog/BlogCard.vue";
 import MusicCard from "../components/Cards/MusicCard.vue";
-import MusicCardTest from "../components/Cards/MusicCardTest.vue";
+import TimeCard from "../components/Cards/TimeCard.vue";
 
 export default {
   name: "Home",
@@ -46,7 +49,7 @@ export default {
     SortInfo,
     BlogCard,
     MusicCard,
-    MusicCardTest,
+    TimeCard
   },
 
 };

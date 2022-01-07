@@ -128,7 +128,7 @@ export default {
     UserInfo,
   },
 
-  setup: function () {
+  setup(){
     const route = useRoute();
     const store = useStore();
 

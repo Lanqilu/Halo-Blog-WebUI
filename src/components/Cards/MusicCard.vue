@@ -1,5 +1,75 @@
 <template>
   <!--  https://codepen.io/JavaScriptJunkie/pen/qBWrRyg -->
+  <div class="wrapper" id="music-card">
+    <div class="player" @mouseleave="isShowSlider=false">
+      <div class="player__top">
+        <div class="player-cover" @mouseenter="isShow=true" @mouseleave="isShow=false">
+          <div class="player-cover__item" v-if="currentTrack"
+               :style="{ backgroundImage: `url(${currentTrack.cover})` }">
+            <div class="showControls">
+              <div class="player-controls" v-show="isShow">
+                <div class="player-controls__item" @click="prevTrack">
+                  <svg class="icon">
+                    <use xlink:href="#icon-prev"></use>
+                  </svg>
+                </div>
+                <div class="player-controls__item -xl js-play" @click="play">
+                  <svg class="icon">
+                    <use xlink:href="#icon-pause" v-if="isTimerPlaying"></use>
+                    <use xlink:href="#icon-play" v-else></use>
+                  </svg>
+                </div>
+                <div class="player-controls__item" @click="nextTrack">
+                  <svg class="icon">
+                    <use xlink:href="#icon-next"></use>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="progress" ref="progress">
+
+        <div class="album-info__name" v-if="currentTrack">
+          {{ currentTrack.name }}
+
+        </div>
+
+        <div class="progress__top">
+          <div class="album-info" v-if="currentTrack">
+            <div class="album-info__track">{{ currentTrack.artist }}</div>
+          </div>
+          <div class="progress__duration">{{ duration }}</div>
+        </div>
+        <div class="progress__bar" @click="clickProgress">
+          <div class="progress__current" :style="{ width : barWidth }"></div>
+        </div>
+        <div class="progress__time">
+          {{ currentTime }}
+        </div>
+      </div>
+
+      <div v-cloak></div>
+
+      <div class="slider-demo-block" @mousemove="isShowSlider=true">
+        <el-slider class="slider" v-model="volume" v-show="isShowSlider" vertical height="100px"
+                   @change="closeSlider()">
+        </el-slider>
+        <div class="volume" @click="setVolume()">
+          <svg class="icon" aria-hidden="true" v-if="volume!==0">
+            <use xlink:href="#icon-shengyin"/>
+          </svg>
+          <svg class="icon" aria-hidden="true" v-if="volume===0">
+            <use xlink:href="#icon-shengyinguanbi"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <svg xmlns="http://www.w3.org/2000/svg" hidden xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
       <symbol id="icon-heart-o" viewBox="0 0 32 32">
@@ -72,85 +142,58 @@
       </symbol>
     </defs>
   </svg>
-  <div class="wrapper" id="music-card">
-    <div class="player">
-      <div class="player__top">
-        <div class="player-cover">
-          <div class="player-cover__item" v-if="currentTrack"
-               :style="{ backgroundImage: `url(${currentTrack.cover})` }">
-          </div>
-        </div>
-        <div class="player-controls">
-          <div class="player-controls__item" @click="prevTrack">
-            <svg class="icon">
-              <use xlink:href="#icon-prev"></use>
-            </svg>
-          </div>
-          <div class="player-controls__item -xl js-play" @click="play">
-            <svg class="icon">
-              <use xlink:href="#icon-pause" v-if="isTimerPlaying"></use>
-              <use xlink:href="#icon-play" v-else></use>
-            </svg>
-          </div>
-          <div class="player-controls__item" @click="nextTrack">
-            <svg class="icon">
-              <use xlink:href="#icon-next"></use>
-            </svg>
-          </div>
-        </div>
-      </div>
-      <div class="progress" ref="progress">
-        <div class="album-info__name" v-if="currentTrack">{{ currentTrack.name }}</div>
-        <div class="progress__top">
-          <div class="album-info" v-if="currentTrack">
-            <div class="album-info__track">{{ currentTrack.artist }}</div>
-          </div>
-          <div class="progress__duration">{{ duration }}</div>
-        </div>
-        <div class="progress__bar" @click="clickProgress">
-          <div class="progress__current" :style="{ width : barWidth }"></div>
-        </div>
-        <div class="progress__time">{{ currentTime }}</div>
-      </div>
-      <div v-cloak></div>
-    </div>
-  </div>
-
-
 </template>
 
 <script>
 import axios from "axios";
+import {ref} from "vue";
 
 export default {
-  name: "MusicCard",
+  name: "MusicCardTest",
   el: "#music-card",
+  setup() {
+    const value = ref(0)
+    return {
+      value,
+    }
+  },
+
+
   data() {
     return {
+      isShowSlider: false,
       audio: null,
       circleLeft: null,
       barWidth: null,
       duration: null,
       currentTime: null,
       isTimerPlaying: false,
-      tracks: [
-        {
-          "name": "Innocent Age 无虑无猜的岁月",
-          "id": 1861576557,
-          "artist": "陈致逸",
-          "source": "http://m701.music.126.net/20211027020708/da247ced8ee67528a2816d73fe0821a8/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/9875573196/f4ef/ca3d/ade4/0be73000b803d0347faffb83a85bc484.mp3",
-          "cover": "https://p2.music.126.net/klj1ylCHIDtuINQEXo1WEg==/109951166180599033.jpg"
-        }
-      ],
+      tracks: [],
       currentTrack: null,
-      currentTrackIndex: 0,
       transitionName: null,
       source: "",
-      isShow: false,
-      random: 1,
+      volume: 10,
+      oldVolume: null,
+      random: [],
+      isShow: true
     };
   },
   methods: {
+    closeSlider() {
+      setTimeout(() => {
+        this.isShowSlider = false
+      }, 500)
+    },
+    setVolume() {
+      if (this.volume === 0 && this.oldVolume !== null) {
+        this.volume = this.oldVolume
+      } else {
+        this.oldVolume = this.volume;
+        this.volume = 0;
+      }
+      this.isShowSlider = false;
+    },
+
     play() {
       if (this.audio.paused) {
         this.audio.play();
@@ -205,35 +248,30 @@ export default {
       this.updateBar(e.pageX);
     },
     prevTrack() {
-      if (this.currentTrackIndex > 0) {
-        this.currentTrackIndex--;
-      } else {
-        this.currentTrackIndex = this.tracks.length - 1;
-      }
-      this.currentTrack = this.tracks[this.currentTrackIndex];
+      let newRandom = Math.round(Math.random() * (this.tracks.length - 1))
+      this.currentTrack = this.tracks[newRandom];
       this.resetPlayer();
     },
     nextTrack() {
-      if (this.currentTrackIndex < this.tracks.length - 1) {
-        this.currentTrackIndex++;
-      } else {
-        this.currentTrackIndex = 0;
-      }
-      this.currentTrack = this.tracks[this.currentTrackIndex];
+      // 获取随机数组
+      let newRandom = Math.round(Math.random() * (this.tracks.length - 1))
+      this.currentTrack = this.tracks[newRandom];
       this.resetPlayer();
     },
     resetPlayer() {
       this.barWidth = 0;
       this.circleLeft = 0;
       this.audio.currentTime = 0;
-      this.audio.src = this.currentTrack.source;
-      setTimeout(() => {
-        if (this.isTimerPlaying) {
-          this.audio.play();
-        } else {
-          this.audio.pause();
-        }
-      }, 300);
+      axios.get(`http://localhost:3000/song/url?id=${this.currentTrack.id}`).then((url) => {
+        this.audio.src = url.data.data[0].url;
+        setTimeout(() => {
+          if (this.isTimerPlaying) {
+            this.audio.play();
+          } else {
+            this.audio.pause();
+          }
+        }, 300);
+      })
     },
     // 获取歌单前 10 歌曲信息
     getMusicList(id) {
@@ -290,74 +328,57 @@ export default {
     },
     // 获取歌单信息
     getMusicListInfo(id) {
-      this.tracks = [];
+      let trackIds = []
       axios.get(`http://localhost:3000/playlist/detail?id=${id}`).then((res) => {
-        for (let i = 0; i < res.data.playlist.tracks.length; i++) {
-          let id = res.data.playlist.tracks[i]["id"]
-          this.tracks.push(
-              {
-                name: res.data.playlist.tracks[i]["name"],
-                id: id,
-                artist: res.data.playlist.tracks[i]["ar"][0].name,
-                source: "",
-                cover: res.data.playlist.tracks[i]["al"].picUrl,
-              })
-          this.isShow = true
-          let vm = this;
-          this.currentTrack = this.tracks[0];
-          this.audio = new Audio();
-          axios.get(`http://localhost:3000/song/url?id=${this.currentTrack.id}`).then((url) => {
-            this.audio.src = url.data.data[0].url;
-          })
-          this.audio.ontimeupdate = function () {
-            vm.generateTime();
-          };
-          this.audio.onloadedmetadata = function () {
-            vm.generateTime();
-          };
-          this.audio.onended = function () {
-            vm.nextTrack();
-            this.isTimerPlaying = true;
-          };
+        for (let i = 0; i < res.data.playlist.trackIds.length; i++) {
+          trackIds.push(res.data.playlist.trackIds[i].id)
         }
+        axios.get(`http://localhost:3000/song/detail?ids=${trackIds.join(',')}`).then((songs) => {
+              for (let i = 0; i < songs.data.songs.length; i++) {
+                this.tracks.push({
+                  name: songs.data.songs[i]["name"],
+                  id: songs.data.songs[i]["id"],
+                  artist: songs.data.songs[i]["ar"][0].name,
+                  cover: songs.data.songs[i]["al"].picUrl,
+                })
+              }
+              let vm = this;
+              this.audio = new Audio();
+              this.audio.ontimeupdate = function () {
+                vm.generateTime();
+              };
+              this.audio.onloadedmetadata = function () {
+                vm.generateTime();
+              };
+              this.audio.onended = function () {
+                vm.nextTrack();
+                this.isTimerPlaying = true;
+              };
+              this.audio.volume = this.volume / 100;
+              this.nextTrack();
+            }
+        )
       })
-    }
-  },
-  mounted() {
-    this.getMusicListAll(2156211346)
-  },
-  updated() {
-  },
+    },
+  }
+  ,
   created() {
-    let vm = this;
-    this.currentTrack = this.tracks[0];
-    this.audio = new Audio();
-    this.audio.src = this.currentTrack.source;
-    this.audio.ontimeupdate = function () {
-      vm.generateTime();
-    };
-    this.audio.onloadedmetadata = function () {
-      vm.generateTime();
-    };
-    this.audio.onended = function () {
-      vm.nextTrack();
-      this.isTimerPlaying = true;
-    };
-
-    // this is optional (for preload covers)
-    for (let index = 0; index < this.tracks.length; index++) {
-      const element = this.tracks[index];
-      let link = document.createElement('link');
-      link.rel = "prefetch";
-      link.href = element.cover;
-      link.as = "image"
-      document.head.appendChild(link)
-    }
+    this.getMusicListInfo(2156211346)
+  }
+  ,
+  updated() {
+    this.audio.volume = this.volume / 100
   }
 }
 </script>
 
 <style scoped lang="scss">
+@import "../../assets/style/mixin.scss";
+
+svg {
+  height: 0;
+  width: 0;
+}
 
 .icon {
   display: inline-block;
@@ -366,6 +387,17 @@ export default {
   stroke-width: 0;
   stroke: currentColor;
   fill: currentColor;
+}
+
+/* element 滑块 */
+.el-slider{
+  .el-slider__button{
+    width: 10px;
+    height: 10px;
+  }
+  .el-slider__button-wrapper{
+
+  }
 }
 
 .wrapper {
@@ -377,19 +409,15 @@ export default {
 }
 
 .player {
-  background: #eef3f7;
+  background: #{$white};
   width: 300px;
   min-height: 300px;
-  box-shadow: 0 15px 35px -5px rgba(50, 88, 130, 0.32);
-  border-radius: 12px;
+  box-shadow: #{$box-shadow};
+  border-radius: #{$border-radius};
   padding: 20px;
 
   &__top {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    z-index: 4;
+    z-index: 2;
   }
 
   &-cover {
@@ -397,9 +425,8 @@ export default {
     height: 260px;
     flex-shrink: 0;
     position: relative;
-    z-index: 2;
-    border-radius: 12px;
-    margin-bottom: 12px;
+    z-index: 0;
+    border-radius: #{$border-radius};
 
     &__item {
       background-repeat: no-repeat;
@@ -407,7 +434,7 @@ export default {
       background-size: cover;
       width: 100%;
       height: 100%;
-      border-radius: 15px;
+      border-radius: #{$border-radius};
       position: absolute;
       left: 0;
       top: 0;
@@ -417,23 +444,34 @@ export default {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 15px;
+      border-radius: #{$border-radius};
       box-shadow: 0 10px 40px 0 rgba(76, 70, 124, 0.5);
       user-select: none;
       pointer-events: none;
     }
   }
 
+  .showContent {
+    width: 100px;
+    height: 100px;
+    z-index: 10;
+  }
+
   &-controls {
+    position: absolute;
+    width: 260px;
     flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-evenly;
+    z-index: 3;
+    transform: translateY(80px);
 
     &__item {
       display: flex;
       font-size: 30px;
-      color: #acb8cc;
+      color: #eef3f7;
       cursor: pointer;
       width: 80px;
       height: 50px;
@@ -490,6 +528,28 @@ export default {
   display: none;
 }
 
+
+.slider-demo-block {
+  z-index: 10;
+
+  .slider {
+    position: fixed;
+    transform: translateX(-10px) translateY(-110px);
+  }
+
+  transform: translateY(-95px) translateX(240px);
+
+  .volume {
+    color: #71829e;
+    position: fixed;
+    cursor: pointer;
+
+    .icon {
+      font-size: 20px;
+    }
+  }
+}
+
 .progress {
   width: 100%;
   margin-top: 12px;
@@ -535,6 +595,7 @@ export default {
 
 .album-info__name {
   color: #71829e;
+  width: 90%;
   flex: 1;
   user-select: none;
   font-size: 20px;

@@ -1,25 +1,25 @@
 <template>
-  <div class="halo-page">
-    <el-row>
-      <el-col :sm="4" :md="4">
-        <div class="setting">
-          <div class="halo-bottom" @click="goTo('profile')">个人中心</div>
-          <div class="halo-bottom" @click="goTo('account')">账号设置</div>
-          <div class="halo-bottom">账号安全</div>
-          <div class="halo-bottom">账号设置</div>
-          <div class="halo-bottom">账号设置</div>
-          <div class="halo-bottom">账号设置</div>
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="20" :md="20">
-        <div class="content">
-          <router-view name="profile"/>
-          <router-view name="account"/>
-        </div>
-      </el-col>
-    </el-row>
-  </div>
-  <halo-footer></halo-footer>
+    <div class="halo-page">
+      <el-row>
+        <el-col :sm="4" :md="4">
+          <div class="setting">
+            <div class="halo-bottom" @click="goTo('profile')">个人中心</div>
+            <div class="halo-bottom" @click="goTo('account')">账号设置</div>
+            <div class="halo-bottom">账号安全</div>
+            <div class="halo-bottom">账号设置</div>
+            <div class="halo-bottom">账号设置</div>
+            <div class="halo-bottom">账号设置</div>
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="20" :md="20">
+          <div class="content">
+            <router-view name="profile"/>
+            <router-view name="account"/>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <halo-footer></halo-footer>
 </template>
 
 <script>

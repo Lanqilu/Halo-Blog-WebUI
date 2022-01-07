@@ -27,8 +27,6 @@ export default function () {
 
     onMounted(async () => {
         let res = await getBlogList(1)
-        console.log("---------------------res-------------------")
-        console.log(res);
         homeData.blogs = res.data.data.records;
         homeData.currentPage = res.data.data.current;
         homeData.total = res.data.data.total;

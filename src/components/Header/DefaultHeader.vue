@@ -7,7 +7,7 @@
     <div class="halo-a halo-bottom" @click="goTo('nav')">
       导航
     </div>
-    <div class="halo-a halo-bottom" @click="goToNew('tools')">
+    <div class="halo-a halo-bottom" @click="goTo('tools')">
       工具
     </div>
     <div class="halo-a halo-bottom" @click="goToNew('settings')">

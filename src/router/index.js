@@ -1,20 +1,20 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import Home from "../views/Home.vue";
+
 import BlogCards from "../components/Blog/BlogCard.vue";
 import IndexCarousel from "../components/Carousel/IndexCarousel.vue";
 import LinkList from "../components/LinkList/LinkList.vue";
 import BlogDetails from "../components/Blog/BlogDetails.vue";
+import Layout from "../layout/index.vue";
+import Tools from "../views/Tools.vue";
 import Settings from "../views/Settings.vue";
+
 
 const routes = [
     {
-        path: "/",
-        redirect: "/home"
-    },
-    {
         path: '/',
-        name: 'Home',
-        component: Home,
+        redirect: "/home",
+        name: 'Layout',
+        component: Layout,
         children: [
             /* 主页 */
             {
@@ -39,35 +39,41 @@ const routes = [
                     blogDetails: BlogDetails,
                     blogContents: () => import("../components/Blog/BlogContents.vue")
                 }
-            }
-
+            },
+            {
+                path: "/tools",
+                components: {Content: Tools}
+            },
+            /* 动态 */
+            {
+                path: "/trends",
+                components: {
+                    Content: () => import("../views/Trends")
+                }
+            },
         ]
     },
-    {
-        path: "/settings",
-        redirect: "/settings/profile"
-    },
+    /* 设置页 */
     {
         path: '/settings',
-        name: 'Settings',
+        redirect: '/settings/profile',
         component: Settings,
         children: [
-            /* 个人信息 */
             {
                 path: 'profile',
                 components: {
-                    profile: ()=> import("../components/Setting/profile.vue")
+                    profile: () => import("../components/Setting/profile.vue")
                 }
             },
-            /* 账户信息 */
             {
                 path: 'account',
                 components: {
-                    profile: ()=> import("../components/Setting/account.vue")
+                    account: () => import("../components/Setting/account.vue")
                 }
-            }
+            },
         ]
     },
+
     {
         path: '/404',
         name: 'Error404',
@@ -78,11 +84,7 @@ const routes = [
         name: 'Login',
         component: () => import("../views/Login.vue")
     },
-    {
-        path: "/tools",
-        name: "Tools",
-        component: () => import("../views/Tools.vue")
-    },
+
     {
         path: "/test",
         name: "Test",
